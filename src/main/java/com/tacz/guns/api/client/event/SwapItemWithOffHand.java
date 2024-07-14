@@ -8,7 +8,7 @@ public interface SwapItemWithOffHand {
     Event<SwapItemWithOffHand> EVENT = EventFactory.createArrayBacked(SwapItemWithOffHand.class,
             (listeners) -> () -> {
                 for (SwapItemWithOffHand listener : listeners) {
-                    ActionResult result = listener.run();
+                    ActionResult result = listener.swapItemWithOffHand();
 
                     if (result != ActionResult.PASS) {
                         return result;
@@ -18,5 +18,5 @@ public interface SwapItemWithOffHand {
                 return ActionResult.PASS;
             });
 
-    ActionResult run();
+    ActionResult swapItemWithOffHand();
 }

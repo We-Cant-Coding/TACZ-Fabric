@@ -7,6 +7,7 @@ import com.tacz.guns.block.TargetBlock;
 import com.tacz.guns.block.entity.GunSmithTableBlockEntity;
 import com.tacz.guns.block.entity.StatueBlockEntity;
 import com.tacz.guns.block.entity.TargetBlockEntity;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -23,10 +24,7 @@ public class ModBlocks {
     public static BlockEntityType<TargetBlockEntity> TARGET_BE = register("target", TargetBlockEntity.TYPE);
     public static BlockEntityType<StatueBlockEntity> STATUE_BE = register("statue", StatueBlockEntity.TYPE);
 
-
-
     public static void register() {
-
     }
 
     private static Block register(String path, Block block) {

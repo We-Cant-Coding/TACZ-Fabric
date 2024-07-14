@@ -109,6 +109,8 @@ dependencies {
 	// 총기 제어에 사용되는 로직 및 애니메이션 상태 머신에 루아 스크립팅 언어를 도입한 LuaJ 라이브러리
 	include implementation('com.github.286799714.luaj:luaj-jse:3.0.3')
 	include implementation('com.github.286799714.luaj:luaj-core:3.0.3')
+
+	include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.4.0")))
 }
 
 processResources {

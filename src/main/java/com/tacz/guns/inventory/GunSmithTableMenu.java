@@ -1,12 +1,31 @@
 package com.tacz.guns.inventory;
 
+import com.tacz.guns.api.TimelessAPI;
+import com.tacz.guns.crafting.GunSmithTableIngredient;
+import com.tacz.guns.network.NetworkHandler;
+import com.tacz.guns.network.message.ServerMessageCraft;
+import it.unimi.dsi.fastutil.ints.Int2IntArrayMap;
+import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.item.PlayerInventoryStorage;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.fabricmc.fabric.impl.transfer.item.InventoryStorageImpl;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.World;
+
+import java.util.List;
 
 public class GunSmithTableMenu extends ScreenHandler {
     public static final ScreenHandlerType<GunSmithTableMenu> TYPE = new ScreenHandlerType<>(GunSmithTableMenu::new, FeatureFlags.VANILLA_FEATURES);
@@ -26,54 +45,56 @@ public class GunSmithTableMenu extends ScreenHandler {
     }
 
     public void doCraft(Identifier recipeId, PlayerEntity player) {
-        /*
-        ???
-        forge 전용 코드로만 되있는데 방법이 있나?
-        TimelessAPI.getRecipe(recipeId).ifPresent(recipe -> player.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(handler -> {
-            Int2IntArrayMap recordCount = new Int2IntArrayMap();
+        TimelessAPI.getRecipe(recipeId).ifPresent(recipe -> {
+            var handler = PlayerInventoryStorage.of(player);
+            Object2IntArrayMap<ItemVariant> recordCount = new Object2IntArrayMap<>();
             List<GunSmithTableIngredient> ingredients = recipe.getInputs();
 
             for (GunSmithTableIngredient ingredient : ingredients) {
                 int count = 0;
-                for (int slotIndex = 0; slotIndex < handler.getSlots(); slotIndex++) {
-                    ItemStack stack = handler.getStackInSlot(slotIndex);
+                for (SingleSlotStorage<ItemVariant> slot : handler.getSlots()) {
+                    var variant = slot.getResource();
+                    ItemStack stack = variant.toStack();
                     int stackCount = stack.getCount();
-                    if (!stack.isEmpty() && ingredient.getIngredient().test(stack)) {
+                    if (!stack.isEmpty() && ingredient.ingredient().test(stack)) {
                         count = count + stackCount;
-                        // 记录扣除的 slot 和数量
-                        if (count <= ingredient.getCount()) {
-                            // 如果数量不足，全扣
-                            recordCount.put(slotIndex, stackCount);
+                        // Record the slot and number of deductions
+                        if (count <= ingredient.count()) {
+                            // Full deduction if insufficient
+                            recordCount.put(variant, stackCount);
                         } else {
-                            //  数量够了，只扣需要的数量
-                            int remaining = count - ingredient.getCount();
-                            recordCount.put(slotIndex, stackCount - remaining);
+                            // Enough to deduct only the amount needed
+                            int remaining = count - ingredient.count();
+                            recordCount.put(variant, stackCount - remaining);
                             break;
                         }
                     }
                 }
-                // 数量不够，不执行后续逻辑，合成失败
-                if (count < ingredient.getCount()) {
+                // Insufficient quantity, no subsequent logic is performed, synthesis fails
+                if (count < ingredient.count()) {
                     return;
                 }
             }
 
             // Start withholding materials
-            for (int slotIndex : recordCount.keySet()) {
-                handler.extractItem(slotIndex, recordCount.get(slotIndex), false);
+            Transaction transaction = Transaction.openOuter();
+            for (ItemVariant variant : recordCount.keySet()) {
+                handler.extract(variant, recordCount.get(variant), transaction);
             }
+            transaction.close();
 
             // Give the player the corresponding item
-            Level level = player.level();
-            if (!level.isClientSide) {
-                ItemEntity itemEntity = new ItemEntity(level, player.getX(), player.getY() + 0.5, player.getZ(), recipe.getResultItem(player.level().registryAccess()).copy());
-                itemEntity.setPickUpDelay(0);
-                level.addFreshEntity(itemEntity);
+            World world = player.getWorld();
+            if (!world.isClient) {
+                ItemEntity entity = new ItemEntity(world, player.getX(), player.getY() + 0.5, player.getZ(), recipe.getOutput(world.getRegistryManager()).copy());
+                entity.setPickupDelay(0);
+                world.spawnEntity(entity);
             }
-            // 更新，否则客户端显示不正确
-            player.inventoryMenu.broadcastFullState();
-            NetworkHandler.sendToClientPlayer(new ServerMessageCraft(this.containerId), player);
-        }));
-         */
+            // Update, otherwise the client display is incorrect
+            player.playerScreenHandler.updateToClient();
+            if (player instanceof ServerPlayerEntity) {
+                ServerPlayNetworking.send((ServerPlayerEntity) player, new ServerMessageCraft(this.syncId));
+            }
+        });
     }
 }

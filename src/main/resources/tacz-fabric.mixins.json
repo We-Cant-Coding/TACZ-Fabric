@@ -3,12 +3,20 @@
   "package": "com.tacz.guns.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "client.forge.SoundSystemMixin",
     "network.EntitySpawnS2CPacketMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "client": [
+    "client.CameraAccessor",
+    "client.HeldItemRendererMixin",
+    "client.forge.GameRendererMixin",
+    "client.forge.InGameHudMixin",
+    "client.forge.LivingEntityRendererMixin",
+    "client.forge.MinecraftClientMixin",
+    "client.forge.SpriteAtlasTextureMixin",
     "client.network.ClientPlayNetworkHandlerMixin"
   ]
 }
