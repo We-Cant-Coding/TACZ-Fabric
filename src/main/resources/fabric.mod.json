@@ -2,40 +2,45 @@
 	"schemaVersion": 1,
 	"id": "tacz-fabric",
 	"version": "${version}",
-	"name": "TACZ-Fabric",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "Timeless & Classics Guns: Zero",
+	"description": "",
 	"authors": [
-		"Me!"
+		"Serene Wave Studio | Modified by We-Cant-Coding"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"issues": "https://github.com/We-Cant-Coding/TACZ-Fabric/issues",
+		"sources": "https://github.com/We-Cant-Coding/TACZ-Fabric"
 	},
-	"license": "CC0-1.0",
+	"license": "GPL-3.0",
 	"icon": "assets/tacz-fabric/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.tacz.guns.TACZFabric"
+			"com.tacz.guns.GunMod"
 		],
 		"client": [
-			"com.tacz.guns.TACZFabricClient"
+			"com.tacz.guns.GunModClient"
+		],
+		"modmenu": [
+			"com.tacz.guns.compat.modmenu.ModMenuIntegration"
 		]
 	},
 	"mixins": [
-		"tacz-fabric.mixins.json",
-		{
-			"config": "tacz-fabric.client.mixins.json",
-			"environment": "client"
-		}
+		"tacz-fabric.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.15.11",
 		"minecraft": "~1.20.1",
 		"java": ">=17",
-		"fabric-api": "*"
+		"fabric-api": "*",
+		"forgeconfigapiport": ">=8.0.0"
 	},
-	"suggests": {
-		"another-mod": "*"
-	}
+	"custom": {
+		"loom:injected_interfaces": {
+			"net/minecraft/class_276": [
+				"com/tacz/guns/mixin/client/interfaces/FramebufferStencil"
+			]
+		}
+	},
+	"accessWidener": "tacz-fabric.accesswidener"
 }

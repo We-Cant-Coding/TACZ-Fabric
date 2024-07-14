@@ -1,0 +1,5 @@
+accessWidener v2 named
+
+accessible field net/minecraft/client/texture/TextureManager textures Ljava/util/Map;
+
+accessible field net/minecraft/client/resource/language/I18n language Lnet/minecraft/util/Language;

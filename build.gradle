@@ -11,23 +11,67 @@ base {
 }
 
 repositories {
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
-	// for more information about repositories.
+	maven {
+		// location of the maven that hosts JEI files before January 2023
+		name = "Progwml6's maven"
+		url = "https://dvs1.progwml6.com/files/maven/"
+	}
+	maven {
+		// location of the maven that hosts JEI files since January 2023
+		name = "Jared's maven"
+		url = "https://maven.blamejared.com/"
+	}
+	maven {
+		name = "KosmX's maven"
+		url = 'https://maven.kosmx.dev/'
+	}
+	maven {
+		// location of a maven mirror for JEI files, as a fallback
+		name = "ModMaven"
+		url = "https://modmaven.dev"
+	}
+	maven {
+		url = "https://cursemaven.com"
+		content {
+			includeGroup "curse.maven"
+		}
+	}
+	maven {
+		name = "Modrinth"
+		url = "https://api.modrinth.com/maven"
+	}
+	maven {
+		name = "Fuzs Mod Resources"
+		url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+	}
+	maven {
+		url = 'https://oss.sonatype.org/content/repositories/snapshots'
+	}
+	maven {
+		url = "https://maven.shedaniel.me/"
+	}
+	maven {
+		url = "https://maven.terraformersmc.com/releases/"
+	}
+	maven {
+		url = "https://maven.blamejared.com"
+	}
+	maven {
+		url = 'https://jitpack.io'
+	}
 }
 
 loom {
-	splitEnvironmentSourceSets()
+//	splitEnvironmentSourceSets()
+//
+//	mods {
+//		"tacz-fabric" {
+//			sourceSet sourceSets.main
+//			sourceSet sourceSets.client
+//		}
+//	}
 
-	mods {
-		"tacz-fabric" {
-			sourceSet sourceSets.main
-			sourceSet sourceSets.client
-		}
-	}
-
+	accessWidenerPath = file("src/main/resources/tacz-fabric.accesswidener")
 }
 
 dependencies {
@@ -38,7 +82,33 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	
+
+	modImplementation("maven.modrinth:jei:${project.jei_version}")
+
+	modRuntimeOnly("maven.modrinth:moonlight:${project.moonlight_version}")
+	modRuntimeOnly("maven.modrinth:mmmmmmmmmmmm:${project.mmmmmmmmmmmm_version}")
+
+	modImplementation("maven.modrinth:shoulder-surfing-reloaded:${project.shoulder_surfing_reloaded_version}")
+
+	modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
+	modApi "com.terraformersmc:modmenu:${project.modmenu_version}"
+	modApi "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.forgeconfigapiport_version}"
+
+	modCompileOnly("org.embeddedt:embeddium-1.20.1:${project.embeddedt_version}")
+
+	modCompileOnly("maven.modrinth:iris:${project.iris_version}")
+	modCompileOnly("maven.modrinth:carry-on:${project.carry_on_version}")
+
+	modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${project.player_animation_lib}")
+
+	// Apache Commons Math library for performing some interpolation operations
+	include minecraftLibraries('org.apache.commons:commons-math3:3.6.1')
+
+	// 총기 제어에 사용되는 로직 및 애니메이션 상태 머신에 루아 스크립팅 언어를 도입한 LuaJ 라이브러리
+	include implementation('com.github.286799714.luaj:luaj-jse:3.0.3')
+	include implementation('com.github.286799714.luaj:luaj-core:3.0.3')
 }
 
 processResources {
