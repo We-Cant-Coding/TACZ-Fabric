@@ -4,12 +4,12 @@ import com.tacz.guns.GunMod;
 import com.tacz.guns.client.resource.ClientReloadManager;
 import com.tacz.guns.resource.network.CommonGunPackNetwork;
 import com.tacz.guns.resource.network.DataType;
+import com.tacz.guns.util.EnvironmentUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.PacketType;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
@@ -35,7 +35,7 @@ public class ServerMessageSyncGunPack implements FabricPacket {
     }
 
     public void handle(PlayerEntity ignoredPlayer, PacketSender ignoredSender) {
-        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+        if (EnvironmentUtil.isClient()) {
             doSync(this);
         }
     }

@@ -1,7 +1,7 @@
 package com.tacz.guns.mixin.client;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import com.tacz.guns.mixin.client.interfaces.FramebufferStencil;
+import com.tacz.guns.api.mixin.FramebufferStencil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
 import org.spongepowered.asm.mixin.Mixin;

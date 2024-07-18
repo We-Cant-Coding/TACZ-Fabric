@@ -6,11 +6,10 @@ import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.api.item.attachment.AttachmentType;
 import com.tacz.guns.api.item.builder.AmmoItemBuilder;
 import com.tacz.guns.util.AttachmentDataUtils;
-import net.fabricmc.api.EnvType;
+import com.tacz.guns.util.EnvironmentUtil;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.PacketType;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -44,7 +43,7 @@ public class ClientMessageRefitGun implements FabricPacket {
     }
 
     public void handle(ServerPlayerEntity player, PacketSender sender) {
-        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
+        if (EnvironmentUtil.isServer()) {
             if (player == null) return;
             PlayerInventory inventory = player.getInventory();
             ItemStack attachmentItem = inventory.getStack(attachmentSlotIndex);

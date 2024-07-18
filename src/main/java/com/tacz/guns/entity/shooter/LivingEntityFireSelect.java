@@ -1,9 +1,11 @@
 package com.tacz.guns.entity.shooter;
 
+import com.tacz.guns.api.LogicalSide;
 import com.tacz.guns.api.event.common.GunFireSelectEvent;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.api.item.gun.AbstractGunItem;
 import com.tacz.guns.network.NetworkHandler;
+import com.tacz.guns.network.message.event.ServerMessageGunFireSelect;
 import net.fabricmc.api.EnvType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
@@ -26,7 +28,7 @@ public class LivingEntityFireSelect {
         if (!(currentGunItem.getItem() instanceof IGun iGun)) {
             return;
         }
-        if (GunFireSelectEvent.EVENT.invoker().gunFireSelect(shooter, currentGunItem, EnvType.SERVER) != ActionResult.PASS) {
+        if (new GunFireSelectEvent(shooter, currentGunItem, LogicalSide.SERVER).post()) {
             return;
         }
         NetworkHandler.sendToTrackingEntity(new ServerMessageGunFireSelect(shooter.getId(), currentGunItem), shooter);

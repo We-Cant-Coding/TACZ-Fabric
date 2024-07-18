@@ -3,6 +3,7 @@ package com.tacz.guns.api.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.item.Item;
 import net.minecraft.util.hit.EntityHitResult;
 
 /**

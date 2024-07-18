@@ -1,6 +1,7 @@
 package com.tacz.guns.entity.shooter;
 
 import com.tacz.guns.api.DefaultAssets;
+import com.tacz.guns.api.LogicalSide;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.entity.IGunOperator;
 import com.tacz.guns.api.entity.ReloadState;
@@ -9,16 +10,16 @@ import com.tacz.guns.api.item.IAmmo;
 import com.tacz.guns.api.item.IAmmoBox;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.api.item.gun.AbstractGunItem;
+import com.tacz.guns.forge.items.IItemHandler;
 import com.tacz.guns.network.NetworkHandler;
+import com.tacz.guns.network.message.event.ServerMessageGunReload;
 import com.tacz.guns.resource.index.CommonGunIndex;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
 import com.tacz.guns.resource.pojo.data.gun.GunData;
 import com.tacz.guns.resource.pojo.data.gun.GunReloadData;
 import com.tacz.guns.util.AttachmentDataUtils;
-import net.fabricmc.api.EnvType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 
 import java.util.Optional;
@@ -69,7 +70,7 @@ public class LivingEntityReload {
                 return;
             }
             // 触发装弹事件
-            if (GunReloadEvent.EVENT.invoker().gunReload(shooter, currentGunItem, EnvType.SERVER) != ActionResult.PASS) {
+            if (new GunReloadEvent(shooter, currentGunItem, LogicalSide.SERVER).post()) {
                 return;
             }
             NetworkHandler.sendToTrackingEntity(new ServerMessageGunReload(shooter.getId(), currentGunItem), shooter);
@@ -171,8 +172,8 @@ public class LivingEntityReload {
             return iGun.getDummyAmmoAmount(currentGunItem) > 0;
         }
         // ???? 도대체 이거 뭔데?
-        return shooter.getCapability(ForgeCapabilities.ITEM_HANDLER, null).map(cap -> {
-            // 背包检查
+
+        return shooter.tacz$getItemHandlerCapability(null).map(cap -> {
             for (int i = 0; i < cap.getSlots(); i++) {
                 ItemStack checkAmmoStack = cap.getStackInSlot(i);
                 if (checkAmmoStack.getItem() instanceof IAmmo iAmmo && iAmmo.isAmmoOfGun(currentGunItem, checkAmmoStack)) {
@@ -192,7 +193,7 @@ public class LivingEntityReload {
             if (iGun.useDummyAmmo(currentGunItem)) {
                 return getAndExtractDummyAmmoCount(maxAmmoCount, currentAmmoCount, currentGunItem, iGun);
             }
-            return shooter.getCapability(ForgeCapabilities.ITEM_HANDLER, null)
+            return shooter.tacz$getItemHandlerCapability(null)
                     .map(cap -> getAndExtractInventoryAmmoCount(cap, maxAmmoCount, currentAmmoCount, currentGunItem))
                     .orElse(currentAmmoCount);
         }

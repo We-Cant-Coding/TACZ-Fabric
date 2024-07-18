@@ -1,6 +1,7 @@
 package com.tacz.guns.client.event;
 
 import com.tacz.guns.api.DefaultAssets;
+import com.tacz.guns.api.LogicalSide;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.client.event.RenderItemInHandBobEvent;
 import com.tacz.guns.api.client.gameplay.IClientPlayerGunOperator;
@@ -26,7 +27,6 @@ import com.tacz.guns.util.math.Easing;
 import com.tacz.guns.util.math.MathUtil;
 import com.tacz.guns.util.math.PerlinNoise;
 import com.tacz.guns.util.math.SecondOrderDynamics;
-import net.fabricmc.api.EnvType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.Camera;
@@ -36,9 +36,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
@@ -57,7 +55,7 @@ import java.util.Optional;
 import static net.minecraft.client.render.model.json.ModelTransformationMode.FIRST_PERSON_LEFT_HAND;
 import static net.minecraft.client.render.model.json.ModelTransformationMode.FIRST_PERSON_RIGHT_HAND;
 
-public class FirstPersonRenderGunEvent implements GunFireEvent, RenderItemInHandBobEvent.BobView {
+public class FirstPersonRenderGunEvent implements GunFireEvent.Callback, RenderItemInHandBobEvent.BobViewCallback {
     // Used to generate motion curves for aiming actions to make the action look smoother
     private static final SecondOrderDynamics AIMING_DYNAMICS = new SecondOrderDynamics(1.2f, 1.2f, 0.5f, 0);
     // For smoothing gun movement when opening the modification screen
@@ -263,29 +261,30 @@ public class FirstPersonRenderGunEvent implements GunFireEvent, RenderItemInHand
      * 当主手拿着枪械物品的时候，取消应用在它上面的 viewBobbing，以便应用自定义的跑步/走路动画。
      */
     @Override
-    public ActionResult bobView() {
+    public void onBobView(RenderItemInHandBobEvent.BobView event) {
         MinecraftClient mc = MinecraftClient.getInstance();
         if (mc.player == null) {
-            return ActionResult.PASS;
+            return;
         }
         ItemStack itemStack = KeepingItemRenderer.getRenderer().getCurrentItem();
         if (IGun.getIGunOrNull(itemStack) != null) {
-            return ActionResult.SUCCESS;
+            event.setCanceled(true);
         }
-        return ActionResult.PASS;
     }
 
     @Override
-    public ActionResult gunFire(LivingEntity shooter, ItemStack gunItemStack, EnvType side) {
-        if (side == EnvType.CLIENT) {
+    public void onGunFire(GunFireEvent event) {
+        LogicalSide side = event.getLogicalSide();
+        if (side.isClient()) {
+            Entity shooter = event.getShooter();
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
             if (!shooter.equals(player)) {
-                return ActionResult.PASS;
+                return;
             }
             ItemStack mainhandItem = player.getMainHandStack();
             IGun iGun = IGun.getIGunOrNull(mainhandItem);
             if (iGun == null) {
-                return ActionResult.PASS;
+                return;
             }
             TimelessAPI.getClientGunIndex(iGun.getGunId(mainhandItem)).ifPresent(gunIndex -> {
                 // 记录开火时间戳，用于后坐力程序动画
@@ -298,7 +297,6 @@ public class FirstPersonRenderGunEvent implements GunFireEvent, RenderItemInHand
                 }
             });
         }
-        return ActionResult.PASS;
     }
 
     private static boolean bulletFromPlayer(Entity entity) {

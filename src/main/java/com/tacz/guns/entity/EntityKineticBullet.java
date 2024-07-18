@@ -1,17 +1,21 @@
 package com.tacz.guns.entity;
 
 import com.tacz.guns.api.DefaultAssets;
+import com.tacz.guns.api.LogicalSide;
 import com.tacz.guns.api.entity.ITargetEntity;
 import com.tacz.guns.api.entity.KnockBackModifier;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.EntityKillByGunEvent;
 import com.tacz.guns.api.event.server.AmmoHitBlockEvent;
+import com.tacz.guns.client.particle.AmmoParticleSpawner;
 import com.tacz.guns.config.common.AmmoConfig;
 import com.tacz.guns.config.sync.SyncConfig;
 import com.tacz.guns.config.util.HeadShotAABBConfigRead;
 import com.tacz.guns.init.ModDamageTypes;
-import com.tacz.guns.network.IEntityAdditionalSpawnData;
+import com.tacz.guns.api.mixin.IEntityAdditionalSpawnData;
 import com.tacz.guns.network.NetworkHandler;
+import com.tacz.guns.network.message.event.ServerMessageGunHurt;
+import com.tacz.guns.network.message.event.ServerMessageGunKill;
 import com.tacz.guns.particles.BulletHoleOption;
 import com.tacz.guns.resource.pojo.data.gun.BulletData;
 import com.tacz.guns.resource.pojo.data.gun.ExplosionData;
@@ -20,7 +24,6 @@ import com.tacz.guns.util.HitboxHelper;
 import com.tacz.guns.util.TacHitResult;
 import com.tacz.guns.util.block.BlockRayTrace;
 import com.tacz.guns.util.block.ProjectileExplosion;
-import net.fabricmc.api.EnvType;
 import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -36,7 +39,6 @@ import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -390,8 +392,8 @@ public class EntityKineticBullet extends ProjectileEntity implements IEntityAddi
             headShotMultiplier = (float) (this.extraDamage.getHeadShotMultiplier() * SyncConfig.HEAD_SHOT_BASE_MULTIPLIER.get());
         }
         // 发布Pre事件
-        var preEvent = EntityHurtByGunEvent.PRE_EVENT.invoker().pre(entity, attacker, this.gunId, damage, headshot, headShotMultiplier, EnvType.SERVER);
-        if (preEvent.isCancelled()) {
+        var preEvent = new EntityHurtByGunEvent.Pre(entity, attacker, this.gunId, damage, headshot, headShotMultiplier, LogicalSide.SERVER);
+        if (preEvent.post()) {
             return;
         }
         // 刷新由Pre事件修改后的参数
@@ -441,10 +443,10 @@ public class EntityKineticBullet extends ProjectileEntity implements IEntityAddi
                 int attackerId = attacker == null ? 0 : attacker.getId();
                 // 如果生物死了
                 if (livingEntity.isDead()) {
-                    EntityKillByGunEvent.EVENT.invoker().entityKillByGun(livingEntity, attacker, newGunId, headshot, EnvType.SERVER);
+                    new EntityKillByGunEvent(livingEntity, attacker, newGunId, headshot, LogicalSide.SERVER).post();
                     NetworkHandler.sendToDimension(new ServerMessageGunKill(livingEntity.getId(), attackerId, newGunId, headshot), livingEntity);
                 } else {
-                    EntityHurtByGunEvent.POST_EVENT.invoker().post(livingEntity, attacker, newGunId, damage, headshot, headShotMultiplier, EnvType.SERVER);
+                    new EntityHurtByGunEvent.Post(livingEntity, attacker, newGunId, damage, headshot, headShotMultiplier, LogicalSide.SERVER).post();
                     NetworkHandler.sendToDimension(new ServerMessageGunHurt(livingEntity.getId(), attackerId, newGunId, damage, headshot, headShotMultiplier), livingEntity);
                 }
             }
@@ -460,7 +462,7 @@ public class EntityKineticBullet extends ProjectileEntity implements IEntityAddi
         BlockPos pos = result.getBlockPos();
         // 触发事件
 
-        if (AmmoHitBlockEvent.EVENT.invoker().ammoHitBlock(this.getWorld(), result, this.getWorld().getBlockState(pos), this) != ActionResult.PASS) {
+        if (new AmmoHitBlockEvent(this.getWorld(), result, this.getWorld().getBlockState(pos), this).post()) {
             return;
         }
         // 爆炸

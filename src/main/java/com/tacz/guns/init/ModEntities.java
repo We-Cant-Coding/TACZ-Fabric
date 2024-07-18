@@ -14,8 +14,7 @@ public class ModEntities {
     public static EntityType<EntityKineticBullet> BULLET = register("bullet", EntityKineticBullet.TYPE);
     public static EntityType<TargetMinecart> TARGET_MINECART = register("target_minecart", TargetMinecart.TYPE);
 
-    public static void register() {
-
+    public static void init() {
     }
 
     private static <T extends Entity> EntityType<T> register(String path, EntityType<T> type) {

@@ -1,5 +1,6 @@
 package com.tacz.guns.client.renderer.item;
 
+import com.tacz.guns.client.renderer.block.GunSmithTableRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -18,7 +19,7 @@ public class GunSmithTableItemRenderer implements BuiltinItemRendererRegistry.Dy
             poseStack.push();
             poseStack.translate(0.5, 1.5, 0.5);
             poseStack.multiply(RotationAxis.NEGATIVE_Z.rotationDegrees(180));
-            RenderLayer renderType = RenderLayer.entityTranslucent(texture);
+            RenderLayer renderType = RenderLayer.getEntityTranslucent(texture);
             model.render(poseStack, transformType, renderType, pPackedLight, pPackedOverlay);
             poseStack.pop();
         });

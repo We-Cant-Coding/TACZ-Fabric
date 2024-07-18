@@ -2,22 +2,24 @@ package com.tacz.guns.compat.playeranimator.animation;
 
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.entity.IGunOperator;
+import com.tacz.guns.api.event.common.GunDrawEvent;
+import com.tacz.guns.api.event.common.GunMeleeEvent;
+import com.tacz.guns.api.event.common.GunReloadEvent;
+import com.tacz.guns.api.event.common.GunShootEvent;
 import com.tacz.guns.api.item.IGun;
+import com.tacz.guns.client.resource.index.ClientGunIndex;
 import com.tacz.guns.compat.playeranimator.AnimationName;
 import com.tacz.guns.compat.playeranimator.PlayerAnimatorCompat;
-import com.tacz.guns.client.resource.index.ClientGunIndex;
 import dev.kosmx.playerAnim.api.layered.IAnimation;
 import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
 import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.api.layered.modifier.AbstractFadeModifier;
 import dev.kosmx.playerAnim.core.util.Ease;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
-import net.fabricmc.api.EnvType;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 
 public class AnimationManager {
@@ -178,16 +180,18 @@ public class AnimationManager {
         }
     }
 
-    public ActionResult onFire(LivingEntity shooter, ItemStack gunItemStack, EnvType side) {
-        if (side == EnvType.SERVER) {
-            return ActionResult.PASS;
+    public void onFire(GunShootEvent event) {
+        if (event.getLogicalSide().isServer()) {
+            return;
         }
+        LivingEntity shooter = event.getShooter();
         if (!(shooter instanceof AbstractClientPlayerEntity player)) {
-            return ActionResult.PASS;
+            return;
         }
+        ItemStack gunItemStack = event.getGunItemStack();
         IGun iGun = IGun.getIGunOrNull(gunItemStack);
         if (iGun == null) {
-            return ActionResult.PASS;
+            return;
         }
         TimelessAPI.getClientGunIndex(iGun.getGunId(gunItemStack)).ifPresent(index -> {
             IGunOperator operator = IGunOperator.fromLivingEntity(player);
@@ -198,34 +202,36 @@ public class AnimationManager {
                 playOnceAnimation(player, index, PlayerAnimatorCompat.ONCE_UPPER_ANIMATION, AnimationName.AIM_FIRE_UPPER);
             }
         });
-        return ActionResult.PASS;
     }
 
-    public ActionResult onReload(LivingEntity shooter, ItemStack gunItemStack, EnvType side) {
-        if (side == EnvType.SERVER) {
-            return ActionResult.PASS;
+    public void onReload(GunReloadEvent event) {
+        if (event.getLogicalSide().isServer()) {
+            return;
         }
+        LivingEntity shooter = event.getEntity();
         if (!(shooter instanceof AbstractClientPlayerEntity player)) {
-            return ActionResult.PASS;
+            return;
         }
+        ItemStack gunItemStack = event.getGunItemStack();
         IGun iGun = IGun.getIGunOrNull(gunItemStack);
         if (iGun == null) {
-            return ActionResult.PASS;
+            return;
         }
         TimelessAPI.getClientGunIndex(iGun.getGunId(gunItemStack)).ifPresent(index -> playOnceAnimation(player, index, PlayerAnimatorCompat.ONCE_UPPER_ANIMATION, AnimationName.RELOAD_UPPER));
-        return ActionResult.PASS;
     }
 
-    public ActionResult onMelee(LivingEntity shooter, ItemStack gunItemStack, EnvType side) {
-        if (side == EnvType.SERVER) {
-            return ActionResult.PASS;
+    public void onMelee(GunMeleeEvent event) {
+        if (event.getLogicalSide().isServer()) {
+            return;
         }
+        LivingEntity shooter = event.getShooter();
         if (!(shooter instanceof AbstractClientPlayerEntity player)) {
-            return ActionResult.PASS;
+            return;
         }
+        ItemStack gunItemStack = event.getGunItemStack();
         IGun iGun = IGun.getIGunOrNull(gunItemStack);
         if (iGun == null) {
-            return ActionResult.PASS;
+            return;
         }
         int randomIndex = shooter.getRandom().nextInt(3);
         String animationName = switch (randomIndex) {
@@ -234,21 +240,22 @@ public class AnimationManager {
             default -> AnimationName.MELEE_3_UPPER;
         };
         TimelessAPI.getClientGunIndex(iGun.getGunId(gunItemStack)).ifPresent(index -> playOnceAnimation(player, index, PlayerAnimatorCompat.ONCE_UPPER_ANIMATION, animationName));
-        return ActionResult.PASS;
     }
 
-    public ActionResult onDraw(LivingEntity entity, ItemStack previousGunItem, ItemStack currentGunItem, EnvType side) {
-        if (side == EnvType.SERVER) {
-            return ActionResult.PASS;
+    public void onDraw(GunDrawEvent event) {
+        if (event.getLogicalSide().isServer()) {
+            return;
         }
+        LivingEntity entity = event.getEntity();
         if (!(entity instanceof AbstractClientPlayerEntity player)) {
-            return ActionResult.PASS;
+            return;
         }
+        ItemStack currentGunItem = event.getCurrentGunItem();
+        ItemStack previousGunItem = event.getPreviousGunItem();
         // 在切枪时，重置上半身动画
         if (currentGunItem.getItem() instanceof IGun && previousGunItem.getItem() instanceof IGun) {
             stopAnimation(player, PlayerAnimatorCompat.LOOP_UPPER_ANIMATION);
             stopAnimation(player, PlayerAnimatorCompat.ONCE_UPPER_ANIMATION);
         }
-        return ActionResult.PASS;
     }
 }

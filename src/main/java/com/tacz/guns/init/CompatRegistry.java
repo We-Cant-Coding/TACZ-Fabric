@@ -10,7 +10,7 @@ public class CompatRegistry {
     public static final String IRIS = "iris";
     public static final String CARRY_ON_ID = "carryon";
 
-    public static void run() {
+    public static void init() {
         checkModLoad(IRIS, IrisCompat::initCompat);
         checkModLoad(CARRY_ON_ID, BlackList::addBlackList);
     }

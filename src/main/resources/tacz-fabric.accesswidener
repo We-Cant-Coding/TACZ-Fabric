@@ -7,3 +7,9 @@ accessible field net/minecraft/client/resource/language/I18n language Lnet/minec
 accessible field net/minecraft/client/gui/screen/Screen drawables Ljava/util/List;
 
 accessible method net/minecraft/client/MinecraftClient doItemUse ()V
+
+accessible method net/minecraft/entity/vehicle/AbstractMinecartEntity getItem ()Lnet/minecraft/item/Item;
+
+accessible method net/minecraft/client/network/ClientPlayerInteractionManager syncSelectedSlot ()V
+
+accessible method net/minecraft/util/thread/ThreadExecutor submitAsync (Ljava/lang/Runnable;)Ljava/util/concurrent/CompletableFuture;

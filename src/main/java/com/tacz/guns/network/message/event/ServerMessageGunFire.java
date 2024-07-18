@@ -1,6 +1,7 @@
 package com.tacz.guns.network.message.event;
 
 import com.tacz.guns.GunMod;
+import com.tacz.guns.api.LogicalSide;
 import com.tacz.guns.api.event.common.GunFireEvent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -9,9 +10,9 @@ import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.PacketType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
@@ -36,7 +37,7 @@ public class ServerMessageGunFire implements FabricPacket {
         buf.writeItemStack(gunItemStack);
     }
 
-    public void handle(ClientPlayerEntity ignoredPlayer, PacketSender ignoredSender) {
+    public void handle(PlayerEntity ignoredPlayer, PacketSender ignoredSender) {
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
             doClientEvent(this);
         }
@@ -54,7 +55,8 @@ public class ServerMessageGunFire implements FabricPacket {
             return;
         }
         if (level.getEntityById(message.shooterId) instanceof LivingEntity shooter) {
-            GunFireEvent.EVENT.invoker().gunFire(shooter, message.gunItemStack, EnvType.CLIENT);
+            GunFireEvent gunFireEvent = new GunFireEvent(shooter, message.gunItemStack, LogicalSide.CLIENT);
+            gunFireEvent.post();
         }
     }
 }

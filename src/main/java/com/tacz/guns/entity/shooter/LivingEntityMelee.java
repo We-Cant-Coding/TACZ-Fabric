@@ -1,12 +1,14 @@
 package com.tacz.guns.entity.shooter;
 
 import com.tacz.guns.api.DefaultAssets;
+import com.tacz.guns.api.LogicalSide;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.event.common.GunMeleeEvent;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.api.item.attachment.AttachmentType;
 import com.tacz.guns.api.item.gun.AbstractGunItem;
 import com.tacz.guns.network.NetworkHandler;
+import com.tacz.guns.network.message.event.ServerMessageGunMelee;
 import com.tacz.guns.resource.index.CommonGunIndex;
 import com.tacz.guns.resource.pojo.data.attachment.MeleeData;
 import com.tacz.guns.resource.pojo.data.gun.GunDefaultMeleeData;
@@ -49,7 +51,7 @@ public class LivingEntityMelee {
         }
         ItemStack currentGunItem = data.currentGunItem.get();
         // 触发近战事件
-        if (GunMeleeEvent.EVENT.invoker().gunMelee(shooter, currentGunItem, EnvType.SERVER) != ActionResult.PASS) {
+        if (new GunMeleeEvent(shooter, currentGunItem, LogicalSide.SERVER).post()) {
             return;
         }
         NetworkHandler.sendToTrackingEntity(new ServerMessageGunMelee(shooter.getId(), currentGunItem), shooter);

@@ -13,4 +13,7 @@ public class ModSounds {
     private static SoundEvent register(String path, String sound_path) {
         return Registry.register(Registries.SOUND_EVENT, new Identifier(GunMod.MOD_ID, path), SoundEvent.of(new Identifier(GunMod.MOD_ID, sound_path)));
     }
+
+    public static void init() {
+    }
 }

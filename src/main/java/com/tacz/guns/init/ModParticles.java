@@ -18,6 +18,9 @@ public class ModParticles {
         return Registry.register(Registries.PARTICLE_TYPE, new Identifier(GunMod.MOD_ID, path), type);
     }
 
+    public static void init() {
+    }
+
 
     @SuppressWarnings("deprecation")
     private static class ModParticleType<T extends ParticleEffect> extends ParticleType<T> {

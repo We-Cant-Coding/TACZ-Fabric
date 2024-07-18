@@ -1,23 +1,31 @@
 package com.tacz.guns.api.client.event;
 
+import com.tacz.guns.api.event.GunBaseEvent;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.ActionResult;
 
-public interface BeforeRenderHandEvent {
-    Event<BeforeRenderHandEvent> EVENT = EventFactory.createArrayBacked(BeforeRenderHandEvent.class,
-            (listeners) -> (matrixStack) -> {
-                for (BeforeRenderHandEvent listener : listeners) {
-                    ActionResult result = listener.beforeRenderHand(matrixStack);
+public class BeforeRenderHandEvent extends GunBaseEvent {
+    public static final Event<Callback> EVENT = EventFactory.createArrayBacked(Callback.class, callbacks -> event -> {
+        for (Callback e : callbacks) e.onBeforeRenderHand(event);
+    });
 
-                    if (result != ActionResult.PASS) {
-                        return result;
-                    }
-                }
+    private final MatrixStack poseStack;
 
-                return ActionResult.PASS;
-            });
+    public BeforeRenderHandEvent(MatrixStack poseStack) {
+        this.poseStack = poseStack;
+    }
 
-    ActionResult beforeRenderHand(MatrixStack matrixStack);
+    public MatrixStack getPoseStack() {
+        return poseStack;
+    }
+
+    @Override
+    public void sendEvent() {
+        EVENT.invoker().onBeforeRenderHand(this);
+    }
+
+    public interface Callback {
+        void onBeforeRenderHand(BeforeRenderHandEvent event);
+    }
 }

@@ -1,11 +1,12 @@
 package com.tacz.guns.entity.shooter;
 
+import com.tacz.guns.api.LogicalSide;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.event.common.GunDrawEvent;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.network.NetworkHandler;
+import com.tacz.guns.network.message.event.ServerMessageGunDraw;
 import com.tacz.guns.resource.index.CommonGunIndex;
-import net.fabricmc.api.EnvType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -41,7 +42,7 @@ public class LivingEntityDrawGun {
             }
         }
         ItemStack lastItem = data.currentGunItem == null ? ItemStack.EMPTY : data.currentGunItem.get();
-        GunDrawEvent.EVENT.invoker().gunDraw(shooter, lastItem, gunItemSupplier.get(), EnvType.SERVER);
+        new GunDrawEvent(shooter, lastItem, gunItemSupplier.get(), LogicalSide.SERVER).post();
         NetworkHandler.sendToTrackingEntity(new ServerMessageGunDraw(shooter.getId(), lastItem, gunItemSupplier.get()), shooter);
         data.currentGunItem = gunItemSupplier;
         updatePutAwayTime();

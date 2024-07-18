@@ -3,15 +3,15 @@ package com.tacz.guns.network.message;
 import com.tacz.guns.GunMod;
 import com.tacz.guns.entity.sync.core.DataEntry;
 import com.tacz.guns.entity.sync.core.SyncedEntityData;
+import com.tacz.guns.util.EnvironmentUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.PacketType;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
@@ -46,8 +46,8 @@ public class ServerMessageUpdateEntityData implements FabricPacket {
         return TYPE;
     }
 
-    public void handle(ClientPlayerEntity ignoredPlayer, PacketSender ignoredSender) {
-        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+    public void handle(PlayerEntity ignoredPlayer, PacketSender ignoredSender) {
+        if (EnvironmentUtil.isClient()) {
             onHandle(this);
         }
     }

@@ -1,119 +1,154 @@
 package com.tacz.guns.api.event.common;
 
-import net.fabricmc.api.EnvType;
+import com.tacz.guns.api.LogicalSide;
+import com.tacz.guns.api.event.GunBaseEvent;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
-public interface EntityHurtByGunEvent {
-    Event<EntityHurtByGunEvent> EVENT = EventFactory.createArrayBacked(EntityHurtByGunEvent.class,
-            (listeners) -> (hurtEntity, attacker, gunId, baseAmount, isHeadShot, headshotMultiplier, side) -> {
-                for (EntityHurtByGunEvent listener : listeners) {
-                    ActionResult result = listener.entityHurtByGun(hurtEntity, attacker, gunId, baseAmount, isHeadShot, headshotMultiplier, side);
+/**
+ * Events triggered when a creature is damaged by a firearm bullet
+ */
+public class EntityHurtByGunEvent extends GunBaseEvent {
+    public static final Event<Callback> EVENT = EventFactory.createArrayBacked(Callback.class, callbacks -> event -> {
+        for (Callback e : callbacks) e.onEntityHurtByGun(event);
+    });
+    protected @Nullable Entity hurtEntity;
+    protected @Nullable LivingEntity attacker;
+    protected Identifier gunId;
+    protected float baseAmount;
+    protected boolean isHeadShot;
+    protected float headshotMultiplier;
+    private final LogicalSide logicalSide;
 
-                    if (result != ActionResult.PASS) {
-                        return result;
-                    }
-                }
-
-                return ActionResult.PASS;
-            });
-    Event<Pre> PRE_EVENT = EventFactory.createArrayBacked(Pre.class,
-            (listeners) -> (hurtEntity, attacker, gunId, baseAmount, isHeadShot, headshotMultiplier, side) -> {
-                for (Pre listener : listeners) {
-                    Result result = listener.pre(hurtEntity, attacker, gunId, baseAmount, isHeadShot, headshotMultiplier, side);
-
-                    if (result.isCancelled()) {
-                        return result;
-                    }
-                }
-
-                return new Result(hurtEntity, attacker, gunId, baseAmount, isHeadShot, headshotMultiplier);
-            });
-    Event<Post> POST_EVENT = EventFactory.createArrayBacked(Post.class,
-            (listeners) -> (hurtEntity, attacker, gunId, baseAmount, isHeadShot, headshotMultiplier, side) -> {
-                for (Post listener : listeners) {
-                    Result result = listener.post(hurtEntity, attacker, gunId, baseAmount, isHeadShot, headshotMultiplier, side);
-
-                    if (result.isCancelled()) {
-                        return result;
-                    }
-                }
-
-                return new Result(hurtEntity, attacker, gunId, baseAmount, isHeadShot, headshotMultiplier);
-            });
-
-    ActionResult entityHurtByGun(@Nullable Entity hurtEntity, @Nullable LivingEntity attacker, Identifier gunId, float baseAmount, boolean isHeadShot, float headshotMultiplier, EnvType side);
-
-    public static interface Pre {
-        Result pre(@Nullable Entity hurtEntity, @Nullable LivingEntity attacker, Identifier gunId, float amount, boolean isHeadShot, float headshotMultiplier, EnvType side);
+    protected EntityHurtByGunEvent(@Nullable Entity hurtEntity, @Nullable LivingEntity attacker, Identifier gunId, float baseAmount, boolean isHeadShot, float headshotMultiplier, LogicalSide logicalSide) {
+        this.hurtEntity = hurtEntity;
+        this.attacker = attacker;
+        this.gunId = gunId;
+        this.baseAmount = baseAmount;
+        this.isHeadShot = isHeadShot;
+        this.headshotMultiplier = headshotMultiplier;
+        this.logicalSide = logicalSide;
     }
 
-    public static interface Post {
-        Result post(@Nullable Entity hurtEntity, @Nullable LivingEntity attacker, Identifier gunId, float amount, boolean isHeadShot, float headshotMultiplier, EnvType side);
-    }
+    /**
+     * An event that is triggered before an entity is shot and the damage is determined,
+     * allowing you to set the damage attribute of the shot
+     */
+    public static class Pre extends EntityHurtByGunEvent {
+        public static final Event<PreCallback> EVENT = EventFactory.createArrayBacked(PreCallback.class, callbacks -> event -> {
+            for (PreCallback e : callbacks) e.onEntityHurtByGun(event);
+        });
 
-    public static class Result {
-        protected @Nullable Entity hurtEntity;
-        protected @Nullable LivingEntity attacker;
-        protected Identifier gunId;
-        protected float baseAmount;
-        protected boolean isHeadShot;
-        protected float headshotMultiplier;
-        private boolean cancelled = false;
-
-        protected Result(@Nullable Entity hurtEntity, @Nullable LivingEntity attacker, Identifier gunId, float baseAmount, boolean isHeadShot, float headshotMultiplier) {
-            this.hurtEntity = hurtEntity;
-            this.attacker = attacker;
-            this.gunId = gunId;
-            this.baseAmount = baseAmount;
-            this.isHeadShot = isHeadShot;
+        public Pre(@Nullable Entity hurtEntity, @Nullable LivingEntity attacker, Identifier gunId, float baseAmount, boolean isHeadShot, float headshotMultiplier, LogicalSide logicalSide) {
+            super(hurtEntity, attacker, gunId, baseAmount, isHeadShot, headshotMultiplier, logicalSide);
             this.headshotMultiplier = headshotMultiplier;
         }
 
-        public boolean isCancelled() {
-            return cancelled;
+        public final void setHurtEntity(@Nullable Entity hurtEntity) {
+            this.hurtEntity = hurtEntity;
         }
 
-        public void setCancelled(boolean cancelled) {
-            this.cancelled = cancelled;
+        public final void setAttacker(@Nullable LivingEntity attacker) {
+            this.attacker = attacker;
         }
 
-        @Nullable
-        public Entity getHurtEntity() {
-            return hurtEntity;
+        public final void setGunId(Identifier gunId) {
+            this.gunId = gunId;
         }
 
-        @Nullable
-        public LivingEntity getAttacker() {
-            return attacker;
+        public final void setBaseAmount(float baseAmount) {
+            this.baseAmount = baseAmount;
         }
 
-        public Identifier getGunId() {
-            return gunId;
+        public final void setHeadshot(boolean headshot) {
+            this.isHeadShot = headshot;
         }
 
-        @ApiStatus.Obsolete
-        public float getAmount() {
-            return baseAmount * headshotMultiplier;
+        public final void setHeadshotMultiplier(float headshotMultiplier) {
+            this.headshotMultiplier = headshotMultiplier;
         }
 
-        public float getBaseAmount() {
-            return baseAmount;
+        @Override
+        public void sendEvent() {
+            super.sendEvent();
+            EVENT.invoker().onEntityHurtByGun(this);
+        }
+    }
+
+    /**
+     * 实体受到枪击，伤害判定结束但没有死亡后触发的事件
+     * @see EntityKillByGunEvent 实体因枪击致死时触发的事件
+     */
+    public static class Post extends EntityHurtByGunEvent {
+        public static final Event<PostCallback> EVENT = EventFactory.createArrayBacked(PostCallback.class, callbacks -> event -> {
+            for (PostCallback e : callbacks) e.onEntityHurtByGun(event);
+        });
+
+        public Post(@Nullable Entity hurtEntity, @Nullable LivingEntity attacker, Identifier gunId, float baseAmount, boolean isHeadShot, float headshotMultiplier, LogicalSide logicalSide) {
+            super(hurtEntity, attacker, gunId, baseAmount, isHeadShot, headshotMultiplier, logicalSide);
         }
 
-        public float getHeadshotMultiplier() {
-            return headshotMultiplier;
+        @Override
+        public void sendEvent() {
+            super.sendEvent();
+            EVENT.invoker().onEntityHurtByGun(this);
         }
+    }
 
-        public boolean isHeadShot() {
-            return isHeadShot;
-        }
+    @Nullable
+    public Entity getHurtEntity() {
+        return hurtEntity;
+    }
+
+    @Nullable
+    public LivingEntity getAttacker() {
+        return attacker;
+    }
+
+    public Identifier getGunId() {
+        return gunId;
+    }
+
+    @ApiStatus.Obsolete
+    public float getAmount() {
+        return baseAmount * headshotMultiplier;
+    }
+
+    public float getBaseAmount() {
+        return baseAmount;
+    }
+
+    public float getHeadshotMultiplier() {
+        return headshotMultiplier;
+    }
+
+    public boolean isHeadShot() {
+        return isHeadShot;
+    }
+
+    public LogicalSide getLogicalSide() {
+        return logicalSide;
+    }
+
+    @Override
+    public void sendEvent() {
+        EVENT.invoker().onEntityHurtByGun(this);
+    }
+
+    public interface Callback {
+        void onEntityHurtByGun(EntityHurtByGunEvent event);
+    }
+
+    public interface PreCallback {
+        void onEntityHurtByGun(EntityHurtByGunEvent.Pre event);
+    }
+
+    public interface PostCallback {
+        void onEntityHurtByGun(EntityHurtByGunEvent.Post event);
     }
 }

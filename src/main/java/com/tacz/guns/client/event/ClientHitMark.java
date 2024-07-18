@@ -1,5 +1,6 @@
 package com.tacz.guns.client.event;
 
+import com.tacz.guns.api.LogicalSide;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.EntityKillByGunEvent;
@@ -17,55 +18,58 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
-public class ClientHitMark implements EntityHurtByGunEvent, EntityKillByGunEvent {
+public class ClientHitMark implements EntityHurtByGunEvent.Callback, EntityKillByGunEvent.Callback {
     public static long lastHitTimestamp = 0;
     public static float damageAmount = 0;
 
     @Override
-    public ActionResult entityHurtByGun(@Nullable Entity hurtEntity, @Nullable LivingEntity attacker, Identifier gunId, float baseAmount, boolean isHeadShot, float headshotMultiplier, EnvType side) {
-        if (side != EnvType.CLIENT) {
-            return ActionResult.PASS;
+    public void onEntityHurtByGun(EntityHurtByGunEvent event) {
+        LogicalSide logicalSide = event.getLogicalSide();
+        if (logicalSide != LogicalSide.CLIENT) {
+            return;
         }
+        LivingEntity attacker = event.getAttacker();
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        if (player != null && player.equals(attacker) && hurtEntity != null) {
+        Entity hurtEntity = event.getHurtEntity();
+        if (player != null && player.equals(attacker) && hurtEntity!=null) {
+            Identifier gunId = event.getGunId();
             RenderCrosshairEvent.markHitTimestamp();
-            if (isHeadShot) {
+            if (event.isHeadShot()) {
                 RenderCrosshairEvent.markHeadShotTimestamp();
                 TimelessAPI.getClientGunIndex(gunId).ifPresent(index -> SoundPlayManager.playHeadHitSound(player, index));
             } else {
                 TimelessAPI.getClientGunIndex(gunId).ifPresent(index -> SoundPlayManager.playFleshHitSound(player, index));
             }
 
-            if (hurtEntity instanceof TargetMinecart) {
-                if (System.currentTimeMillis() - lastHitTimestamp < RenderConfig.DAMAGE_COUNTER_RESET_TIME.get()) {
-                    damageAmount += (baseAmount * headshotMultiplier);
+            if(hurtEntity instanceof TargetMinecart){
+                if(System.currentTimeMillis() - lastHitTimestamp < RenderConfig.DAMAGE_COUNTER_RESET_TIME.get()) {
+                    damageAmount += event.getAmount();
                 } else {
-                    damageAmount = (baseAmount * headshotMultiplier);
+                    damageAmount = event.getAmount();
                 }
-                float distance = player.distanceTo(hurtEntity);
+                float distance = player.distanceTo(event.getHurtEntity());
                 player.sendMessage(Text.translatable("message.tacz.target_minecart.hit", String.format("%.1f", damageAmount), String.format("%.2f", distance)), true);
 
                 lastHitTimestamp = System.currentTimeMillis();
             }
         }
-
-        return ActionResult.PASS;
     }
 
     @Override
-    public ActionResult entityKillByGun(@Nullable LivingEntity hurtEntity, @Nullable LivingEntity attacker, Identifier gunId, boolean isHeadShot, EnvType side) {
-        if (side != EnvType.CLIENT) {
-            return ActionResult.PASS;
+    public void onEntityKillByGun(EntityKillByGunEvent event) {
+        LogicalSide logicalSide = event.getLogicalSide();
+        if (logicalSide != LogicalSide.CLIENT) {
+            return;
         }
+        LivingEntity attacker = event.getAttacker();
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player != null && player.equals(attacker)) {
             RenderCrosshairEvent.markKillTimestamp();
             KillAmountOverlay.markTimestamp();
-            TimelessAPI.getClientGunIndex(gunId).ifPresent(index -> SoundPlayManager.playKillSound(player, index));
-            if (isHeadShot) {
+            TimelessAPI.getClientGunIndex(event.getGunId()).ifPresent(index -> SoundPlayManager.playKillSound(player, index));
+            if (event.isHeadShot()) {
                 RenderCrosshairEvent.markHeadShotTimestamp();
             }
         }
-        return ActionResult.PASS;
     }
 }

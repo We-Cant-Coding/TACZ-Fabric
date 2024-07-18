@@ -152,12 +152,12 @@ public class MinecraftClientMixin {
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", ordinal = 0, shift = At.Shift.BEFORE))
     private void renderTickStart(boolean tick, CallbackInfo ci) {
-        RenderTickEvent.EVENT.invoker().renderTick(This());
+        new RenderTickEvent(This()).post();
     }
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V", ordinal = 4, shift = At.Shift.AFTER))
     private void renderTickEnd(boolean tick, CallbackInfo ci) {
-        RenderTickEvent.EVENT.invoker().renderTick(This());
+        new RenderTickEvent(This()).post();
     }
 
     @Unique

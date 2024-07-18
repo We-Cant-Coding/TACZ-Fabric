@@ -1,5 +1,6 @@
 package com.tacz.guns.entity.shooter;
 
+import com.tacz.guns.api.LogicalSide;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.entity.ShootResult;
 import com.tacz.guns.api.event.common.GunShootEvent;
@@ -7,6 +8,7 @@ import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.api.item.gun.AbstractGunItem;
 import com.tacz.guns.api.item.gun.FireMode;
 import com.tacz.guns.network.NetworkHandler;
+import com.tacz.guns.network.message.event.ServerMessageGunShoot;
 import com.tacz.guns.resource.index.CommonGunIndex;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
 import com.tacz.guns.resource.pojo.data.gun.BulletData;
@@ -85,7 +87,7 @@ public class LivingEntityShoot {
             iGun.setBulletInBarrel(currentGunItem, true);
         }
         // 触发射击事件
-        if (GunShootEvent.EVENT.invoker().gunShoot(shooter, currentGunItem, EnvType.SERVER) != ActionResult.PASS) {
+        if (new GunShootEvent(shooter, currentGunItem, LogicalSide.SERVER).post()) {
             return ShootResult.FORGE_EVENT_CANCEL;
         }
         NetworkHandler.sendToTrackingEntity(new ServerMessageGunShoot(shooter.getId(), currentGunItem), shooter);

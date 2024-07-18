@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.7-SNAPSHOT'
+	id 'fabric-loom' version '1.6-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -45,6 +45,10 @@ repositories {
 		url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
 	}
 	maven {
+		name = 'Ladysnake Mods'
+		url = 'https://maven.ladysnake.org/releases'
+	}
+	maven {
 		url = 'https://oss.sonatype.org/content/repositories/snapshots'
 	}
 	maven {
@@ -58,6 +62,9 @@ repositories {
 	}
 	maven {
 		url = 'https://jitpack.io'
+	}
+	maven {
+		url = "https://mvn.devos.one/releases/"
 	}
 }
 
@@ -96,10 +103,10 @@ dependencies {
 	modApi "com.terraformersmc:modmenu:${project.modmenu_version}"
 	modApi "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.forgeconfigapiport_version}"
 
-	modCompileOnly("org.embeddedt:embeddium-1.20.1:${project.embeddedt_version}")
+	modCompileOnly "org.embeddedt:embeddium-1.20.1:${project.embeddedt_version}"
 
-	modCompileOnly("maven.modrinth:iris:${project.iris_version}")
-	modCompileOnly("maven.modrinth:carry-on:${project.carry_on_version}")
+	modCompileOnly "maven.modrinth:iris:${project.iris_version}"
+	modCompileOnly "maven.modrinth:carry-on:${project.carry_on_version}"
 
 	modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${project.player_animation_lib}")
 
@@ -111,6 +118,11 @@ dependencies {
 	include implementation('com.github.286799714.luaj:luaj-core:3.0.3')
 
 	include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.4.0")))
+
+	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:core:${project.porting_lib_version}+${project.minecraft_version}"))
+
+	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinal_components_api_version}"
+	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinal_components_api_version}"
 }
 
 processResources {

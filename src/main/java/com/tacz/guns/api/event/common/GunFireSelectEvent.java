@@ -1,25 +1,45 @@
 package com.tacz.guns.api.event.common;
 
-import net.fabricmc.api.EnvType;
+import com.tacz.guns.api.LogicalSide;
+import com.tacz.guns.api.event.GunBaseEvent;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
 
-public interface GunFireSelectEvent {
-    Event<GunFireSelectEvent> EVENT = EventFactory.createArrayBacked(GunFireSelectEvent.class,
-            (listeners) -> (shooter, gunItemStack, side) -> {
-                for (GunFireSelectEvent listener : listeners) {
-                    ActionResult result = listener.gunFireSelect(shooter, gunItemStack, side);
+public class GunFireSelectEvent extends GunBaseEvent {
+    public static final Event<Callback> EVENT = EventFactory.createArrayBacked(Callback.class, callbacks -> event -> {
+        for (Callback e : callbacks) e.onGunFireSelect(event);
+    });
 
-                    if (result != ActionResult.PASS) {
-                        return result;
-                    }
-                }
+    private final LivingEntity shooter;
+    private final ItemStack gunItemStack;
+    private final LogicalSide logicalSide;
 
-                return ActionResult.PASS;
-            });
+    public GunFireSelectEvent(LivingEntity shooter, ItemStack gunItemStack, LogicalSide side) {
+        this.shooter = shooter;
+        this.gunItemStack = gunItemStack;
+        this.logicalSide = side;
+    }
 
-    ActionResult gunFireSelect(LivingEntity shooter, ItemStack gunItemStack, EnvType side);
+    public LivingEntity getShooter() {
+        return shooter;
+    }
+
+    public ItemStack getGunItemStack() {
+        return gunItemStack;
+    }
+
+    public LogicalSide getLogicalSide() {
+        return logicalSide;
+    }
+
+    @Override
+    public void sendEvent() {
+        EVENT.invoker().onGunFireSelect(this);
+    }
+
+    public interface Callback {
+        void onGunFireSelect(GunFireSelectEvent event);
+    }
 }

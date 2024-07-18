@@ -93,8 +93,7 @@ public class ModCreativeTabs {
             .icon(() -> GunItemBuilder.create().setId(new Identifier(GunMod.MOD_ID, "m249")).build())
             .entries((parameters, output) -> output.addAll(AbstractGunItem.fillItemCategory(GunTabType.MG))).build());
 
-    public static void register() {
-
+    public static void init() {
     }
 
     private static ItemGroup register(String path, ItemGroup group) {

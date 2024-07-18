@@ -2,7 +2,10 @@ package com.tacz.guns.client.input;
 
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.config.util.InteractKeyConfigRead;
+import com.tacz.guns.forge.InputEvent;
 import com.tacz.guns.util.InputExtraCheck;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
@@ -16,18 +19,26 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import org.lwjgl.glfw.GLFW;
 
-public class InteractKey implements ClientTickEvents.EndTick {
+import static com.tacz.guns.util.InputExtraCheck.isInGame;
+
+@Environment(EnvType.CLIENT)
+public class InteractKey implements InputEvent.KeyCallback, InputEvent.MousePostCallback {
     public static final KeyBinding INTERACT_KEY = new KeyBinding("key.tacz.interact.desc",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_O,
             "key.category.tacz");
 
     @Override
-    public void onEndTick(MinecraftClient client) {
-        if (InputExtraCheck.isInGame()) {
-            while (INTERACT_KEY.wasPressed()) {
-                doInteractLogic();
-            }
+    public void onKey(InputEvent.Key event) {
+        if (isInGame() && event.getAction() == GLFW.GLFW_PRESS && INTERACT_KEY.matchesKey(event.getKey(), event.getScanCode())) {
+            doInteractLogic();
+        }
+    }
+
+    @Override
+    public void onMousePost(InputEvent.MouseButton.Post event) {
+        if (isInGame() && event.getAction() == GLFW.GLFW_PRESS && INTERACT_KEY.matchesMouse(event.getButton())) {
+            doInteractLogic();
         }
     }
 

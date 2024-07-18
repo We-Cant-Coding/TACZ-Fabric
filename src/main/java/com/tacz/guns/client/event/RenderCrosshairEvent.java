@@ -26,7 +26,7 @@ import net.minecraft.world.GameMode;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class RenderCrosshairEvent implements RenderTickEvent {
+public class RenderCrosshairEvent implements RenderTickEvent.Callback {
     private static final Identifier HIT_ICON = new Identifier(GunMod.MOD_ID, "textures/crosshair/hit/hit_marker.png");
     private static final long KEEP_TIME = 300;
     private static boolean isRefitScreen = false;
@@ -88,10 +88,9 @@ public class RenderCrosshairEvent implements RenderTickEvent {
     }
 
     @Override
-    public ActionResult renderTick(MinecraftClient client) {
+    public void onRenderTick(RenderTickEvent event) {
         // 奇迹的是，RenderGameOverlayEvent.PreLayer 事件中，screen 还未被赋值...
-        isRefitScreen = client.currentScreen instanceof GunRefitScreen;
-        return ActionResult.PASS;
+        isRefitScreen = event.getClient().currentScreen instanceof GunRefitScreen;
     }
 
     private static void renderCrosshair(DrawContext graphics) {

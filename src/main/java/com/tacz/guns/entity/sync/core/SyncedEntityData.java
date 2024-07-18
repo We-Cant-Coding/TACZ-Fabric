@@ -2,6 +2,8 @@ package com.tacz.guns.entity.sync.core;
 
 import com.google.common.collect.ImmutableSet;
 import com.tacz.guns.GunMod;
+import com.tacz.guns.init.CommonRegistry;
+import com.tacz.guns.api.mixin.SyncedEntityDataMapping;
 import it.unimi.dsi.fastutil.ints.Int2ReferenceMap;
 import it.unimi.dsi.fastutil.ints.Int2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.*;
@@ -151,7 +153,10 @@ public class SyncedEntityData {
 
     @Nullable
     public DataHolder getDataHolder(Entity entity) {
-        return entity.getCapability(DataHolderCapabilityProvider.CAPABILITY, null).resolve().orElse(null);
+        return DataHolderCapabilityProvider.CAPABILITY
+                .maybeGet(entity)
+                .map(DataHolderCapabilityProvider::getDataHolder)
+                .orElse(null);
     }
 
     public boolean hasSyncedDataKey(Class<? extends Entity> entityClass) {
@@ -175,11 +180,11 @@ public class SyncedEntityData {
         });
     }
 
-    public boolean updateMappings(ServerMessageSyncedEntityDataMapping message) {
+    public boolean updateMappings(SyncedEntityDataMapping message) {
         this.syncedIdToKey.clear();
 
         List<Pair<Identifier, Identifier>> missingKeys = new ArrayList<>();
-        message.getKeyMap().forEach((classId, list) -> {
+        message.tacz$getKeymap().forEach((classId, list) -> {
             SyncedClassKey<?> classKey = this.idToClassKey.get(classId);
             if (classKey == null || !this.classToKeys.containsKey(classKey)) {
                 list.forEach(pair -> missingKeys.add(Pair.of(classId, pair.getLeft())));

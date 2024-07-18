@@ -1,29 +1,52 @@
 package com.tacz.guns.api.event.server;
 
+import com.tacz.guns.api.event.GunBaseEvent;
 import com.tacz.guns.entity.EntityKineticBullet;
-import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.world.World;
 
-public interface AmmoHitBlockEvent {
-    Event<AmmoHitBlockEvent> EVENT = EventFactory.createArrayBacked(AmmoHitBlockEvent.class,
-            (listeners) -> (world, hitResult, state, ammo) -> {
-                for (AmmoHitBlockEvent listener : listeners) {
-                    ActionResult result = listener.ammoHitBlock(world, hitResult, state, ammo);
+public class AmmoHitBlockEvent extends GunBaseEvent {
+    public static final Event<Callback> EVENT = EventFactory.createArrayBacked(Callback.class, callbacks -> event -> {
+        for (Callback e : callbacks) e.onAmmoHitBlock(event);
+    });
 
-                    if (result != ActionResult.PASS) {
-                        return result;
-                    }
-                }
+    private final World level;
+    private final BlockHitResult hitResult;
+    private final BlockState state;
+    private final EntityKineticBullet ammo;
 
-                return ActionResult.PASS;
-            });
+    public AmmoHitBlockEvent(World level, BlockHitResult hitResult, BlockState state, EntityKineticBullet ammo) {
+        this.level = level;
+        this.hitResult = hitResult;
+        this.state = state;
+        this.ammo = ammo;
+    }
 
-    ActionResult ammoHitBlock(World world, BlockHitResult hitResult, BlockState state, EntityKineticBullet ammo);
+    public World getLevel() {
+        return level;
+    }
+
+    public BlockHitResult getHitResult() {
+        return hitResult;
+    }
+
+    public BlockState getState() {
+        return state;
+    }
+
+    public EntityKineticBullet getAmmo() {
+        return ammo;
+    }
+
+    @Override
+    public void sendEvent() {
+        EVENT.invoker().onAmmoHitBlock(this);
+    }
+
+    public interface Callback {
+        void onAmmoHitBlock(AmmoHitBlockEvent event);
+    }
 }

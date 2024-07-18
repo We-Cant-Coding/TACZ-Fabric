@@ -24,7 +24,7 @@ public class ModBlocks {
     public static BlockEntityType<TargetBlockEntity> TARGET_BE = register("target", TargetBlockEntity.TYPE);
     public static BlockEntityType<StatueBlockEntity> STATUE_BE = register("statue", StatueBlockEntity.TYPE);
 
-    public static void register() {
+    public static void init() {
     }
 
     private static Block register(String path, Block block) {

@@ -1,6 +1,6 @@
 {
 	"schemaVersion": 1,
-	"id": "tacz-fabric",
+	"id": "tacz",
 	"version": "${version}",
 	"name": "Timeless & Classics Guns: Zero",
 	"description": "",
@@ -12,7 +12,7 @@
 		"sources": "https://github.com/We-Cant-Coding/TACZ-Fabric"
 	},
 	"license": "GPL-3.0",
-	"icon": "assets/tacz-fabric/icon.png",
+	"icon": "assets/tacz/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
@@ -20,6 +20,9 @@
 		],
 		"client": [
 			"com.tacz.guns.GunModClient"
+		],
+		"cardinal-components": [
+			"com.tacz.guns.GunModComponents"
 		],
 		"modmenu": [
 			"com.tacz.guns.compat.modmenu.ModMenuIntegration"
@@ -30,15 +33,21 @@
 	],
 	"depends": {
 		"fabricloader": ">=0.15.11",
-		"minecraft": "~1.20.1",
+		"minecraft": "1.20.1",
 		"java": ">=17",
 		"fabric-api": "*",
-		"forgeconfigapiport": ">=8.0.0"
+		"forgeconfigapiport": ">=8.0.0",
+		"cloth-config": "*",
+		"cardinal-components-base": ">=5.2.2",
+		"cardinal-components-entity": ">=5.2.2"
 	},
 	"custom": {
 		"loom:injected_interfaces": {
 			"net/minecraft/class_276": [
-				"com/tacz/guns/mixin/client/interfaces/FramebufferStencil"
+				"com/tacz/guns/api/mixin/FramebufferStencil"
+			],
+			"net/minecraft/class_1309": [
+				"com/tacz/guns/api/mixin/ItemHandlerCapability"
 			]
 		}
 	},

@@ -2,14 +2,12 @@ package com.tacz.guns.network.message;
 
 import com.tacz.guns.GunMod;
 import com.tacz.guns.client.sound.SoundPlayManager;
-import net.fabricmc.api.EnvType;
+import com.tacz.guns.util.EnvironmentUtil;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.PacketType;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
 public class ServerMessageSound implements FabricPacket {
@@ -45,8 +43,8 @@ public class ServerMessageSound implements FabricPacket {
         buf.writeInt(distance);
     }
 
-    public void handle(ClientPlayerEntity ignoredPlayer, PacketSender ignoredSender) {
-        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+    public void handle(PlayerEntity ignoredPlayer, PacketSender ignoredSender) {
+        if (EnvironmentUtil.isClient()) {
             SoundPlayManager.playMessageSound(this);
         }
     }

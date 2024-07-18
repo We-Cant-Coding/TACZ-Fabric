@@ -8,9 +8,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
 
-public class InventoryEvent implements SwapItemWithOffHand, ClientTickEvents.StartTick, ClientTickEvents.EndTick {
+public class InventoryEvent implements SwapItemWithOffHand.Callback, ClientTickEvents.StartTick, ClientTickEvents.EndTick {
     // 用于切枪逻辑
     private static int oldHotbarSelected = -1;
     private static ItemStack oldHotbarSelectItem = ItemStack.EMPTY;
@@ -53,14 +52,12 @@ public class InventoryEvent implements SwapItemWithOffHand, ClientTickEvents.Sta
     }
 
     @Override
-    public ActionResult swapItemWithOffHand() {
+    public void onSwapItemWithOffHand(SwapItemWithOffHand event) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player == null) {
-            return ActionResult.PASS;
+            return;
         }
         IClientPlayerGunOperator.fromLocalPlayer(player).draw(player.getOffHandStack());
-
-        return ActionResult.PASS;
     }
 
     public static void onPlayerLoggedOut() {

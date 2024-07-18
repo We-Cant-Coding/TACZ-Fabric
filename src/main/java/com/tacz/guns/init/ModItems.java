@@ -1,6 +1,7 @@
 package com.tacz.guns.init;
 
 import com.tacz.guns.GunMod;
+import com.tacz.guns.api.item.gun.GunItemManager;
 import com.tacz.guns.item.*;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -20,5 +21,9 @@ public class ModItems {
 
     private static <T extends Item> T register(String path, T item) {
         return Registry.register(Registries.ITEM, new Identifier(GunMod.MOD_ID, path), item);
+    }
+
+    public static void init() {
+        GunItemManager.registerGunItem(ModernKineticGunItem.TYPE_NAME, MODERN_KINETIC_GUN);
     }
 }

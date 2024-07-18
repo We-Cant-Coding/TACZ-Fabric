@@ -1,22 +1,20 @@
 package com.tacz.guns.api.client.event;
 
+import com.tacz.guns.api.event.GunBaseEvent;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.util.ActionResult;
 
-public interface SwapItemWithOffHand {
-    Event<SwapItemWithOffHand> EVENT = EventFactory.createArrayBacked(SwapItemWithOffHand.class,
-            (listeners) -> () -> {
-                for (SwapItemWithOffHand listener : listeners) {
-                    ActionResult result = listener.swapItemWithOffHand();
+public class SwapItemWithOffHand extends GunBaseEvent {
+    public static final Event<Callback> EVENT = EventFactory.createArrayBacked(Callback.class, callbacks -> event -> {
+        for (Callback e : callbacks) e.onSwapItemWithOffHand(event);
+    });
 
-                    if (result != ActionResult.PASS) {
-                        return result;
-                    }
-                }
+    @Override
+    public void sendEvent() {
+        EVENT.invoker().onSwapItemWithOffHand(this);
+    }
 
-                return ActionResult.PASS;
-            });
-
-    ActionResult swapItemWithOffHand();
+    public interface Callback {
+        void onSwapItemWithOffHand(SwapItemWithOffHand event);
+    }
 }

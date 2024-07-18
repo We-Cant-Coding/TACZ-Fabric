@@ -1,6 +1,7 @@
 package com.tacz.guns.item;
 
 import com.tacz.guns.api.DefaultAssets;
+import com.tacz.guns.api.LogicalSide;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.entity.IGunOperator;
 import com.tacz.guns.api.event.common.GunFireEvent;
@@ -13,6 +14,7 @@ import com.tacz.guns.config.common.GunConfig;
 import com.tacz.guns.debug.GunMeleeDebug;
 import com.tacz.guns.entity.EntityKineticBullet;
 import com.tacz.guns.network.NetworkHandler;
+import com.tacz.guns.network.message.event.ServerMessageGunFire;
 import com.tacz.guns.resource.index.CommonGunIndex;
 import com.tacz.guns.resource.pojo.data.attachment.AttachmentData;
 import com.tacz.guns.resource.pojo.data.attachment.EffectData;
@@ -22,7 +24,6 @@ import com.tacz.guns.resource.pojo.data.gun.*;
 import com.tacz.guns.sound.SoundManager;
 import com.tacz.guns.util.AttachmentDataUtils;
 import com.tacz.guns.util.CycleTaskHelper;
-import net.fabricmc.api.EnvType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -31,7 +32,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -111,8 +111,8 @@ public class ModernKineticGunItem extends AbstractGunItem implements GunItemData
                 }
             }
             // 触发击发事件
-            ActionResult result = GunFireEvent.EVENT.invoker().gunFire(shooter, gunItem, EnvType.SERVER);
-            if (result == ActionResult.PASS) {
+            boolean fire = !new GunFireEvent(shooter, gunItem, LogicalSide.SERVER).post();
+            if (fire) {
                 NetworkHandler.sendToTrackingEntity(new ServerMessageGunFire(shooter.getId(), gunItem), shooter);
                 if (consumeAmmo) {
                     // 削减弹药

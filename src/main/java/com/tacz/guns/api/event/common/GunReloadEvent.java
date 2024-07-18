@@ -1,25 +1,45 @@
 package com.tacz.guns.api.event.common;
 
-import net.fabricmc.api.EnvType;
+import com.tacz.guns.api.LogicalSide;
+import com.tacz.guns.api.event.GunBaseEvent;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
 
-public interface GunReloadEvent {
-    Event<GunReloadEvent> EVENT = EventFactory.createArrayBacked(GunReloadEvent.class,
-            (listeners) -> (entity, gunItemStack, side) -> {
-                for (GunReloadEvent listener : listeners) {
-                    ActionResult result = listener.gunReload(entity, gunItemStack, side);
+public class GunReloadEvent extends GunBaseEvent {
+    public static final Event<Callback> EVENT = EventFactory.createArrayBacked(Callback.class, callbacks -> event -> {
+        for (Callback e : callbacks) e.onGunReload(event);
+    });
 
-                    if (result != ActionResult.PASS) {
-                        return result;
-                    }
-                }
+    private final LivingEntity entity;
+    private final ItemStack gunItemStack;
+    private final LogicalSide logicalSide;
 
-                return ActionResult.PASS;
-            });
+    public GunReloadEvent(LivingEntity entity, ItemStack gunItemStack, LogicalSide side) {
+        this.entity = entity;
+        this.gunItemStack = gunItemStack;
+        this.logicalSide = side;
+    }
 
-    ActionResult gunReload(LivingEntity entity, ItemStack gunItemStack, EnvType side);
+    public LivingEntity getEntity() {
+        return entity;
+    }
+
+    public ItemStack getGunItemStack() {
+        return gunItemStack;
+    }
+
+    public LogicalSide getLogicalSide() {
+        return logicalSide;
+    }
+
+    @Override
+    public void sendEvent() {
+        EVENT.invoker().onGunReload(this);
+    }
+
+    public interface Callback {
+        void onGunReload(GunReloadEvent event);
+    }
 }

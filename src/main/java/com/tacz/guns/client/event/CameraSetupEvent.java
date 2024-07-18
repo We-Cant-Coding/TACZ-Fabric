@@ -1,6 +1,7 @@
 package com.tacz.guns.client.event;
 
 import com.tacz.guns.api.DefaultAssets;
+import com.tacz.guns.api.LogicalSide;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.client.event.BeforeRenderHandEvent;
 import com.tacz.guns.api.client.gameplay.IClientPlayerGunOperator;
@@ -18,14 +19,12 @@ import com.tacz.guns.resource.pojo.data.gun.GunData;
 import com.tacz.guns.util.AttachmentDataUtils;
 import com.tacz.guns.util.math.MathUtil;
 import com.tacz.guns.util.math.SecondOrderDynamics;
-import net.fabricmc.api.EnvType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
@@ -33,7 +32,7 @@ import org.joml.Quaternionf;
 
 import java.util.Optional;
 
-public class CameraSetupEvent implements GunFireEvent, BeforeRenderHandEvent {
+public class CameraSetupEvent implements GunFireEvent.Callback, BeforeRenderHandEvent.Callback {
     /**
      * 用于平滑 FOV 变化
      */
@@ -84,12 +83,7 @@ public class CameraSetupEvent implements GunFireEvent, BeforeRenderHandEvent {
     }
 
     @Override
-    public ActionResult beforeRenderHand(MatrixStack matrixStack) {
-        applyItemInHandCameraAnimation(matrixStack);
-        return ActionResult.PASS;
-    }
-
-    public static void applyItemInHandCameraAnimation(MatrixStack matrixStack) {
+    public void onBeforeRenderHand(BeforeRenderHandEvent event) {
         if (!MinecraftClient.getInstance().options.getBobView().getValue()) {
             return;
         }
@@ -103,13 +97,14 @@ public class CameraSetupEvent implements GunFireEvent, BeforeRenderHandEvent {
         }
         TimelessAPI.getClientGunIndex(iGun.getGunId(stack)).ifPresent(gunIndex -> {
             BedrockGunModel gunModel = gunIndex.getGunModel();
+            MatrixStack poseStack = event.getPoseStack();
             IClientPlayerGunOperator clientPlayerGunOperator = IClientPlayerGunOperator.fromLocalPlayer(player);
             float partialTicks = MinecraftClient.getInstance().getTickDelta();
             float aimingProgress = clientPlayerGunOperator.getClientAimingProgress(partialTicks);
             float zoom = iGun.getAimingZoom(stack);
             float multiplier = 1 - aimingProgress + aimingProgress / (float) Math.sqrt(zoom);
             Quaternionf quaternion = MathUtil.multiplyQuaternion(gunModel.getCameraAnimationObject().rotationQuaternion, multiplier);
-            matrixStack.multiply(quaternion);
+            poseStack.multiply(quaternion);
             // 截至目前，摄像机动画数据已消费完毕。是否有更好的清理动画数据的方法？
             gunModel.cleanCameraAnimationTransform();
         });
@@ -176,13 +171,12 @@ public class CameraSetupEvent implements GunFireEvent, BeforeRenderHandEvent {
     }
 
     @Override
-    public ActionResult gunFire(LivingEntity shooter, ItemStack gunItemStack, EnvType side) {
-        initialCameraRecoil(shooter, side);
-        return ActionResult.PASS;
+    public void onGunFire(GunFireEvent event) {
+        initialCameraRecoil(event.getShooter(), event.getLogicalSide());
     }
 
-    public static void initialCameraRecoil(LivingEntity shooter, EnvType side) {
-        if (side == EnvType.CLIENT) {
+    public static void initialCameraRecoil(LivingEntity shooter, LogicalSide side) {
+        if (side.isClient()) {
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
             if (!shooter.equals(player)) {
                 return;

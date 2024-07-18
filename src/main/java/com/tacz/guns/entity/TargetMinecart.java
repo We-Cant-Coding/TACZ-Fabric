@@ -1,6 +1,7 @@
 package com.tacz.guns.entity;
 
 import com.mojang.authlib.GameProfile;
+import com.tacz.guns.api.LogicalSide;
 import com.tacz.guns.api.entity.ITargetEntity;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.config.client.RenderConfig;
@@ -9,7 +10,7 @@ import com.tacz.guns.init.ModBlocks;
 import com.tacz.guns.init.ModItems;
 import com.tacz.guns.init.ModSounds;
 import com.tacz.guns.network.NetworkHandler;
-import net.fabricmc.api.EnvType;
+import com.tacz.guns.network.message.event.ServerMessageGunHurt;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.SkullBlockEntity;
 import net.minecraft.entity.Entity;
@@ -70,7 +71,7 @@ public class TargetMinecart extends AbstractMinecartEntity implements ITargetEnt
             if (entity instanceof EntityKineticBullet projectile) {
                 boolean isHeadshot = false;
                 float headshotMultiplier = 1;
-                EntityHurtByGunEvent.POST_EVENT.invoker().post(this, player, projectile.getGunId(), damage, isHeadshot, headshotMultiplier, EnvType.SERVER);
+                new EntityHurtByGunEvent.Post(this, player, projectile.getGunId(), damage, isHeadshot, headshotMultiplier, LogicalSide.SERVER).post();
                 NetworkHandler.sendToDimension(new ServerMessageGunHurt(this.getId(), player.getId(), projectile.getGunId(), damage, isHeadshot, headshotMultiplier), this);
             }
         }
@@ -104,7 +105,7 @@ public class TargetMinecart extends AbstractMinecartEntity implements ITargetEnt
     }
 
     @Override
-    protected Item getItem() {
+    public Item getItem() {
         return ModItems.TARGET_MINECART;
     }
 

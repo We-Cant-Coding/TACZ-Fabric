@@ -1,27 +1,22 @@
 package com.tacz.guns.inventory;
 
+import com.tacz.guns.GunMod;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.crafting.GunSmithTableIngredient;
 import com.tacz.guns.network.NetworkHandler;
 import com.tacz.guns.network.message.ServerMessageCraft;
 import it.unimi.dsi.fastutil.ints.Int2IntArrayMap;
-import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.item.PlayerInventoryStorage;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.fabricmc.fabric.impl.transfer.item.InventoryStorageImpl;
+import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
+import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
@@ -45,27 +40,25 @@ public class GunSmithTableMenu extends ScreenHandler {
     }
 
     public void doCraft(Identifier recipeId, PlayerEntity player) {
-        TimelessAPI.getRecipe(recipeId).ifPresent(recipe -> {
-            var handler = PlayerInventoryStorage.of(player);
-            Object2IntArrayMap<ItemVariant> recordCount = new Object2IntArrayMap<>();
+        TimelessAPI.getRecipe(recipeId).ifPresent(recipe -> player.tacz$getItemHandlerCapability(null).ifPresent(handler -> {
+            Int2IntArrayMap recordCount = new Int2IntArrayMap();
             List<GunSmithTableIngredient> ingredients = recipe.getInputs();
 
             for (GunSmithTableIngredient ingredient : ingredients) {
                 int count = 0;
-                for (SingleSlotStorage<ItemVariant> slot : handler.getSlots()) {
-                    var variant = slot.getResource();
-                    ItemStack stack = variant.toStack();
+                for (int slotIndex = 0; slotIndex < handler.getSlots(); slotIndex++) {
+                    ItemStack stack = handler.getStackInSlot(slotIndex);
                     int stackCount = stack.getCount();
                     if (!stack.isEmpty() && ingredient.ingredient().test(stack)) {
                         count = count + stackCount;
                         // Record the slot and number of deductions
                         if (count <= ingredient.count()) {
                             // Full deduction if insufficient
-                            recordCount.put(variant, stackCount);
+                            recordCount.put(slotIndex, stackCount);
                         } else {
                             // Enough to deduct only the amount needed
                             int remaining = count - ingredient.count();
-                            recordCount.put(variant, stackCount - remaining);
+                            recordCount.put(slotIndex, stackCount - remaining);
                             break;
                         }
                     }
@@ -77,11 +70,9 @@ public class GunSmithTableMenu extends ScreenHandler {
             }
 
             // Start withholding materials
-            Transaction transaction = Transaction.openOuter();
-            for (ItemVariant variant : recordCount.keySet()) {
-                handler.extract(variant, recordCount.get(variant), transaction);
+            for (int slotIndex : recordCount.keySet()) {
+                handler.extractItem(slotIndex, recordCount.get(slotIndex), false);
             }
-            transaction.close();
 
             // Give the player the corresponding item
             World world = player.getWorld();
@@ -92,9 +83,7 @@ public class GunSmithTableMenu extends ScreenHandler {
             }
             // Update, otherwise the client display is incorrect
             player.playerScreenHandler.updateToClient();
-            if (player instanceof ServerPlayerEntity) {
-                ServerPlayNetworking.send((ServerPlayerEntity) player, new ServerMessageCraft(this.syncId));
-            }
-        });
+            NetworkHandler.sendToClientPlayer(new ServerMessageCraft(this.syncId), player);
+        }));
     }
 }

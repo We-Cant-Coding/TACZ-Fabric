@@ -41,7 +41,7 @@ public abstract class HeldItemRendererMixin implements KeepingItemRenderer {
 
     @Inject(method = "renderItem(FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;Lnet/minecraft/client/network/ClientPlayerEntity;I)V", at = @At(value = "HEAD"))
     private void beforeHandRender(float tickDelta, MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, ClientPlayerEntity player, int light, CallbackInfo ci) {
-        BeforeRenderHandEvent.EVENT.invoker().beforeRenderHand(matrices);
+        new BeforeRenderHandEvent(matrices).post();
     }
 
     @Inject(method = "updateHeldItems", at = @At("HEAD"))

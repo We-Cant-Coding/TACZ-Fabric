@@ -1,25 +1,51 @@
 package com.tacz.guns.api.event.common;
 
-import net.fabricmc.api.EnvType;
+import com.tacz.guns.api.LogicalSide;
+import com.tacz.guns.api.event.GunBaseEvent;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
 
-public interface GunDrawEvent {
-    Event<GunDrawEvent> EVENT = EventFactory.createArrayBacked(GunDrawEvent.class,
-            (listeners) -> (shooter, previousGunItem, gunItemStack, side) -> {
-                for (GunDrawEvent listener : listeners) {
-                    ActionResult result = listener.gunDraw(shooter, previousGunItem, gunItemStack, side);
+public class GunDrawEvent extends GunBaseEvent {
+    public static final Event<Callback> EVENT = EventFactory.createArrayBacked(Callback.class, callbacks -> event -> {
+        for (Callback e : callbacks) e.onGunDraw(event);
+    });
 
-                    if (result != ActionResult.PASS) {
-                        return result;
-                    }
-                }
+    private final LivingEntity entity;
+    private final ItemStack previousGunItem;
+    private final ItemStack currentGunItem;
+    private final LogicalSide logicalSide;
 
-                return ActionResult.PASS;
-            });
+    public GunDrawEvent(LivingEntity entity, ItemStack previousGunItem, ItemStack currentGunItem, LogicalSide side) {
+        this.entity = entity;
+        this.previousGunItem = previousGunItem;
+        this.currentGunItem = currentGunItem;
+        this.logicalSide = side;
+    }
 
-    ActionResult gunDraw(LivingEntity entity, ItemStack previousGunItem, ItemStack currentGunItem, EnvType side);
+    public LivingEntity getEntity() {
+        return entity;
+    }
+
+    public ItemStack getPreviousGunItem() {
+        return previousGunItem;
+    }
+
+    public ItemStack getCurrentGunItem() {
+        return currentGunItem;
+    }
+
+    public LogicalSide getLogicalSide() {
+        return logicalSide;
+    }
+
+    @Override
+    public void sendEvent() {
+        EVENT.invoker().onGunDraw(this);
+    }
+
+    public interface Callback {
+        void onGunDraw(GunDrawEvent event);
+    }
 }
