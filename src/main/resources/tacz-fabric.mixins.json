@@ -5,13 +5,17 @@
   "mixins": [
     "common.EntityMixin",
     "common.LivingEntityMixin",
+    "common.PlayerEntityMixin",
+    "common.PlayerManagerMixin",
     "common.ServerPlayerEntityMixin",
     "common.ServerPlayNetworkHandlerMixin",
     "common.StairsBlockAccessor",
     "common.forge.AbstractHorseEntityMixin",
     "common.forge.LivingEntityMixin",
     "common.forge.PlayerEntityMixin",
-    "common.network.EntitySpawnS2CPacketMixin",
+    "common.forge.ServerEntityManagerMixin",
+    "common.forge.ServerPlayerInteractionManagerMixin",
+    "common.forge.ServerWorldMixin",
     "common.network.LoginSuccessS2CPacketMixin"
   ],
   "client": [
@@ -26,6 +30,7 @@
     "client.PlayerEntityModelMixin",
     "client.PressableWidgetMixin",
     "client.TranslationStorageMixin",
+    "client.forge.ClientPlayerInteractionManagerMixin",
     "client.forge.GameRendererMixin",
     "client.forge.InGameHudMixin",
     "client.forge.KeyboardMixin",
@@ -35,7 +40,6 @@
     "client.forge.SoundSystemMixin",
     "client.forge.SpriteAtlasTextureMixin",
     "client.network.ClientLoginNetworkHandlerMixin",
-    "client.network.ClientPlayNetworkHandlerMixin",
     "common.MinecraftServerMixin"
   ],
   "injectors": {

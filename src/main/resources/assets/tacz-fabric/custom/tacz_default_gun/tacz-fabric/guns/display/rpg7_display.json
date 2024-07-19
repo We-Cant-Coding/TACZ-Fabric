@@ -1,0 +1,42 @@
+{
+  "model": "tacz-fabric:gun/rpg7_geo",
+  "texture": "tacz-fabric:gun/uv/rpg7",
+  "hud": "tacz-fabric:gun/hud/rpg7",
+  "slot": "tacz-fabric:gun/slot/rpg7",
+  "animation": "tacz-fabric:rpg7",
+  "use_default_animation": "rifle",
+  "lod": {
+    "model": "tacz-fabric:gun/lod/rpg7",
+    "texture": "tacz-fabric:gun/lod/rpg7"
+  },
+  "transform": {
+    "scale": {
+      "thirdperson": [1, 1, 1],
+      "ground": [1, 1, 1],
+      "fixed": [1.5, 1.5, 1.5]
+    }
+  },
+  "sounds": {
+    "reload_empty": "tacz-fabric:rpg7/rpg7_reload",
+    "inspect": "tacz-fabric:rpg7/rpg7_inspect",
+    "inspect_empty": "tacz-fabric:rpg7/rpg7_inspect_empty",
+    "draw": "tacz-fabric:rpg7/rpg7_draw",
+    "put_away": "tacz-fabric:rpg7/rpg7_put_away",
+    "shoot": "tacz-fabric:rpg7/rpg7_shoot",
+    "shoot_3p": "tacz-fabric:rpg7/rpg7_shoot",
+    "melee_push": "tacz-fabric:melee_stock/melee_stock_02",
+    "melee_stock": "tacz-fabric:melee_stock/melee_stock_03"
+  },
+  "offhand_show": {
+    "pos": [0, 20, 5],
+    "rotate": [-20, 0, 30],
+    "scale": [0.5, 0.5, 0.5]
+  },
+  "hotbar_show": {
+    "0": {
+      "pos": [-4, 24, 4],
+      "rotate": [-90, -5, -90],
+      "scale": [0.5, 0.5, 0.5]
+    }
+  }
+}

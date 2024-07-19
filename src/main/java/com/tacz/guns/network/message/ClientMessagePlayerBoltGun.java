@@ -25,10 +25,8 @@ public class ClientMessagePlayerBoltGun implements FabricPacket {
     }
 
     public void handle(ServerPlayerEntity player, PacketSender ignoredSender) {
-        if (EnvironmentUtil.isServer()) {
-            if (player == null) return;
-            IGunOperator.fromLivingEntity(player).bolt();
-        }
+        if (player == null) return;
+        IGunOperator.fromLivingEntity(player).bolt();
     }
 
     @Override

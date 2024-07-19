@@ -25,10 +25,8 @@ public class ClientMessagePlayerShoot implements FabricPacket {
     }
 
     public void handle(ServerPlayerEntity player, PacketSender ignoredSender) {
-        if (EnvironmentUtil.isServer()) {
-            if (player == null) return;
-            IGunOperator.fromLivingEntity(player).shoot(player::getPitch, player::getYaw);
-        }
+        if (player == null) return;
+        IGunOperator.fromLivingEntity(player).shoot(player::getPitch, player::getYaw);
     }
 
     @Override

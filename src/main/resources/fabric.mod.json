@@ -1,6 +1,6 @@
 {
 	"schemaVersion": 1,
-	"id": "tacz",
+	"id": "tacz-fabric",
 	"version": "${version}",
 	"name": "Timeless & Classics Guns: Zero",
 	"description": "",
@@ -12,7 +12,7 @@
 		"sources": "https://github.com/We-Cant-Coding/TACZ-Fabric"
 	},
 	"license": "GPL-3.0",
-	"icon": "assets/tacz/icon.png",
+	"icon": "assets/tacz-fabric/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
@@ -37,9 +37,12 @@
 		"java": ">=17",
 		"fabric-api": "*",
 		"forgeconfigapiport": ">=8.0.0",
-		"cloth-config": "*",
+		"cloth-config": ">=11.1.118",
 		"cardinal-components-base": ">=5.2.2",
-		"cardinal-components-entity": ">=5.2.2"
+		"cardinal-components-entity": ">=5.2.2",
+		"porting_lib_core": ">=2.3.4+1.20.1",
+		"porting_lib_tags": "*",
+		"mkb": ">=1.2.0"
 	},
 	"custom": {
 		"loom:injected_interfaces": {
@@ -49,7 +52,10 @@
 			"net/minecraft/class_1309": [
 				"com/tacz/guns/api/mixin/ItemHandlerCapability"
 			]
-		}
+		},
+		"cardinal-components": [
+			"tacz-fabric:synced_entity_data"
+		]
 	},
 	"accessWidener": "tacz-fabric.accesswidener"
 }

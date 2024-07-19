@@ -7,6 +7,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -73,6 +74,10 @@ public class NetworkHandler {
         if (server != null) {
             server.getPlayerManager().sendToDimension(toVanillaPacket(message), dimension);
         }
+    }
+
+    public static Packet<ClientPlayPacketListener> getEntitySpawningPacket(Entity entity) {
+        return toVanillaPacket(new ServerMessageSpawnEntity(entity));
     }
 
     public static <T extends FabricPacket> Packet<ClientPlayPacketListener> toVanillaPacket(T packet) {

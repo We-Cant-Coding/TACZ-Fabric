@@ -19,7 +19,7 @@ import net.minecraft.util.Identifier;
 
 public class ModCreativeTabs {
     public static ItemGroup OTHER_TAB = register("other", FabricItemGroup.builder()
-            .displayName(Text.translatable("itemGroup.tab.tacz.other"))
+            .displayName(Text.translatable("itemGroup.tab.tacz-fabric.other"))
             .icon(() -> ModItems.GUN_SMITH_TABLE.getDefaultStack())
             .entries((displayContext, entries) -> {
                 entries.add(ModItems.GUN_SMITH_TABLE);
@@ -29,7 +29,7 @@ public class ModCreativeTabs {
             }).build());
 
     public static ItemGroup AMMO_TAB = register("ammo", FabricItemGroup.builder()
-            .displayName(Text.translatable("itemGroup.tab.tacz.ammo"))
+            .displayName(Text.translatable("itemGroup.tab.tacz-fabric.ammo"))
             .icon(() -> AmmoItemBuilder.create().setId(DefaultAssets.DEFAULT_AMMO_ID).build())
             .entries((parameters, output) -> output.addAll(AmmoItem.fillItemCategory())).build());
 

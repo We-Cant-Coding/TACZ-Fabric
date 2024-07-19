@@ -30,7 +30,7 @@ public class GunAttachmentSlot extends ButtonWidget implements IStackTooltip {
         this.type = type;
         this.inventory = inventory;
         this.gunItemIndex = gunItemIndex;
-        this.nameKey = String.format("tooltip.tacz.attachment.%s", type.name().toLowerCase(Locale.US));
+        this.nameKey = String.format("tooltip.tacz-fabric.attachment.%s", type.name().toLowerCase(Locale.US));
     }
 
     @Override

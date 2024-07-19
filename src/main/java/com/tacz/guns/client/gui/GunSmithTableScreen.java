@@ -18,6 +18,7 @@ import com.tacz.guns.crafting.GunSmithTableRecipe;
 import com.tacz.guns.crafting.GunSmithTableResult;
 import com.tacz.guns.init.ModCreativeTabs;
 import com.tacz.guns.inventory.GunSmithTableMenu;
+import com.tacz.guns.network.NetworkHandler;
 import com.tacz.guns.network.message.ClientMessageCraft;
 import com.tacz.guns.util.RenderDistance;
 import it.unimi.dsi.fastutil.ints.Int2IntArrayMap;
@@ -188,7 +189,7 @@ public class GunSmithTableScreen extends HandledScreen<GunSmithTableMenu> {
                         return;
                     }
                 }
-                ClientPlayNetworking.send(new ClientMessageCraft(this.selectedRecipe.getId(), this.handler.syncId));
+                NetworkHandler.sendToServer(new ClientMessageCraft(this.selectedRecipe.getId(), this.handler.syncId));
             }
         }));
     }
@@ -337,10 +338,10 @@ public class GunSmithTableScreen extends HandledScreen<GunSmithTableMenu> {
     @Override
     public void render(@NotNull DrawContext graphics, int mouseX, int mouseY, float partialTick) {
         super.render(graphics, mouseX, mouseY, partialTick);
-        drawModCenteredString(graphics, textRenderer, Text.translatable("gui.tacz.gun_smith_table.preview"), x + 108, y + 5, 0x555555);
+        drawModCenteredString(graphics, textRenderer, Text.translatable("gui.tacz-fabric.gun_smith_table.preview"), x + 108, y + 5, 0x555555);
         graphics.drawText(textRenderer, Text.translatable(String.format("tacz.type.%s.name", selectedType)), x + 150, y + 32, 0x555555, false);
-        graphics.drawText(textRenderer, Text.translatable("gui.tacz.gun_smith_table.ingredient"), x + 254, y + 50, 0x555555, false);
-        drawModCenteredString(graphics, textRenderer, Text.translatable("gui.tacz.gun_smith_table.craft"), x + 312, y + 167, 0xFFFFFF);
+        graphics.drawText(textRenderer, Text.translatable("gui.tacz-fabric.gun_smith_table.ingredient"), x + 254, y + 50, 0x555555, false);
+        drawModCenteredString(graphics, textRenderer, Text.translatable("gui.tacz-fabric.gun_smith_table.craft"), x + 312, y + 167, 0xFFFFFF);
         if (this.selectedRecipe != null) {
             this.renderLeftModel(this.selectedRecipe);
             this.renderPackInfo(graphics, this.selectedRecipe);
@@ -397,28 +398,28 @@ public class GunSmithTableScreen extends HandledScreen<GunSmithTableMenu> {
                 offsetY += 3;
             }
 
-            gui.drawText(textRenderer, Text.translatable("gui.tacz.gun_smith_table.license")
+            gui.drawText(textRenderer, Text.translatable("gui.tacz-fabric.gun_smith_table.license")
                             .append(Text.literal(packInfo.getLicense()).formatted(Formatting.DARK_GRAY)),
                     offsetX, offsetY, Formatting.DARK_GRAY.getColorValue(), false);
             offsetY += 12;
 
             List<String> authors = packInfo.getAuthors();
             if (!authors.isEmpty()) {
-                gui.drawText(textRenderer, Text.translatable("gui.tacz.gun_smith_table.authors")
+                gui.drawText(textRenderer, Text.translatable("gui.tacz-fabric.gun_smith_table.authors")
                                 .append(Text.literal(StringUtils.join(authors, ", ")).formatted(Formatting.DARK_GRAY)),
                         offsetX, offsetY, Formatting.DARK_GRAY.getColorValue(), false);
                 offsetY += 12;
             }
 
-            gui.drawText(textRenderer, Text.translatable("gui.tacz.gun_smith_table.date")
+            gui.drawText(textRenderer, Text.translatable("gui.tacz-fabric.gun_smith_table.date")
                             .append(Text.literal(packInfo.getDate()).formatted(Formatting.DARK_GRAY)),
                     offsetX, offsetY, Formatting.DARK_GRAY.getColorValue(), false);
 
             poseStack.pop();
         } else {
             Identifier recipeId = recipe.getId();
-            gui.drawText(textRenderer, Text.translatable("gui.tacz.gun_smith_table.error").formatted(Formatting.DARK_RED), x + 6, y + 122, 0xAF0000, false);
-            gui.drawText(textRenderer, Text.translatable("gui.tacz.gun_smith_table.error.id", recipeId.toString()).formatted(Formatting.DARK_RED), x + 6, y + 134, 0xFFFFFF, false);
+            gui.drawText(textRenderer, Text.translatable("gui.tacz-fabric.gun_smith_table.error").formatted(Formatting.DARK_RED), x + 6, y + 122, 0xAF0000, false);
+            gui.drawText(textRenderer, Text.translatable("gui.tacz-fabric.gun_smith_table.error.id", recipeId.toString()).formatted(Formatting.DARK_RED), x + 6, y + 134, 0xFFFFFF, false);
             PackInfo errorPackInfo = ClientAssetManager.INSTANCE.getPackInfo(recipeId);
             if (errorPackInfo != null) {
                 gui.drawText(textRenderer, Text.translatable(errorPackInfo.getName()).formatted(Formatting.DARK_RED), x + 6, y + 146, 0xAF0000, false);

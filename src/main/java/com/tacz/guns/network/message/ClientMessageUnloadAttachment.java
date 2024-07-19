@@ -39,21 +39,19 @@ public class ClientMessageUnloadAttachment implements FabricPacket {
     }
 
     public void handle(ServerPlayerEntity player, PacketSender sender) {
-        if (EnvironmentUtil.isServer()) {
-            if (player == null) return;
-            PlayerInventory inventory = player.getInventory();
-            ItemStack gunItem = inventory.getStack(gunSlotIndex);
-            IGun iGun = IGun.getIGunOrNull(gunItem);
-            if (iGun != null) {
-                ItemStack attachmentItem = iGun.getAttachment(gunItem, attachmentType);
-                if (!attachmentItem.isEmpty() && inventory.insertStack(attachmentItem)) {
-                    iGun.unloadAttachment(gunItem, attachmentType);
-                    if (attachmentType == AttachmentType.EXTENDED_MAG) {
-                        dropAllAmmo(player, iGun, gunItem);
-                    }
-                    player.playerScreenHandler.sendContentUpdates();
-                    sender.sendPacket(new ServerMessageRefreshRefitScreen());
+        if (player == null) return;
+        PlayerInventory inventory = player.getInventory();
+        ItemStack gunItem = inventory.getStack(gunSlotIndex);
+        IGun iGun = IGun.getIGunOrNull(gunItem);
+        if (iGun != null) {
+            ItemStack attachmentItem = iGun.getAttachment(gunItem, attachmentType);
+            if (!attachmentItem.isEmpty() && inventory.insertStack(attachmentItem)) {
+                iGun.unloadAttachment(gunItem, attachmentType);
+                if (attachmentType == AttachmentType.EXTENDED_MAG) {
+                    dropAllAmmo(player, iGun, gunItem);
                 }
+                player.playerScreenHandler.sendContentUpdates();
+                sender.sendPacket(new ServerMessageRefreshRefitScreen());
             }
         }
     }

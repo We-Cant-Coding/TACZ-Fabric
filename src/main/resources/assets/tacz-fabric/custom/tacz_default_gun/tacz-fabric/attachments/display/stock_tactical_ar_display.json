@@ -1,0 +1,10 @@
+{
+  "slot": "tacz-fabric:attachment/slot/stock_tactical_ar",
+  "model": "tacz-fabric:attachment/stock_tactical_ar",
+  "texture": "tacz-fabric:attachment/uv/stock_tactical_ar",
+  "adapter": "ar_stock_adapter",
+  "sounds": {
+    "install": "tacz-fabric:attachments/attachment_general_a",
+    "uninstall": "tacz-fabric:attachments/attachment_general_uninstall"
+  }
+}

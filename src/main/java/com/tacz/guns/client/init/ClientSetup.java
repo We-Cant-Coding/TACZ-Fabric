@@ -14,6 +14,9 @@ import com.tacz.guns.inventory.tooltip.AttachmentItemTooltip;
 import com.tacz.guns.inventory.tooltip.GunTooltip;
 import com.tacz.guns.item.AmmoBoxItem;
 import com.tacz.guns.mixin.client.MinecraftClientAccessor;
+import committee.nova.mkb.api.IKeyBinding;
+import committee.nova.mkb.keybinding.KeyConflictContext;
+import committee.nova.mkb.keybinding.KeyModifier;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
 import net.minecraft.client.MinecraftClient;
@@ -21,21 +24,35 @@ import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.item.TooltipData;
+import net.minecraft.client.option.KeyBinding;
+import org.lwjgl.glfw.GLFW;
+
+import java.util.List;
 
 public class ClientSetup {
 
     private static void keybindingRegister() {
-        KeyBindingHelper.registerKeyBinding(InspectKey.INSPECT_KEY);
-        KeyBindingHelper.registerKeyBinding(ReloadKey.RELOAD_KEY);
-        KeyBindingHelper.registerKeyBinding(ShootKey.SHOOT_KEY);
-        KeyBindingHelper.registerKeyBinding(InteractKey.INTERACT_KEY);
-        KeyBindingHelper.registerKeyBinding(FireSelectKey.FIRE_SELECT_KEY);
-        KeyBindingHelper.registerKeyBinding(AimKey.AIM_KEY);
-        KeyBindingHelper.registerKeyBinding(RefitKey.REFIT_KEY);
-        KeyBindingHelper.registerKeyBinding(ZoomKey.ZOOM_KEY);
-        KeyBindingHelper.registerKeyBinding(MeleeKey.MELEE_KEY);
-        KeyBindingHelper.registerKeyBinding(ConfigKey.OPEN_CONFIG_KEY);
+        final KeyBinding[] keys = {
+                InspectKey.INSPECT_KEY,
+                ReloadKey.RELOAD_KEY,
+                ShootKey.SHOOT_KEY,
+                InteractKey.INTERACT_KEY,
+                FireSelectKey.FIRE_SELECT_KEY,
+                AimKey.AIM_KEY,
+                RefitKey.REFIT_KEY,
+                ZoomKey.ZOOM_KEY,
+                MeleeKey.MELEE_KEY,
+                ConfigKey.OPEN_CONFIG_KEY
+        };
 
+        var configKey = ((IKeyBinding)ConfigKey.OPEN_CONFIG_KEY);
+        configKey.setKeyModifierAndCode(KeyModifier.ALT, configKey.getKey());
+
+        for (KeyBinding key : keys) {
+            IKeyBinding ikb = (IKeyBinding) key;
+            ikb.setKeyConflictContext(KeyConflictContext.IN_GAME);
+            KeyBindingHelper.registerKeyBinding(key);
+        }
     }
 
     private static TooltipComponent tooltipComponent(TooltipData tooltip) {

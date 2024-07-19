@@ -23,7 +23,7 @@ import static com.tacz.guns.util.InputExtraCheck.isInGame;
 
 @Environment(EnvType.CLIENT)
 public class InteractKey implements InputEvent.KeyCallback, InputEvent.MousePostCallback {
-    public static final KeyBinding INTERACT_KEY = new KeyBinding("key.tacz.interact.desc",
+    public static final KeyBinding INTERACT_KEY = new KeyBinding("key.tacz-fabric.interact.desc",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_O,
             "key.category.tacz");

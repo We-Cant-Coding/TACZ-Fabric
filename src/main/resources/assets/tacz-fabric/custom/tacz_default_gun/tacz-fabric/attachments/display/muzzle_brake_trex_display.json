@@ -1,0 +1,9 @@
+{
+  "slot": "tacz-fabric:attachment/slot/muzzle_brake_trex",
+  "model": "tacz-fabric:attachment/muzzle_brake_trex_geo",
+  "texture": "tacz-fabric:attachment/uv/muzzle_brake_trex",
+  "sounds": {
+    "install": "tacz-fabric:attachments/attachment_general_a",
+    "uninstall": "tacz-fabric:attachments/attachment_general_uninstall"
+  }
+}

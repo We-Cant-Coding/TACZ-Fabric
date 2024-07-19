@@ -1,0 +1,10 @@
+{
+  "slot": "tacz-fabric:attachment/slot/bayonet_6h3",
+  "model": "tacz-fabric:attachment/bayonet_6h3",
+  "texture": "tacz-fabric:attachment/uv/bayonet_6h3",
+  "show_muzzle": true,
+  "sounds": {
+    "install": "tacz-fabric:attachments/bayonet_install",
+    "uninstall": "tacz-fabric:attachments/bayonet_uninstall"
+  }
+}

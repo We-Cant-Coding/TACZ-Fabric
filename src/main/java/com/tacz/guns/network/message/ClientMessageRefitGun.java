@@ -43,24 +43,22 @@ public class ClientMessageRefitGun implements FabricPacket {
     }
 
     public void handle(ServerPlayerEntity player, PacketSender sender) {
-        if (EnvironmentUtil.isServer()) {
-            if (player == null) return;
-            PlayerInventory inventory = player.getInventory();
-            ItemStack attachmentItem = inventory.getStack(attachmentSlotIndex);
-            ItemStack gunItem = inventory.getStack(gunSlotIndex);
-            IGun iGun = IGun.getIGunOrNull(gunItem);
-            if (iGun != null) {
-                if (iGun.allowAttachment(gunItem, attachmentItem)) {
-                    ItemStack oldAttachmentItem = iGun.getAttachment(gunItem, attachmentType);
-                    iGun.installAttachment(gunItem, attachmentItem);
-                    inventory.setStack(attachmentSlotIndex, oldAttachmentItem);
-                    // If unloading an expanding magazine that spits out all the bullets
-                    if (attachmentType == AttachmentType.EXTENDED_MAG) {
-                        dropAllAmmo(player, iGun, gunItem);
-                    }
-                    player.playerScreenHandler.sendContentUpdates();
-                    sender.sendPacket(new ServerMessageRefreshRefitScreen());
+        if (player == null) return;
+        PlayerInventory inventory = player.getInventory();
+        ItemStack attachmentItem = inventory.getStack(attachmentSlotIndex);
+        ItemStack gunItem = inventory.getStack(gunSlotIndex);
+        IGun iGun = IGun.getIGunOrNull(gunItem);
+        if (iGun != null) {
+            if (iGun.allowAttachment(gunItem, attachmentItem)) {
+                ItemStack oldAttachmentItem = iGun.getAttachment(gunItem, attachmentType);
+                iGun.installAttachment(gunItem, attachmentItem);
+                inventory.setStack(attachmentSlotIndex, oldAttachmentItem);
+                // If unloading an expanding magazine that spits out all the bullets
+                if (attachmentType == AttachmentType.EXTENDED_MAG) {
+                    dropAllAmmo(player, iGun, gunItem);
                 }
+                player.playerScreenHandler.sendContentUpdates();
+                sender.sendPacket(new ServerMessageRefreshRefitScreen());
             }
         }
     }

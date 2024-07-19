@@ -1,5 +1,6 @@
 package com.tacz.guns.entity;
 
+import com.tacz.guns.GunMod;
 import com.tacz.guns.api.DefaultAssets;
 import com.tacz.guns.api.LogicalSide;
 import com.tacz.guns.api.entity.ITargetEntity;
@@ -35,6 +36,8 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.EndermanEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
@@ -538,6 +541,10 @@ public class EntityKineticBullet extends ProjectileEntity implements IEntityAddi
         entity.damage(source, damage * armorDamagePercent);
     }
 
+    @Override
+    public Packet<ClientPlayPacketListener> createSpawnPacket() {
+        return NetworkHandler.getEntitySpawningPacket(this);
+    }
 
     // 테스트 필요
     @Override

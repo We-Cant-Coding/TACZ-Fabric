@@ -1,0 +1,6 @@
+{
+  "name": "tacz.attachment.muzzle_brake_cthulhu.name",
+  "display": "tacz-fabric:muzzle_brake_cthulhu_display",
+  "data": "tacz-fabric:muzzle_brake_cthulhu_data",
+  "type": "muzzle"
+}

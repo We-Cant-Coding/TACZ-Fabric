@@ -23,7 +23,7 @@ public class GunPackProgressScreen extends Screen implements ProgressListener {
     @Override
     protected void init() {
         ButtonWidget button = ButtonWidget.builder(
-                Text.translatable("gui.tacz.client_gun_pack_downloader.background_download"), b -> this.setDone()
+                Text.translatable("gui.tacz-fabric.client_gun_pack_downloader.background_download"), b -> this.setDone()
         ).dimensions((width - 200) / 2, 120, 200, 20).build();
         this.addDrawableChild(button);
     }
@@ -53,7 +53,7 @@ public class GunPackProgressScreen extends Screen implements ProgressListener {
 
     @Override
     public void setTitleAndTask(Text header) {
-        this.header = Text.translatable("gui.tacz.client_gun_pack_downloader.downloading");
+        this.header = Text.translatable("gui.tacz-fabric.client_gun_pack_downloader.downloading");
     }
 
     @Override

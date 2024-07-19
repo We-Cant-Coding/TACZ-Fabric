@@ -1,0 +1,57 @@
+{
+  "model": "tacz-fabric:gun/sks_tactical_geo",
+  "texture": "tacz-fabric:gun/uv/sks_tactical",
+  "lod": {
+    "model": "tacz-fabric:gun/lod/sks_tactical",
+    "texture": "tacz-fabric:gun/lod/sks_tactical"
+  },
+  "hud": "tacz-fabric:gun/hud/sks_tactical_hud",
+  "slot": "tacz-fabric:gun/slot/sks_tactical",
+  "animation": "tacz-fabric:sks_tactical",
+  "use_default_animation": "rifle",
+  "third_person_animation": "default",
+  "transform": {
+    "scale": {
+      "thirdperson": [0.6, 0.6, 0.6],
+      "ground": [0.6, 0.6, 0.6],
+      "fixed": [1.2, 1.2, 1.2]
+    }
+  },
+  "muzzle_flash": {
+    "texture": "tacz-fabric:flash/common_muzzle_flash",
+    "scale": 1.0
+  },
+  "iron_zoom": 1.2,
+  "shell": {
+    "initial_velocity": [5, 2, 1],
+    "random_velocity": [1, 1, 0.25],
+    "acceleration": [0.0, -10, 0.0],
+    "angular_velocity": [360, -1200, 90],
+    "living_time": 1.0
+  },
+  "sounds": {
+    "shoot": "tacz-fabric:sks/sks_shoot",
+    "shoot_3p": "tacz-fabric:sks/sks_shoot_3p",
+    "silence": "tacz-fabric:sks/sks_silence",
+    "silence_3p": "tacz-fabric:sks/sks_silence_3p",
+    "dry_fire": "tacz-fabric:dry_fire",
+    "fire_select": "tacz-fabric:fire_select",
+    "head_hit": "tacz-fabric:head_hit",
+    "flesh_hit": "tacz-fabric:flesh_hit",
+    "kill": "tacz-fabric:kill",
+    "melee_push": "tacz-fabric:melee_stock/melee_stock_01",
+    "melee_stock": "tacz-fabric:melee_stock/melee_stock_03"
+  },
+  "offhand_show": {
+    "pos": [0, 19, 4],
+    "rotate": [0, 0, 60],
+    "scale": [0.5, 0.5, 0.5]
+  },
+  "hotbar_show": {
+    "0": {
+      "pos": [0, 19, 3],
+      "rotate": [-180, 0, 120],
+      "scale": [0.5, 0.5, 0.5]
+    }
+  }
+}

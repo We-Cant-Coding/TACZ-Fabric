@@ -1,0 +1,10 @@
+{
+  "slot": "tacz-fabric:attachment/slot/stock_carbon_bone_c5",
+  "model": "tacz-fabric:attachment/stock_carbon_bone_c5_geo",
+  "texture": "tacz-fabric:attachment/uv/stock_carbon_bone_c5",
+  "adapter": "ar_stock_adapter",
+  "sounds": {
+    "install": "tacz-fabric:attachments/attachment_general_a",
+    "uninstall": "tacz-fabric:attachments/attachment_general_uninstall"
+  }
+}

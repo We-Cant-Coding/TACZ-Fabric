@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "result": {
-    "item": "tacz:target_minecart"
+    "item": "tacz-fabric:target_minecart"
   },
   "pattern": [
     "A",
@@ -9,7 +9,7 @@
   ],
   "key": {
     "A": {
-      "item": "tacz:target"
+      "item": "tacz-fabric:target"
     },
     "B": {
       "item": "minecraft:minecart"

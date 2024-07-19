@@ -1,0 +1,9 @@
+{
+  "slot": "tacz-fabric:ammo/slot/50ae",
+  "shell": {
+    "model": "tacz-fabric:shell/50ae_shell",
+    "texture": "tacz-fabric:shell/50ae_shell"
+  },
+  "tracer_color": "#FF9999"
+}
+    

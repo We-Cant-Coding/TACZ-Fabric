@@ -6,6 +6,7 @@ import com.tacz.guns.forge.ViewportEvent;
 import com.tacz.guns.mixin.client.CameraAccessor;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.RotationAxis;
 import org.joml.Quaternionf;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,7 +23,7 @@ public class GameRendererMixin {
     @Shadow private boolean renderingPanorama;
 
     @Redirect(method = "renderWorld", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/RotationAxis;rotationDegrees(F)Lorg/joml/Quaternionf;", ordinal = 2))
-    private Quaternionf renderWorld(RotationAxis axis, float deg, float tickDelta, @Local Camera camera) {
+    private Quaternionf renderWorld(RotationAxis axis, float deg, float tickDelta, long limitTime, MatrixStack matrices, @Local Camera camera) {
         var event = new ViewportEvent.ComputeCameraAngles(This(), camera, tickDelta, camera.getYaw(), camera.getPitch(), 0.0F);
 
         // Calling events
@@ -31,7 +32,8 @@ public class GameRendererMixin {
 
         ((CameraAccessor) camera).setYaw(event.getYaw());
         ((CameraAccessor) camera).setPitch(event.getPitch());
-        return axis.rotationDegrees(event.getRoll());
+        matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(event.getRoll()));
+        return axis.rotationDegrees(camera.getPitch());
     }
 
     @Inject(method = "getFov", at = @At(value = "RETURN", ordinal = 1), cancellable = true)

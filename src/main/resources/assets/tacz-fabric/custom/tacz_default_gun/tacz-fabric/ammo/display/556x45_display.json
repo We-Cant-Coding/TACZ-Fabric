@@ -1,0 +1,8 @@
+{
+  "slot": "tacz-fabric:ammo/slot/556x45",
+  "shell": {
+    "model": "tacz-fabric:shell/556x45_shell",
+    "texture": "tacz-fabric:shell/556x45_shell"
+  },
+  "tracer_color": "#FF8888"
+}

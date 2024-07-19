@@ -1,9 +1,0 @@
-{
-  "slot": "tacz:ammo/slot/357mag",
-  "shell": {
-    "model": "tacz:shell/357mag_shell",
-    "texture": "tacz:shell/357mag_shell"
-  },
-  "tracer_color": "#ffe09e"
-}
-    

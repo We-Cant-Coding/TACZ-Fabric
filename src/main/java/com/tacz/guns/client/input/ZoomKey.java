@@ -16,7 +16,7 @@ import static com.tacz.guns.util.InputExtraCheck.isInGame;
 
 @Environment(EnvType.CLIENT)
 public class ZoomKey implements InputEvent.KeyCallback, InputEvent.MousePostCallback {
-    public static final KeyBinding ZOOM_KEY = new KeyBinding("key.tacz.zoom.desc",
+    public static final KeyBinding ZOOM_KEY = new KeyBinding("key.tacz-fabric.zoom.desc",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_V,
             "key.category.tacz");

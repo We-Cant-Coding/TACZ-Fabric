@@ -28,7 +28,7 @@
     "minecraft:stonecutter",
     "minecraft:lever",
     "minecraft:trapped_chest",
-    "tacz:gun_smith_table",
-    "tacz:statue"
+    "tacz-fabric:gun_smith_table",
+    "tacz-fabric:statue"
   ]
 }

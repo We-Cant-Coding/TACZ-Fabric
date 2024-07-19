@@ -135,22 +135,22 @@ public class ClientGunTooltip implements TooltipComponent {
             int level = iGun.getLevel(gun);
             if (level >= iGun.getMaxLevel()) {
                 String levelText = String.format("%d (MAX)", level);
-                this.levelInfo = Text.translatable("tooltip.tacz.gun.level").append(Text.literal(levelText).formatted(Formatting.DARK_PURPLE));
+                this.levelInfo = Text.translatable("tooltip.tacz-fabric.gun.level").append(Text.literal(levelText).formatted(Formatting.DARK_PURPLE));
             } else {
                 String levelText = String.format("%d (%.1f%%)", level, expCurrentLevel / (expToNextLevel + expCurrentLevel) * 100f);
-                this.levelInfo = Text.translatable("tooltip.tacz.gun.level").append(Text.literal(levelText).formatted(Formatting.YELLOW));
+                this.levelInfo = Text.translatable("tooltip.tacz-fabric.gun.level").append(Text.literal(levelText).formatted(Formatting.YELLOW));
             }
             this.maxWidth = Math.max(font.getWidth(this.levelInfo), this.maxWidth);
 
             String tabKey = "tacz.type." + gunIndex.getType() + ".name";
-            this.gunType = Text.translatable("tooltip.tacz.gun.type").append(Text.translatable(tabKey).formatted(Formatting.AQUA));
+            this.gunType = Text.translatable("tooltip.tacz-fabric.gun.type").append(Text.translatable(tabKey).formatted(Formatting.AQUA));
             this.maxWidth = Math.max(font.getWidth(this.gunType), this.maxWidth);
 
             MutableText value = Text.literal(DAMAGE_FORMAT.format(gunIndex.getBulletData().getDamageAmount() * SyncConfig.DAMAGE_BASE_MULTIPLIER.get())).formatted(Formatting.AQUA);
             if (gunIndex.getBulletData().getExplosionData() != null) {
-                value.append(" + ").append(DAMAGE_FORMAT.format(gunIndex.getBulletData().getExplosionData().getDamage() * SyncConfig.DAMAGE_BASE_MULTIPLIER.get())).append(Text.translatable("tooltip.tacz.gun.explosion"));
+                value.append(" + ").append(DAMAGE_FORMAT.format(gunIndex.getBulletData().getExplosionData().getDamage() * SyncConfig.DAMAGE_BASE_MULTIPLIER.get())).append(Text.translatable("tooltip.tacz-fabric.gun.explosion"));
             }
-            this.damage = Text.translatable("tooltip.tacz.gun.damage").append(value);
+            this.damage = Text.translatable("tooltip.tacz-fabric.gun.damage").append(value);
             this.maxWidth = Math.max(font.getWidth(this.damage), this.maxWidth);
         }
 
@@ -161,11 +161,11 @@ public class ClientGunTooltip implements TooltipComponent {
                 float armorDamagePercent = (float) (extraDamage.getArmorIgnore() * SyncConfig.ARMOR_IGNORE_BASE_MULTIPLIER.get());
                 float headShotMultiplierPercent = (float) (extraDamage.getHeadShotMultiplier() * SyncConfig.HEAD_SHOT_BASE_MULTIPLIER.get());
                 armorDamagePercent = MathHelper.clamp(armorDamagePercent, 0.0F, 1.0F);
-                this.armorIgnore = Text.translatable("tooltip.tacz.gun.armor_ignore", FORMAT.format(armorDamagePercent));
-                this.headShotMultiplier = Text.translatable("tooltip.tacz.gun.head_shot_multiplier", FORMAT.format(headShotMultiplierPercent));
+                this.armorIgnore = Text.translatable("tooltip.tacz-fabric.gun.armor_ignore", FORMAT.format(armorDamagePercent));
+                this.headShotMultiplier = Text.translatable("tooltip.tacz-fabric.gun.head_shot_multiplier", FORMAT.format(headShotMultiplierPercent));
             } else {
-                this.armorIgnore = Text.translatable("tooltip.tacz.gun.armor_ignore", FORMAT.format(0));
-                this.headShotMultiplier = Text.translatable("tooltip.tacz.gun.head_shot_multiplier", FORMAT.format(1));
+                this.armorIgnore = Text.translatable("tooltip.tacz-fabric.gun.armor_ignore", FORMAT.format(0));
+                this.headShotMultiplier = Text.translatable("tooltip.tacz-fabric.gun.head_shot_multiplier", FORMAT.format(1));
             }
             this.maxWidth = Math.max(font.getWidth(this.armorIgnore), this.maxWidth);
             this.maxWidth = Math.max(font.getWidth(this.headShotMultiplier), this.maxWidth);
@@ -174,7 +174,7 @@ public class ClientGunTooltip implements TooltipComponent {
 
         if (shouldShow(GunTooltipPart.UPGRADES_TIP)) {
             String keyName = Text.keybind(RefitKey.REFIT_KEY.getTranslationKey()).getString().toUpperCase(Locale.ENGLISH);
-            this.tips = Text.translatable("tooltip.tacz.gun.tips", keyName).formatted(Formatting.YELLOW).formatted(Formatting.ITALIC);
+            this.tips = Text.translatable("tooltip.tacz-fabric.gun.tips", keyName).formatted(Formatting.YELLOW).formatted(Formatting.ITALIC);
             this.maxWidth = Math.max(font.getWidth(this.tips), this.maxWidth);
         }
 

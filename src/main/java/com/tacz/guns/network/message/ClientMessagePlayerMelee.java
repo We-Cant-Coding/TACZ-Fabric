@@ -25,10 +25,8 @@ public class ClientMessagePlayerMelee implements FabricPacket {
     }
 
     public void handle(ServerPlayerEntity player, PacketSender ignoredSender) {
-        if (EnvironmentUtil.isServer()) {
-            if (player == null) return;
-            IGunOperator.fromLivingEntity(player).melee();
-        }
+        if (player == null) return;
+        IGunOperator.fromLivingEntity(player).melee();
     }
 
     @Override

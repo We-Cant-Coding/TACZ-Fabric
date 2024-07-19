@@ -15,7 +15,7 @@ import static com.tacz.guns.util.InputExtraCheck.isInGame;
 
 @Environment(EnvType.CLIENT)
 public class RefitKey implements InputEvent.KeyCallback {
-    public static final KeyBinding REFIT_KEY = new KeyBinding("key.tacz.refit.desc",
+    public static final KeyBinding REFIT_KEY = new KeyBinding("key.tacz-fabric.refit.desc",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_Z,
             "key.category.tacz");

@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.function.Supplier;
@@ -181,6 +182,20 @@ public class LivingEntityMixin implements IGunOperator, KnockBackModifier {
     public void setKnockBackStrength(double strength) {
         this.tacz$data.knockbackStrength = strength;
     }
+
+
+
+    @ModifyVariable(method = "takeKnockback", at = @At("HEAD"), ordinal = 0, argsOnly = true)
+    private double modifyKnockbackStrength(double strength) {
+        KnockBackModifier modifier = KnockBackModifier.fromLivingEntity(This());
+        double modifierStrength = modifier.getKnockBackStrength();
+        if (modifierStrength >= 0) {
+            return modifierStrength;
+        }
+        return strength;
+    }
+
+
 
     @Unique
     private LivingEntity This() {

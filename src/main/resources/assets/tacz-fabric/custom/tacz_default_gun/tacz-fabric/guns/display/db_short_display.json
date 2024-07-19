@@ -1,0 +1,46 @@
+{
+  "model": "tacz-fabric:gun/db_short_geo",
+  "texture": "tacz-fabric:gun/uv/db_short",
+  "lod": {
+    "model": "tacz-fabric:gun/lod/db_short",
+    "texture": "tacz-fabric:gun/lod/db_short"
+  },
+  "hud": "tacz-fabric:gun/hud/db_short",
+  "slot": "tacz-fabric:gun/slot/db_short",
+  "animation": "tacz-fabric:db_short",
+  "use_default_animation": "rifle",
+  "third_person_animation": "default",
+  "transform": {
+    "scale": {
+      "thirdperson": [0.6, 0.6, 0.6],
+      "ground": [0.6, 0.6, 0.6],
+      "fixed": [1.2, 1.2, 1.2]
+    }
+  },
+  "muzzle_flash": {
+    "texture": "tacz-fabric:flash/common_muzzle_flash",
+    "scale": 0.75
+  },
+  "sounds": {
+    "reload_empty": "tacz-fabric:db_short/db_short_reload_empty",
+    "reload_tactical": "tacz-fabric:db_short/db_short_reload_tactical",
+    "inspect": "tacz-fabric:db_short/db_short_inspect",
+    "inspect_empty": "tacz-fabric:db_short/db_short_inspect_empty",
+    "draw": "tacz-fabric:db_short/db_short_draw",
+    "put_away": "tacz-fabric:db_short/db_short_put_away",
+    "shoot": "tacz-fabric:db_short/db_shoot",
+    "shoot_3p": "tacz-fabric:db_short/db_shoot_3p"
+  },
+  "offhand_show": {
+    "pos": [1, 22, 4],
+    "rotate": [0, 0, 60],
+    "scale": [0.5, 0.5, 0.5]
+  },
+  "hotbar_show": {
+    "0": {
+      "pos": [-1, 22, 3],
+      "rotate": [-180, 0, 120],
+      "scale": [0.5, 0.5, 0.5]
+    }
+  }
+}

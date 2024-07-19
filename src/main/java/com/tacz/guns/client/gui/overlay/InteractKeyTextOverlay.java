@@ -65,7 +65,7 @@ public class InteractKeyTextOverlay {
 
     private static void renderText(DrawContext graphics, int width, int height, TextRenderer font) {
         String keyName = InteractKey.INTERACT_KEY.getBoundKeyLocalizedText().getString();
-        Text title = Text.translatable("gui.tacz.interact_key.text.desc", StringUtils.capitalize(keyName));
+        Text title = Text.translatable("gui.tacz-fabric.interact_key.text.desc", StringUtils.capitalize(keyName));
         graphics.drawText(font, title, (int) ((width - font.getWidth(title)) / 2.0f), (int) (height / 2.0f - 25), Formatting.YELLOW.getColorValue(), false);
     }
 }

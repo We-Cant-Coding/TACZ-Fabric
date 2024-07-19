@@ -7,6 +7,7 @@ import com.tacz.guns.api.item.attachment.AttachmentType;
 import com.tacz.guns.client.animation.screen.RefitTransform;
 import com.tacz.guns.client.gui.components.refit.*;
 import com.tacz.guns.client.sound.SoundPlayManager;
+import com.tacz.guns.network.NetworkHandler;
 import com.tacz.guns.network.message.ClientMessageRefitGun;
 import com.tacz.guns.network.message.ClientMessageUnloadAttachment;
 import com.tacz.guns.sound.SoundManager;
@@ -128,7 +129,7 @@ public class GunRefitScreen extends Screen {
                     int slotIndex = ((InventoryAttachmentSlot) b).getSlotIndex();
                     SoundPlayManager.playerRefitSound(inventory.getStack(slotIndex), player, SoundManager.INSTALL_SOUND);
                     ClientMessageRefitGun message = new ClientMessageRefitGun(slotIndex, inventory.selectedSlot, RefitTransform.getCurrentTransformType());
-                    ClientPlayNetworking.send(message);
+                    NetworkHandler.sendToServer(message);
                 });
                 this.addDrawableChild(button);
                 currentY = currentY + SLOT_SIZE;
@@ -202,9 +203,9 @@ public class GunRefitScreen extends Screen {
                         if (freeSlot != -1) {
                             SoundPlayManager.playerRefitSound(attachmentItem, player, SoundManager.UNINSTALL_SOUND);
                             ClientMessageUnloadAttachment message = new ClientMessageUnloadAttachment(inventory.selectedSlot, RefitTransform.getCurrentTransformType());
-                            ClientPlayNetworking.send(message);
+                            NetworkHandler.sendToServer(message);
                         } else {
-                            player.sendMessage(Text.translatable("gui.tacz.gun_refit.unload.no_space"));
+                            player.sendMessage(Text.translatable("gui.tacz-fabric.gun_refit.unload.no_space"));
                         }
                     }
                 });

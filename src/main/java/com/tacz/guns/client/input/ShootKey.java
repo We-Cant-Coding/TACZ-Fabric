@@ -1,5 +1,6 @@
 package com.tacz.guns.client.input;
 
+import com.tacz.guns.GunMod;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.client.gameplay.IClientPlayerGunOperator;
 import com.tacz.guns.api.item.IGun;
@@ -21,7 +22,7 @@ import static com.tacz.guns.util.InputExtraCheck.isInGame;
 
 @Environment(EnvType.CLIENT)
 public class ShootKey implements ClientTickEvents.StartTick, InputEvent.MousePostCallback {
-    public static final KeyBinding SHOOT_KEY = new KeyBinding("key.tacz.shoot.desc",
+    public static final KeyBinding SHOOT_KEY = new KeyBinding("key.tacz-fabric.shoot.desc",
             InputUtil.Type.MOUSE,
             GLFW.GLFW_MOUSE_BUTTON_LEFT,
             "key.category.tacz");
@@ -68,7 +69,7 @@ public class ShootKey implements ClientTickEvents.StartTick, InputEvent.MousePos
                         .map(index -> !index.getGunData().getBurstData().isContinuousShoot())
                         .orElse(false);
                 if (fireMode == FireMode.UNKNOWN) {
-                    player.sendMessage(Text.translatable("message.tacz.fire_select.fail"));
+                    player.sendMessage(Text.translatable("message.tacz-fabric.fire_select.fail"));
                 }
                 if (fireMode == FireMode.SEMI || isBurstSemi) {
                     IClientPlayerGunOperator.fromLocalPlayer(player).shoot();

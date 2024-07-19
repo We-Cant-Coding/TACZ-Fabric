@@ -1,0 +1,8 @@
+{
+  "name": "tacz.gun.m4a1.name",
+  "display": "tacz-fabric:m4a1_display",
+  "data": "tacz-fabric:m4a1_data",
+  "type": "rifle",
+  "tooltip": "tacz.gun.m4a1.desc",
+  "sort": 2
+}

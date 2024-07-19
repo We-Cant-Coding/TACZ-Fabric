@@ -22,7 +22,7 @@ import java.util.List;
 
 public class GunSmithTableCategory implements IRecipeCategory<GunSmithTableRecipe> {
     public static final RecipeType<GunSmithTableRecipe> GUN_SMITH_TABLE = RecipeType.create(GunMod.MOD_ID, "gun_smith_table", GunSmithTableRecipe.class);
-    private static final Text TITLE = Text.translatable("block.tacz.gun_smith_table");
+    private static final Text TITLE = Text.translatable("block.tacz-fabric.gun_smith_table");
     private final IDrawableStatic bgDraw;
     private final IDrawable slotDraw;
     private final IDrawable iconDraw;

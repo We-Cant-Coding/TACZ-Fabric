@@ -25,10 +25,8 @@ public class ClientMessagePlayerFireSelect implements FabricPacket {
     }
 
     public void handle(ServerPlayerEntity player, PacketSender ignoredSender) {
-        if (EnvironmentUtil.isServer()) {
-            if (player == null) return;
-            IGunOperator.fromLivingEntity(player).fireSelect();
-        }
+        if (player == null) return;
+        IGunOperator.fromLivingEntity(player).fireSelect();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.tacz.guns.mixin.common.forge;
 
 import com.tacz.guns.GunMod;
+import com.tacz.guns.api.entity.KnockBackModifier;
 import com.tacz.guns.forge.items.IItemHandler;
 import com.tacz.guns.forge.items.wrapper.EntityEquipmentInvWrapper;
 import com.tacz.guns.forge.util.LazyOptional;
@@ -15,6 +16,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)

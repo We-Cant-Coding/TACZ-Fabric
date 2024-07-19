@@ -32,11 +32,9 @@ public class ClientMessageCraft implements FabricPacket {
     }
 
     public void handle(ServerPlayerEntity player, PacketSender ignoredSender) {
-        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
-            if (player == null) return;
-            if (player.currentScreenHandler.syncId == menuId && player.currentScreenHandler instanceof GunSmithTableMenu menu) {
-                menu.doCraft(recipeId, player);
-            }
+        if (player == null) return;
+        if (player.currentScreenHandler.syncId == menuId && player.currentScreenHandler instanceof GunSmithTableMenu menu) {
+            menu.doCraft(recipeId, player);
         }
     }
 

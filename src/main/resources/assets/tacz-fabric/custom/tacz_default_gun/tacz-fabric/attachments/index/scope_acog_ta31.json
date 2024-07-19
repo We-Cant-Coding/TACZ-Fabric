@@ -1,0 +1,6 @@
+{
+  "name": "tacz.attachment.scope_acog_ta31.name",
+  "display": "tacz-fabric:scope_acog_ta31_display",
+  "data": "tacz-fabric:scope_acog_ta31_data",
+  "type": "scope"
+}

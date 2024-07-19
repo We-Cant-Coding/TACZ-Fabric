@@ -1,0 +1,11 @@
+{
+  "slot": "tacz-fabric:attachment/slot/grip_vertical_talon",
+  // 配件的默认模型，不可为空
+  "model": "tacz-fabric:attachment/grip_vertical_talon_geo",
+  // 配件默认模型使用的材质，不可为空
+  "texture": "tacz-fabric:attachment/uv/grip_vertical_talon",
+  "sounds": {
+    "install": "tacz-fabric:attachments/attachment_general_b",
+    "uninstall": "tacz-fabric:attachments/attachment_general_uninstall"
+  }
+}

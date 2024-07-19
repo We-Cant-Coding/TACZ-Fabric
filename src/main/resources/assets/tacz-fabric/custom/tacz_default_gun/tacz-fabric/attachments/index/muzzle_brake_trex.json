@@ -1,0 +1,6 @@
+{
+  "name": "tacz.attachment.muzzle_brake_trex.name",
+  "display": "tacz-fabric:muzzle_brake_trex_display",
+  "data": "tacz-fabric:muzzle_brake_trex_data",
+  "type": "muzzle"
+}

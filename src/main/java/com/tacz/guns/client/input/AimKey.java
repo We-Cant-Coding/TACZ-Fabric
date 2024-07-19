@@ -17,7 +17,7 @@ import static com.tacz.guns.util.InputExtraCheck.isInGame;
 
 @Environment(EnvType.CLIENT)
 public class AimKey implements ClientTickEvents.StartTick, InputEvent.MousePostCallback {
-    public static final KeyBinding AIM_KEY = new KeyBinding("key.tacz.aim.desc",
+    public static final KeyBinding AIM_KEY = new KeyBinding("key.tacz-fabric.aim.desc",
             InputUtil.Type.MOUSE,
             GLFW.GLFW_MOUSE_BUTTON_RIGHT,
             "key.category.tacz");

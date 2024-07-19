@@ -1,0 +1,7 @@
+{
+  "slot": "tacz-fabric:attachment/slot/extended_mag_1",
+  "sounds": {
+    "install": "tacz-fabric:attachments/extended_mag_install",
+    "uninstall": "tacz-fabric:attachments/extended_mag_uninstall"
+  }
+}

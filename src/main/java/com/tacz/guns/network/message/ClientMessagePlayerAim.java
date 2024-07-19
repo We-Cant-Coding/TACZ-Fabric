@@ -29,10 +29,8 @@ public class ClientMessagePlayerAim implements FabricPacket {
     }
 
     public void handle(ServerPlayerEntity player, PacketSender ignoredSender) {
-        if (EnvironmentUtil.isServer()) {
-            if (player == null) return;
-            IGunOperator.fromLivingEntity(player).aim(isAim);
-        }
+        if (player == null) return;
+        IGunOperator.fromLivingEntity(player).aim(isAim);
     }
 
     @Override

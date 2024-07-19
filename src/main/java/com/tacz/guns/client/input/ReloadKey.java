@@ -15,7 +15,7 @@ import static com.tacz.guns.util.InputExtraCheck.isInGame;
 
 @Environment(EnvType.CLIENT)
 public class ReloadKey implements InputEvent.KeyCallback {
-    public static final KeyBinding RELOAD_KEY = new KeyBinding("key.tacz.reload.desc",
+    public static final KeyBinding RELOAD_KEY = new KeyBinding("key.tacz-fabric.reload.desc",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_R,
             "key.category.tacz");

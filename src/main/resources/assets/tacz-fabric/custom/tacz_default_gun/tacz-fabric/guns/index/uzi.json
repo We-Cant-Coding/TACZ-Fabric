@@ -1,0 +1,7 @@
+{
+  "name": "tacz.gun.uzi.name",
+  "display": "tacz-fabric:uzi_display",
+  "data": "tacz-fabric:uzi_data",
+  "tooltip": "tacz.gun.uzi.desc",
+  "type": "smg"
+}

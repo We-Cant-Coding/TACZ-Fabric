@@ -15,7 +15,7 @@ import static com.tacz.guns.util.InputExtraCheck.isInGame;
 
 @Environment(EnvType.CLIENT)
 public class InspectKey implements InputEvent.KeyCallback {
-    public static final KeyBinding INSPECT_KEY = new KeyBinding("key.tacz.inspect.desc",
+    public static final KeyBinding INSPECT_KEY = new KeyBinding("key.tacz-fabric.inspect.desc",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_H,
             "key.category.tacz");

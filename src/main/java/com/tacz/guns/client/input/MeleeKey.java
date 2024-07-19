@@ -14,7 +14,7 @@ import static com.tacz.guns.util.InputExtraCheck.isInGame;
 
 @Environment(EnvType.CLIENT)
 public class MeleeKey implements InputEvent.KeyCallback, InputEvent.MousePostCallback {
-    public static final KeyBinding MELEE_KEY = new KeyBinding("key.tacz.melee.desc",
+    public static final KeyBinding MELEE_KEY = new KeyBinding("key.tacz-fabric.melee.desc",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_V,
             "key.category.tacz");

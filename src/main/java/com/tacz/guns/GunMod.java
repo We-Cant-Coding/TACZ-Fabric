@@ -8,6 +8,7 @@ import com.tacz.guns.init.*;
 import com.tacz.guns.resource.DedicatedServerReloadManager;
 import com.tacz.guns.util.EnvironmentUtil;
 import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
+import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
 import net.fabricmc.api.ModInitializer;
 
 import net.minecraftforge.fml.config.ModConfig;
@@ -15,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class GunMod implements ModInitializer {
-	public static final String MOD_ID = "tacz";
+	public static final String MOD_ID = "tacz-fabric";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	/**
 	 * 默认模型包文件夹
@@ -28,6 +29,7 @@ public class GunMod implements ModInitializer {
 		ForgeConfigRegistry.INSTANCE.register(MOD_ID, ModConfig.Type.SERVER, ServerConfig.init());
 		ForgeConfigRegistry.INSTANCE.register(MOD_ID, ModConfig.Type.CLIENT, ClientConfig.init());
 
+		ModEvents.init();
 		ModBlocks.init();
 		ModCreativeTabs.init();
 		ModItems.init();
@@ -36,6 +38,12 @@ public class GunMod implements ModInitializer {
 		ModContainer.init();
 		ModSounds.init();
 		ModParticles.init();
+		ModDamageTypes.init();
+		CommonRegistry.init();
+		CommandRegistry.init();
+		CompatRegistry.init();
+
+		GunModComponents.init();
 
 		registerDefaultExtraGunPack();
 

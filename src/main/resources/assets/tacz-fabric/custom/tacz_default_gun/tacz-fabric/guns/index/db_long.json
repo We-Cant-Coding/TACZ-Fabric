@@ -1,0 +1,7 @@
+{
+  "name": "tacz.gun.db_long.name",
+  "display": "tacz-fabric:db_long_display",
+  "data": "tacz-fabric:db_long_data",
+  "tooltip": "tacz.gun.db_long.desc",
+  "type": "shotgun"
+}

@@ -1,0 +1,9 @@
+{
+  "slot": "tacz-fabric:attachment/slot/muzzle_brake_cyclone_d2",
+  "model": "tacz-fabric:attachment/muzzle_brake_cyclone_d2_geo",
+  "texture": "tacz-fabric:attachment/uv/muzzle_brake_cyclone_d2",
+  "sounds": {
+    "install": "tacz-fabric:attachments/attachment_general_a",
+    "uninstall": "tacz-fabric:attachments/attachment_general_uninstall"
+  }
+}

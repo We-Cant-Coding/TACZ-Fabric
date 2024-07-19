@@ -14,13 +14,13 @@
           "conditions": [
             {
               "condition": "minecraft:block_state_property",
-              "block": "tacz:statue",
+              "block": "tacz-fabric:statue",
               "properties": {
                 "half": "lower"
               }
             }
           ],
-          "name": "tacz:statue"
+          "name": "tacz-fabric:statue"
         }
       ],
       "rolls": 1

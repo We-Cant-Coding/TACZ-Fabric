@@ -14,13 +14,13 @@
           "conditions": [
             {
               "condition": "minecraft:block_state_property",
-              "block": "tacz:gun_smith_table",
+              "block": "tacz-fabric:gun_smith_table",
               "properties": {
                 "part": "head"
               }
             }
           ],
-          "name": "tacz:gun_smith_table"
+          "name": "tacz-fabric:gun_smith_table"
         }
       ],
       "rolls": 1

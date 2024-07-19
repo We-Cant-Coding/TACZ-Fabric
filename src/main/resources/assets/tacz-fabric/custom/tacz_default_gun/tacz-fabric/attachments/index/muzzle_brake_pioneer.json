@@ -1,0 +1,6 @@
+{
+  "name": "tacz.attachment.muzzle_brake_pioneer.name",
+  "display": "tacz-fabric:muzzle_brake_pioneer_display",
+  "data": "tacz-fabric:muzzle_brake_pioneer_data",
+  "type": "muzzle"
+}

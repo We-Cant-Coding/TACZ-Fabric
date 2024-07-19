@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "result": {
-    "item": "tacz:ammo_box",
+    "item": "tacz-fabric:ammo_box",
     "nbt": {
       "Level": 1
     }
@@ -13,7 +13,7 @@
   ],
   "key": {
     "I": {
-      "tag": "forge:ingots/gold"
+      "tag": "c:gold_ingots"
     },
     "P": {
       "tag": "minecraft:planks"

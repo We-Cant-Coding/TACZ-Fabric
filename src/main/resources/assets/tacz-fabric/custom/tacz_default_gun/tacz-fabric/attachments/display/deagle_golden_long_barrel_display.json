@@ -1,0 +1,9 @@
+{
+  "slot": "tacz-fabric:attachment/slot/deagle_golden_long_barrel",
+  "model": "tacz-fabric:attachment/deagle_golden_long_barrel_geo",
+  "texture": "tacz-fabric:attachment/uv/deagle_golden",
+  "sounds": {
+    "install": "tacz-fabric:attachments/attachment_general_a",
+    "uninstall": "tacz-fabric:attachments/attachment_general_uninstall"
+  }
+}

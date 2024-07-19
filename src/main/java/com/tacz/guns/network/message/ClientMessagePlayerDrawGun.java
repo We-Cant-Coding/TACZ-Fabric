@@ -26,12 +26,10 @@ public class ClientMessagePlayerDrawGun implements FabricPacket {
     }
 
     public void handle(ServerPlayerEntity player, PacketSender ignoredSender) {
-        if (EnvironmentUtil.isServer()) {
-            if (player == null) return;
-            PlayerInventory inventory = player.getInventory();
-            int selected = inventory.selectedSlot;
-            IGunOperator.fromLivingEntity(player).draw(() -> inventory.getStack(selected));
-        }
+        if (player == null) return;
+        PlayerInventory inventory = player.getInventory();
+        int selected = inventory.selectedSlot;
+        IGunOperator.fromLivingEntity(player).draw(() -> inventory.getStack(selected));
     }
 
     @Override

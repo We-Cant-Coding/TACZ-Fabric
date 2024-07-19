@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "result": {
-    "item": "tacz:gun_smith_table"
+    "item": "tacz-fabric:gun_smith_table"
   },
   "pattern": [
     "LLL",
@@ -13,7 +13,7 @@
       "tag": "minecraft:logs"
     },
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:iron_ingots"
     },
     "B": {
       "item": "minecraft:iron_block"

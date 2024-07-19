@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "result": {
-    "item": "tacz:target"
+    "item": "tacz-fabric:target"
   },
   "pattern": [
     "III",
@@ -10,7 +10,7 @@
   ],
   "key": {
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:iron_ingots"
     },
     "R": {
       "item": "minecraft:redstone"

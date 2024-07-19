@@ -1,0 +1,57 @@
+{
+  "model": "tacz-fabric:gun/scar_h_geo",
+  "texture": "tacz-fabric:gun/uv/scar_h",
+  "lod": {
+    "model": "tacz-fabric:gun/lod/scar_h",
+    "texture": "tacz-fabric:gun/lod/scar_h"
+  },
+  "hud": "tacz-fabric:gun/hud/scar_h_hud",
+  "slot": "tacz-fabric:gun/slot/scar_h_slot",
+  "animation": "tacz-fabric:scar_h",
+  "use_default_animation": "rifle",
+  "third_person_animation": "default",
+  "transform": {
+    "scale": {
+      "thirdperson": [0.6, 0.6, 0.6],
+      "ground": [0.6, 0.6, 0.6],
+      "fixed": [1.2, 1.2, 1.2]
+    }
+  },
+  "muzzle_flash": {
+    "texture": "tacz-fabric:flash/common_muzzle_flash",
+    "scale": 1.125
+  },
+  "iron_zoom": 1.2,
+  "shell": {
+    "initial_velocity": [5, 2, 1],
+    "random_velocity": [1, 1, 0.25],
+    "acceleration": [0.0, -10, 0.0],
+    "angular_velocity": [360, -1200, 90],
+    "living_time": 1.0
+  },
+  "sounds": {
+    "shoot": "tacz-fabric:scar_h/scar_h_shoot",
+    "shoot_3p": "tacz-fabric:scar_h/scar_h_shoot_3p",
+    "silence": "tacz-fabric:scar_h/scar_h_silence",
+    "silence_3p": "tacz-fabric:scar_h/scar_h_silence_3p",
+    "dry_fire": "tacz-fabric:dry_fire",
+    "fire_select": "tacz-fabric:fire_select",
+    "head_hit": "tacz-fabric:head_hit",
+    "flesh_hit": "tacz-fabric:flesh_hit",
+    "kill": "tacz-fabric:kill",
+    "melee_push": "tacz-fabric:melee_stock/melee_stock_01",
+    "melee_stock": "tacz-fabric:melee_stock/melee_stock_03"
+  },
+  "offhand_show": {
+    "pos": [0, 19, 4],
+    "rotate": [0, 0, 60],
+    "scale": [0.5, 0.5, 0.5]
+  },
+  "hotbar_show": {
+    "0": {
+      "pos": [0, 19, 3],
+      "rotate": [-180, 0, 120],
+      "scale": [0.5, 0.5, 0.5]
+    }
+  }
+}

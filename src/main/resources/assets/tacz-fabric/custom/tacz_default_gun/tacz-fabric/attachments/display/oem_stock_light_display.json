@@ -1,0 +1,8 @@
+{
+  "slot": "tacz-fabric:attachment/slot/oem_stock_light",
+  "adapter": "oem_stock_light",
+  "sounds": {
+    "install": "tacz-fabric:attachments/attachment_general_a",
+    "uninstall": "tacz-fabric:attachments/attachment_general_uninstall"
+  }
+}

@@ -2,7 +2,7 @@ package com.tacz.guns.mixin.client.network;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.tacz.guns.GunMod;
-import com.tacz.guns.mixin.common.network.IEntitySpawnS2C;
+import com.tacz.guns.api.mixin.IEntitySpawnS2C;
 import com.tacz.guns.api.mixin.IEntityAdditionalSpawnData;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.entity.Entity;

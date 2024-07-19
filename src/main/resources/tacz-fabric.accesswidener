@@ -13,3 +13,5 @@ accessible method net/minecraft/entity/vehicle/AbstractMinecartEntity getItem ()
 accessible method net/minecraft/client/network/ClientPlayerInteractionManager syncSelectedSlot ()V
 
 accessible method net/minecraft/util/thread/ThreadExecutor submitAsync (Ljava/lang/Runnable;)Ljava/util/concurrent/CompletableFuture;
+
+accessible field net/minecraft/client/option/KeyBinding timesPressed I
