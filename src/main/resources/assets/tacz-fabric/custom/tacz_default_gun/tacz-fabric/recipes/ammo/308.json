@@ -2,18 +2,18 @@
   "materials": [
     {
       "item": {
-        "tag": "forge:ingots/copper"
+        "tag": "c:copper_ingots"
       },
       "count": 24
     },
     {
       "item": {
-        "tag": "forge:gems/lapis"
+        "tag": "c:lapis"
       }
     },
     {
       "item": {
-        "tag": "forge:gunpowder"
+        "tag": "c:gunpowder"
       },
       "count": 9
     }

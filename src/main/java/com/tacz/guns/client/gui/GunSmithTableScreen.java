@@ -445,8 +445,11 @@ public class GunSmithTableScreen extends HandledScreen<GunSmithTableMenu> {
                 Ingredient ingredient = smithTableIngredient.ingredient();
 
                 ItemStack[] items = ingredient.getMatchingStacks();
-                int itemIndex = ((int) (System.currentTimeMillis() / 1_000)) % items.length;
-                ItemStack item = items[itemIndex];
+                ItemStack item = ItemStack.EMPTY;
+                if (items.length > 0) {
+                    int itemIndex = ((int) (System.currentTimeMillis() / 1_000)) % items.length;
+                    item = items[itemIndex];
+                }
 
                 gui.drawItemWithoutEntity(item, offsetX, offsetY);
 
