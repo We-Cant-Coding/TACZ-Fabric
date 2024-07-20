@@ -46,7 +46,12 @@ public class ClientSetup {
         };
 
         var configKey = ((IKeyBinding)ConfigKey.OPEN_CONFIG_KEY);
-        configKey.setKeyModifierAndCode(KeyModifier.ALT, configKey.getKey());
+        try {
+            var field = configKey.getClass().getDeclaredField("keyModifierDefault");
+            field.setAccessible(true);
+            field.set(configKey, KeyModifier.ALT);
+            field.setAccessible(false);
+        } catch (Exception ignored) {}
 
         for (KeyBinding key : keys) {
             IKeyBinding ikb = (IKeyBinding) key;

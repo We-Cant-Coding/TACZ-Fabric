@@ -35,7 +35,6 @@ public abstract class LivingEntityMixin implements ItemHandlerCapability {
     public LazyOptional<IItemHandler> tacz$getItemHandlerCapability(@Nullable Direction facing) {
         if (isAlive()) {
             if (facing == null) {
-                GunMod.LOGGER.info("LivingEntity current");
                 return this.handlers[2].cast();
             }
 

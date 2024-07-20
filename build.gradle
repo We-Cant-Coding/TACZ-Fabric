@@ -88,6 +88,7 @@ dependencies {
 	modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${project.player_animation_lib}")
 	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:core:${project.porting_lib_version}+${project.minecraft_version}"))
 	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:tags:${project.porting_lib_version}+${project.minecraft_version}"))
+	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:entity:${project.porting_lib_version}+${project.minecraft_version}"))
 	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinal_components_api_version}"
 	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinal_components_api_version}"
 

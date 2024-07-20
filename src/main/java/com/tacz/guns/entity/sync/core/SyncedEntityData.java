@@ -181,11 +181,11 @@ public class SyncedEntityData {
         });
     }
 
-    public boolean updateMappings(SyncedEntityDataMapping message) {
+    public boolean updateMappings(Map<Identifier, List<Pair<Identifier, Integer>>> keyMap) {
         this.syncedIdToKey.clear();
 
         List<Pair<Identifier, Identifier>> missingKeys = new ArrayList<>();
-        message.tacz$getKeymap().forEach((classId, list) -> {
+        keyMap.forEach((classId, list) -> {
             SyncedClassKey<?> classKey = this.idToClassKey.get(classId);
             if (classKey == null || !this.classToKeys.containsKey(classKey)) {
                 list.forEach(pair -> missingKeys.add(Pair.of(classId, pair.getLeft())));

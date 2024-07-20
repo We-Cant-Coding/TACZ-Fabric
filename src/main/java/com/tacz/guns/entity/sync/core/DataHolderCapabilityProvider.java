@@ -8,11 +8,13 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 public class DataHolderCapabilityProvider implements Component {
+    public static final Marker MARKER = MarkerFactory.getMarker("TACZ_DATAHOLDER");
     public static final ComponentKey<DataHolderCapabilityProvider> CAPABILITY = ComponentRegistry.getOrCreate(new Identifier(GunMod.MOD_ID, "synced_entity_data"), DataHolderCapabilityProvider.class);
     private final DataHolder holder = new DataHolder();
     private boolean isValid = true;

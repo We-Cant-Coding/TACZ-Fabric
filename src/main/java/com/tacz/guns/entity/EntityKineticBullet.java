@@ -13,7 +13,6 @@ import com.tacz.guns.config.common.AmmoConfig;
 import com.tacz.guns.config.sync.SyncConfig;
 import com.tacz.guns.config.util.HeadShotAABBConfigRead;
 import com.tacz.guns.init.ModDamageTypes;
-import com.tacz.guns.api.mixin.IEntityAdditionalSpawnData;
 import com.tacz.guns.network.NetworkHandler;
 import com.tacz.guns.network.message.event.ServerMessageGunHurt;
 import com.tacz.guns.network.message.event.ServerMessageGunKill;
@@ -25,6 +24,9 @@ import com.tacz.guns.util.HitboxHelper;
 import com.tacz.guns.util.TacHitResult;
 import com.tacz.guns.util.block.BlockRayTrace;
 import com.tacz.guns.util.block.ProjectileExplosion;
+import io.github.fabricators_of_create.porting_lib.entity.IEntityAdditionalSpawnData;
+import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
+import io.github.fabricators_of_create.porting_lib.entity.PortingLibEntity;
 import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -32,6 +34,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.boss.dragon.EnderDragonPart;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.EndermanEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -55,9 +58,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
 
 /**
@@ -100,7 +101,7 @@ public class EntityKineticBullet extends ProjectileEntity implements IEntityAddi
 
     public EntityKineticBullet(EntityType<? extends ProjectileEntity> type, double x, double y, double z, World worldIn) {
         this(type, worldIn);
-        this.setPos(x, y, z);
+        this.setPosition(x, y, z);
     }
 
     public EntityKineticBullet(World worldIn, LivingEntity throwerIn, Identifier ammoId, Identifier gunId, boolean isTracerAmmo, BulletData data) {
@@ -139,7 +140,7 @@ public class EntityKineticBullet extends ProjectileEntity implements IEntityAddi
         double posX = throwerIn.lastRenderX + (throwerIn.getX() - throwerIn.lastRenderX) / 2.0;
         double posY = throwerIn.lastRenderY + (throwerIn.getY() - throwerIn.lastRenderY) / 2.0 + throwerIn.getStandingEyeHeight();
         double posZ = throwerIn.lastRenderZ + (throwerIn.getZ() - throwerIn.lastRenderZ) / 2.0;
-        this.setPos(posX, posY, posZ);
+        this.setPosition(posX, posY, posZ);
         this.startPos = this.getPos();
         this.isTracerAmmo = isTracerAmmo;
         this.gunId = gunId;
@@ -203,7 +204,7 @@ public class EntityKineticBullet extends ProjectileEntity implements IEntityAddi
         double nextPosX = this.getX() + x;
         double nextPosY = this.getY() + y;
         double nextPosZ = this.getZ() + z;
-        this.setPos(nextPosX, nextPosY, nextPosZ);
+        this.setPosition(nextPosX, nextPosY, nextPosZ);
         float friction = this.friction;
         float gravity = this.gravity;
         // 子弹入水后的调整
@@ -402,7 +403,9 @@ public class EntityKineticBullet extends ProjectileEntity implements IEntityAddi
         // 刷新由Pre事件修改后的参数
         entity = preEvent.getHurtEntity();
         // 受击目标
-        LivingEntity livingEntity = (entity instanceof LivingEntity ? (LivingEntity) entity : null);
+        LivingEntity livingEntity = entity instanceof EnderDragonPart part ? part.owner :
+                (entity instanceof PartEntity<?> part && part.getParent() instanceof LivingEntity partOwner) ?
+                        partOwner : (entity instanceof LivingEntity ? (LivingEntity) entity : null);
         attacker = preEvent.getAttacker();
         var newGunId = preEvent.getGunId();
         damage = preEvent.getBaseAmount();
@@ -543,7 +546,7 @@ public class EntityKineticBullet extends ProjectileEntity implements IEntityAddi
 
     @Override
     public Packet<ClientPlayPacketListener> createSpawnPacket() {
-        return NetworkHandler.getEntitySpawningPacket(this);
+        return PortingLibEntity.getEntitySpawningPacket(this);
     }
 
     // 테스트 필요

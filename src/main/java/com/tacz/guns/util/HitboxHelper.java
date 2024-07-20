@@ -24,9 +24,7 @@ public class HitboxHelper {
 
     public static void onPlayerTick(PlayerEntity player) {
         if (player.isSpectator()) {
-            PLAYER_POSITION.remove(player);
-            PLAYER_HITBOXES.remove(player);
-            PLAYER_VELOCITY.remove(player);
+            onPlayerLoggedOut(player);
             return;
         }
         LinkedList<Vec3d> positions = PLAYER_POSITION.computeIfAbsent(player, p -> new LinkedList<>());

@@ -26,7 +26,7 @@ public class ClientLoginNetworkHandlerMixin {
     @Inject(method = "onSuccess", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;setState(Lnet/minecraft/network/NetworkState;)V", shift = At.Shift.AFTER))
     private void onSuccess(LoginSuccessS2CPacket packet, CallbackInfo ci) {
         GunMod.LOGGER.debug(HANDSHAKE, "Received synced key mappings from server");
-        if (!SyncedEntityData.instance().updateMappings(((SyncedEntityDataMapping) packet))) {
+        if (!SyncedEntityData.instance().updateMappings((((SyncedEntityDataMapping) packet).tacz$getKeymap()))) {
             connection.disconnect(Text.literal("Connection closed - [TacZ] Received unknown synced data keys."));
         }
     }

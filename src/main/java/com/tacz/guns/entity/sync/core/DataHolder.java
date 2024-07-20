@@ -1,12 +1,6 @@
 package com.tacz.guns.entity.sync.core;
 
-import dev.onyxstudios.cca.api.v3.component.Component;
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -14,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class DataHolder implements Component {
+public class DataHolder {
     public Map<SyncedDataKey<?, ?>, DataEntry<?, ?>> dataMap = new HashMap<>();
     private boolean dirty = false;
 
@@ -51,45 +45,5 @@ public class DataHolder implements Component {
 
     public List<DataEntry<?, ?>> gatherAll() {
         return this.dataMap.values().stream().filter(entry -> entry.getKey().syncMode() != SyncedDataKey.SyncMode.NONE).collect(Collectors.toList());
-    }
-
-    @Override
-    public void readFromNbt(@NotNull NbtCompound tag) {
-        if (tag.contains("dataMap", NbtElement.LIST_TYPE)) {
-            NbtList list = tag.getList("dataMap", NbtElement.COMPOUND_TYPE);
-            dataMap.clear();
-            list.forEach(entryTag -> {
-                NbtCompound keyTag = (NbtCompound) entryTag;
-                Identifier classKey = Identifier.tryParse(keyTag.getString("ClassKey"));
-                Identifier dataKey = Identifier.tryParse(keyTag.getString("DataKey"));
-                NbtElement value = keyTag.get("Value");
-                SyncedClassKey<?> syncedClassKey = SyncedEntityData.instance().getClassKey(classKey);
-                if (syncedClassKey == null) {
-                    return;
-                }
-                SyncedDataKey<?, ?> syncedDataKey = SyncedEntityData.instance().getKey(syncedClassKey, dataKey);
-                if (syncedDataKey == null || !syncedDataKey.save()) {
-                    return;
-                }
-                DataEntry<?, ?> entry = new DataEntry<>(syncedDataKey);
-                entry.readValue(value);
-                dataMap.put(syncedDataKey, entry);
-            });
-        }
-    }
-
-    @Override
-    public void writeToNbt(@NotNull NbtCompound tag) {
-        NbtList list = new NbtList();
-        dataMap.forEach((key, entry) -> {
-            if (key.save()) {
-                NbtCompound keyTag = new NbtCompound();
-                keyTag.putString("ClassKey", key.classKey().id().toString());
-                keyTag.putString("DataKey", key.id().toString());
-                keyTag.put("Value", entry.writeValue());
-                list.add(keyTag);
-            }
-        });
-        tag.put("dataMap", list);
     }
 }

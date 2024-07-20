@@ -1,6 +1,7 @@
 package com.tacz.guns.mixin.common.network;
 
 import com.mojang.authlib.GameProfile;
+import com.tacz.guns.GunMod;
 import com.tacz.guns.entity.sync.core.SyncedDataKey;
 import com.tacz.guns.entity.sync.core.SyncedEntityData;
 import com.tacz.guns.api.mixin.SyncedEntityDataMapping;
@@ -21,19 +22,7 @@ public class LoginSuccessS2CPacketMixin implements SyncedEntityDataMapping {
     @Unique
     private Map<Identifier, List<Pair<Identifier, Integer>>> keyMap;
 
-    @Inject(method = "<init>(Lcom/mojang/authlib/GameProfile;)V", at = @At("TAIL"))
-    private void initClass(GameProfile profile, CallbackInfo ci) {
-        keyMap = new HashMap<>();
-        Set<SyncedDataKey<?, ?>> keys = SyncedEntityData.instance().getKeys();
-        keys.forEach(key -> {
-            Identifier classId = key.classKey().id();
-            Identifier keyId = key.id();
-            int id = SyncedEntityData.instance().getInternalId(key);
-            keyMap.computeIfAbsent(classId, c -> new ArrayList<>()).add(Pair.of(keyId, id));
-        });
-    }
-
-    @Inject(method = "write", at = @At("TAIL"))
+    @Inject(method = "write", at = @At("RETURN"))
     private void write(PacketByteBuf buf, CallbackInfo ci) {
         Set<SyncedDataKey<?, ?>> keys = SyncedEntityData.instance().getKeys();
         buf.writeInt(keys.size());
@@ -45,7 +34,7 @@ public class LoginSuccessS2CPacketMixin implements SyncedEntityDataMapping {
         });
     }
 
-    @Inject(method = "<init>(Lnet/minecraft/network/PacketByteBuf;)V", at = @At("TAIL"))
+    @Inject(method = "<init>(Lnet/minecraft/network/PacketByteBuf;)V", at = @At("RETURN"))
     private void read(PacketByteBuf buf, CallbackInfo ci) {
         int size = buf.readInt();
         Map<Identifier, List<Pair<Identifier, Integer>>> keyMap = new HashMap<>();
@@ -60,6 +49,17 @@ public class LoginSuccessS2CPacketMixin implements SyncedEntityDataMapping {
 
     @Override
     public Map<Identifier, List<Pair<Identifier, Integer>>> tacz$getKeymap() {
+        if (keyMap == null) {
+            Map<Identifier, List<Pair<Identifier, Integer>>> keyMap = new HashMap<>();
+            Set<SyncedDataKey<?, ?>> keys = SyncedEntityData.instance().getKeys();
+            keys.forEach(key -> {
+                Identifier classId = key.classKey().id();
+                Identifier keyId = key.id();
+                int id = SyncedEntityData.instance().getInternalId(key);
+                keyMap.computeIfAbsent(classId, c -> new ArrayList<>()).add(Pair.of(keyId, id));
+            });
+            return keyMap;
+        }
         return keyMap;
     }
 }

@@ -36,7 +36,6 @@ public abstract class AbstractHorseEntityMixin extends AnimalEntity {
 
     @Override
     public LazyOptional<IItemHandler> tacz$getItemHandlerCapability(@Nullable Direction facing) {
-        GunMod.LOGGER.info("AbstractHorseEntity super ... super LivingEntity");
         return isAlive() && itemHandler != null ? itemHandler.cast() : super.tacz$getItemHandlerCapability(facing);
     }
 

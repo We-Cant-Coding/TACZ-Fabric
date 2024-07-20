@@ -42,6 +42,7 @@
 		"cardinal-components-entity": ">=5.2.2",
 		"porting_lib_core": ">=2.3.4+1.20.1",
 		"porting_lib_tags": "*",
+		"porting_lib_entity": ">=2.3.4+1.20.1",
 		"mkb": ">=1.2.0"
 	},
 	"custom": {

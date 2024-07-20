@@ -50,7 +50,6 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     public LazyOptional<IItemHandler> tacz$getItemHandlerCapability(@Nullable Direction facing) {
         if (isAlive()) {
             if (facing == null) {
-                GunMod.LOGGER.info("PlayerEntity super LivingEntity");
                 return this.playerJoinedHandler.cast();
             }
 

@@ -76,10 +76,6 @@ public class NetworkHandler {
         }
     }
 
-    public static Packet<ClientPlayPacketListener> getEntitySpawningPacket(Entity entity) {
-        return toVanillaPacket(new ServerMessageSpawnEntity(entity));
-    }
-
     public static <T extends FabricPacket> Packet<ClientPlayPacketListener> toVanillaPacket(T packet) {
         Objects.requireNonNull(packet, "Packet cannot be null");
         Objects.requireNonNull(packet.getType(), "Packet#getType cannot return null");
