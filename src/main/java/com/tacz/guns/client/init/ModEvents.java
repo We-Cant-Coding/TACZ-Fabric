@@ -7,6 +7,7 @@ import com.tacz.guns.api.event.client.RenderTickEvent;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.EntityKillByGunEvent;
 import com.tacz.guns.api.event.common.GunFireEvent;
+import com.tacz.guns.client.animation.screen.RefitTransform;
 import com.tacz.guns.client.event.*;
 import com.tacz.guns.client.gui.overlay.GunHudOverlay;
 import com.tacz.guns.client.gui.overlay.InteractKeyTextOverlay;
@@ -34,16 +35,13 @@ public class ModEvents {
         EntityHurtByGunEvent.EVENT.register(new PlayerHurtByGunEvent());
 
         HudRenderCallback.EVENT.register((context, tickDelta) -> {
-            var event = new RenderGuiOverlayEvent(); // Pre event
-            PreventsHotbarEvent.onRenderHotbarEvent(event);
-            if (event.isCanceled()) return; // Pre event cancel
             GunHudOverlay.onHudRender(context);
             InteractKeyTextOverlay.onHudRender(context);
             KillAmountOverlay.onHudRender(context);
-            // Post line
         });
 
         RenderTickEvent.EVENT.register(new RenderCrosshairEvent());
+        RenderTickEvent.EVENT.register(RefitTransform::tickInterpolation);
 
         var inventoryEvent = new InventoryEvent();
         SwapItemWithOffHand.EVENT.register(inventoryEvent);

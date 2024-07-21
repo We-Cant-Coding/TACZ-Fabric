@@ -1,6 +1,6 @@
 {
   "gun": {
-    "subtitle": "subtitle.tacz.gun",
+    "subtitle": "subtitle.tacz-fabric.gun",
     "sounds": [
       {
         "name": "tacz-fabric:gun/empty"
@@ -8,7 +8,7 @@
     ]
   },
   "target_block_hit": {
-    "subtitle": "subtitle.tacz.target_block_hit",
+    "subtitle": "subtitle.tacz-fabric.target_block_hit",
     "sounds": [
       "tacz-fabric:block/target_block_hit/target_block_hit_1",
       "tacz-fabric:block/target_block_hit/target_block_hit_2",

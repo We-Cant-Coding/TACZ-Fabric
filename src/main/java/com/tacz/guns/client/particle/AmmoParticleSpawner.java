@@ -37,19 +37,19 @@ public class AmmoParticleSpawner {
     }
 
     private static void spawnParticle(EntityKineticBullet bullet, AmmoParticle particle) {
-        ParticleEffect particleOptions = particle.getParticleOptions();
-        if (particleOptions == null) {
+        ParticleEffect particleEffect = particle.getParticleOptions();
+        if (particleEffect == null) {
             return;
         }
         int count = particle.getCount();
         Vector3f delta = particle.getDelta();
         float particleSpeed = particle.getSpeed();
-        ParticleManager particleEngine = MinecraftClient.getInstance().particleManager;
+        ParticleManager particleManager = MinecraftClient.getInstance().particleManager;
         if (count == 0) {
             double xSpeed = particleSpeed * delta.x();
             double ySpeed = particleSpeed * delta.y();
             double zSpeed = particleSpeed * delta.z();
-            Particle result = particleEngine.addParticle(particleOptions, bullet.getX(), bullet.getY(), bullet.getZ(), xSpeed, ySpeed, zSpeed);
+            Particle result = particleManager.addParticle(particleEffect, bullet.getX(), bullet.getY(), bullet.getZ(), xSpeed, ySpeed, zSpeed);
             if (result != null) {
                 result.setMaxAge(particle.getLifeTime());
             }
@@ -57,12 +57,12 @@ public class AmmoParticleSpawner {
             Random random = bullet.getRandom();
             Entity owner = bullet.getOwner();
             for (int i = 0; i < count; ++i) {
-                createParticle(bullet, particle, random, delta, particleSpeed, owner, particleEngine, particleOptions);
+                createParticle(bullet, particle, random, delta, particleSpeed, owner, particleManager, particleEffect);
             }
         }
     }
 
-    private static void createParticle(EntityKineticBullet bullet, AmmoParticle particle, Random random, Vector3f delta, float particleSpeed, Entity owner, ParticleManager particleEngine, ParticleEffect particleOptions) {
+    private static void createParticle(EntityKineticBullet bullet, AmmoParticle particle, Random random, Vector3f delta, float particleSpeed, Entity owner, ParticleManager particleManager, ParticleEffect particleEffect) {
         Vec3d deltaMovement = bullet.getVelocity();
         double deltaMovementRandom = random.nextDouble();
         double offsetX = random.nextGaussian() * delta.x() + deltaMovementRandom * deltaMovement.x;
@@ -78,7 +78,7 @@ public class AmmoParticleSpawner {
 
         // 如果太贴近发射者，不进行粒子生成
         if (owner == null || owner.squaredDistanceTo(posX, posY, posZ) > 3 * 3) {
-            Particle result = particleEngine.addParticle(particleOptions, posX, posY, posZ, xSpeed, ySpeed, zSpeed);
+            Particle result = particleManager.addParticle(particleEffect, posX, posY, posZ, xSpeed, ySpeed, zSpeed);
             if (result != null) {
                 result.setMaxAge(particle.getLifeTime());
             }

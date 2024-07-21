@@ -4,6 +4,7 @@ import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.item.IAmmo;
 import com.tacz.guns.api.item.builder.AmmoItemBuilder;
 import com.tacz.guns.api.item.nbt.AmmoItemDataAccessor;
+import com.tacz.guns.api.mixin.IItem;
 import com.tacz.guns.client.resource.ClientAssetManager;
 import com.tacz.guns.client.resource.index.ClientAmmoIndex;
 import com.tacz.guns.client.resource.pojo.PackInfo;
@@ -25,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class AmmoItem extends Item implements AmmoItemDataAccessor {
+public class AmmoItem extends Item implements AmmoItemDataAccessor, IItem {
     public AmmoItem() {
         super(new Settings().maxCount(1));
     }

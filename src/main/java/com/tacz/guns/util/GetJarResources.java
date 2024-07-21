@@ -2,15 +2,18 @@ package com.tacz.guns.util;
 
 import com.tacz.guns.GunMod;
 import org.apache.commons.io.FileUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 public final class GetJarResources {
@@ -81,27 +84,37 @@ public final class GetJarResources {
 
     private static void copyFolder(URI sourceURI, Path targetPath) throws IOException {
         if (Files.isDirectory(targetPath)) {
-            // Delete the original folder for a forced overwrite effect
+            // 删掉原文件夹，达到强行覆盖的效果
             deleteFiles(targetPath);
         }
-        // Use Files.walk() to iterate through the contents of a folder
+        // 使用 Files.walk() 遍历文件夹中的所有内容
         try (Stream<Path> stream = Files.walk(Paths.get(sourceURI), Integer.MAX_VALUE)) {
             stream.forEach(source -> {
-                // Generate target paths
-                Path target = targetPath.resolve(sourceURI.relativize(source.toUri()).toString());
+                Path target = getTargetPath(sourceURI, targetPath, source);
                 try {
-                    // Copying files or folders
+                    // 复制文件或文件夹
                     if (Files.isDirectory(source)) {
                         Files.createDirectories(target);
                     } else {
                         Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
                     }
                 } catch (IOException e) {
-                    // Handling of exceptions, e.g. permissions issues, etc.
+                    // 处理异常，例如权限问题等
                     e.printStackTrace();
                 }
             });
         }
+    }
+
+    private static @NotNull Path getTargetPath(URI sourceURI, Path targetPath, Path source) {
+        var relativize = sourceURI.relativize(source.toUri()).toString();
+        // 生成目标路径
+        if (Objects.equals(sourceURI.getScheme(), "jar")) {
+            URI pSourceURI = URI.create(sourceURI.getSchemeSpecificPart().replace(" ", "%20"));
+            URI pSource = URI.create(source.toUri().getSchemeSpecificPart().replace(" ", "%20"));
+            relativize = pSourceURI.relativize(pSource).toString();
+        }
+        return targetPath.resolve(relativize);
     }
 
     private static void deleteFiles(Path targetPath) throws IOException {

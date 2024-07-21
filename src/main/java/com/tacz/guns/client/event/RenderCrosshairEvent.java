@@ -37,7 +37,7 @@ public class RenderCrosshairEvent implements RenderTickEvent.Callback {
     /**
      * 当玩家手上拿着枪时，播放特定动画、或瞄准时需要隐藏准心
      */
-    public static void onRenderOverlay(DrawContext context, AtomicBoolean canceled) {
+    public static void onRenderOverlay(DrawContext context) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player == null) {
             return;
@@ -46,8 +46,6 @@ public class RenderCrosshairEvent implements RenderTickEvent.Callback {
             return;
         }
 
-        // Fully replace it with your own
-        canceled.set(true);
         // hit the display
         renderHitMarker(context);
         // Cancel center rendering while changing rounds
@@ -121,6 +119,7 @@ public class RenderCrosshairEvent implements RenderTickEvent.Callback {
         float x = width / 2f - 8;
         float y = height / 2f - 8;
         graphics.drawTexture(location, (int) x, (int) y, 0, 0, 16, 16, 16, 16);
+        RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
     }
 
     private static void renderHitMarker(DrawContext graphics) {
@@ -149,16 +148,22 @@ public class RenderCrosshairEvent implements RenderTickEvent.Callback {
 
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
+
+        // 색상 설정
         if (remainHeadShotTime > KEEP_TIME) {
             RenderSystem.setShaderColor(1F, 1F, 1F, 1 - fadeTime / KEEP_TIME);
         } else {
             RenderSystem.setShaderColor(1F, 0, 0, 1 - fadeTime / KEEP_TIME);
         }
 
+        // 텍스처 그리기
         graphics.drawTexture(HIT_ICON, (int) (x - offset), (int) (y - offset), 0, 0, 8, 8, 16, 16);
         graphics.drawTexture(HIT_ICON, (int) (x + 8 + offset), (int) (y - offset), 8, 0, 8, 8, 16, 16);
         graphics.drawTexture(HIT_ICON, (int) (x - offset), (int) (y + 8 + offset), 0, 8, 8, 8, 16, 16);
         graphics.drawTexture(HIT_ICON, (int) (x + 8 + offset), (int) (y + 8 + offset), 8, 8, 8, 8, 16, 16);
+
+        // 색상 리셋
+        RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
     }
 
     public static void markHitTimestamp() {
