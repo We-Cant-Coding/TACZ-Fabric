@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.5-SNAPSHOT'
+	id 'fabric-loom' version '1.6-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -111,6 +111,7 @@ dependencies {
 	modCompileOnly "org.embeddedt:embeddium-1.20.1:${project.embeddedt_version}"
 	modCompileOnly "maven.modrinth:iris:${project.iris_version}"
 	modCompileOnly "maven.modrinth:carry-on:${project.carry_on_version}"
+	modCompileOnly "maven.modrinth:immediatelyfast:${project.immediatelyfast_version}"
 
 	// Apache Commons Math library for performing some interpolation operations
 	include implementation(minecraftLibraries('org.apache.commons:commons-math3:3.6.1'))
