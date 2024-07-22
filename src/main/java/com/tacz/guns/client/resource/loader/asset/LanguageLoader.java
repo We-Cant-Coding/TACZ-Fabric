@@ -5,6 +5,7 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import com.tacz.guns.GunMod;
 import com.tacz.guns.client.resource.ClientAssetManager;
+import com.tacz.guns.util.TacPathVisitor;
 import net.minecraft.util.Language;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
@@ -27,7 +28,7 @@ public final class LanguageLoader {
     public static boolean load(ZipFile zipFile, String zipPath) {
         Matcher matcher = LANG_PATTERN.matcher(zipPath);
         if (matcher.find()) {
-            String languageCode = matcher.group(1);
+            String languageCode = TacPathVisitor.checkNamespace(matcher.group(1));
             ZipEntry entry = zipFile.getEntry(zipPath);
             if (entry == null) {
                 GunMod.LOGGER.warn(MARKER, "{} file don't exist", zipPath);

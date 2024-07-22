@@ -1,5 +1,6 @@
 package com.tacz.guns.util;
 
+import com.tacz.guns.GunMod;
 import net.minecraft.util.Identifier;
 
 import java.io.File;
@@ -8,6 +9,7 @@ import java.nio.file.FileVisitResult;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 
 public class TacPathVisitor extends SimpleFileVisitor<Path> {
@@ -27,10 +29,17 @@ public class TacPathVisitor extends SimpleFileVisitor<Path> {
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         if (file.toFile().getName().endsWith(suffix)) {
             String path = PathHandler.getPath(root.toPath(), file, suffix);
-            Identifier id = new Identifier(namespace, path);
+            Identifier id = new Identifier(checkNamespace(namespace), path);
             consumer.accept(id, file);
         }
 
         return FileVisitResult.CONTINUE;
+    }
+
+    public static String checkNamespace(String namespace) {
+        if (Objects.equals(namespace, GunMod.ORIGINAL_MOD_ID)) {
+            return GunMod.MOD_ID;
+        }
+        return namespace;
     }
 }

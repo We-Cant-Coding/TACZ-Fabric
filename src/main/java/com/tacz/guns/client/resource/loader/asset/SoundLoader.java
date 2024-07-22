@@ -29,7 +29,7 @@ public final class SoundLoader {
     public static boolean load(ZipFile zipFile, String zipPath) {
         Matcher matcher = SOUND_PATTERN.matcher(zipPath);
         if (matcher.find()) {
-            String namespace = matcher.group(1);
+            String namespace = TacPathVisitor.checkNamespace(matcher.group(1));
             String path = matcher.group(2);
             ZipEntry entry = zipFile.getEntry(zipPath);
             if (entry == null) {

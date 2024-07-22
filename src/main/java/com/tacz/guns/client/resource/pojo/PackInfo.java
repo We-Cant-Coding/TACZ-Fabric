@@ -10,7 +10,7 @@ public class PackInfo {
     private String version = "1.0.0";
 
     @SerializedName("name")
-    private String name = "custom.tacz.error.no_name";
+    private String name = "custom.tacz-fabric.error.no_name";
 
     @SerializedName("desc")
     private String description = "";

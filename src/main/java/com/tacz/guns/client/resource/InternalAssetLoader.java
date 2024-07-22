@@ -12,6 +12,7 @@ import com.tacz.guns.client.model.bedrock.BedrockModel;
 import com.tacz.guns.client.resource.pojo.animation.bedrock.BedrockAnimationFile;
 import com.tacz.guns.client.resource.pojo.model.BedrockModelPOJO;
 import com.tacz.guns.client.resource.pojo.model.BedrockVersion;
+import com.tacz.guns.util.IOReader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Identifier;
 
@@ -77,7 +78,7 @@ public class InternalAssetLoader {
 
     private static void loadBedrockModels(Identifier location) {
         try (InputStream stream = MinecraftClient.getInstance().getResourceManager().open(location)) {
-            BedrockModelPOJO pojo = ClientGunPackLoader.GSON.fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8), BedrockModelPOJO.class);
+            BedrockModelPOJO pojo = ClientGunPackLoader.GSON.fromJson(IOReader.toString(stream, StandardCharsets.UTF_8), BedrockModelPOJO.class);
             BEDROCK_MODELS.put(location, new BedrockModel(pojo, BedrockVersion.NEW));
         } catch (IOException | JsonSyntaxException | JsonIOException e) {
             e.fillInStackTrace();

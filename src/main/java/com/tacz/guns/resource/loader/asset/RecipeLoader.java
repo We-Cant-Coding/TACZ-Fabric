@@ -9,9 +9,9 @@ import com.tacz.guns.resource.CommonGunPackLoader;
 import com.tacz.guns.resource.network.CommonGunPackNetwork;
 import com.tacz.guns.resource.network.DataType;
 import com.tacz.guns.resource.pojo.data.recipe.TableRecipe;
+import com.tacz.guns.util.IOReader;
 import com.tacz.guns.util.TacPathVisitor;
 import net.minecraft.util.Identifier;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
@@ -33,7 +33,7 @@ public final class RecipeLoader {
     public static boolean load(ZipFile zipFile, String zipPath) {
         Matcher matcher = RECIPES_PATTERN.matcher(zipPath);
         if (matcher.find()) {
-            String namespace = matcher.group(1);
+            String namespace = TacPathVisitor.checkNamespace(matcher.group(1));
             String path = matcher.group(2);
             ZipEntry entry = zipFile.getEntry(zipPath);
             if (entry == null) {
@@ -42,7 +42,7 @@ public final class RecipeLoader {
             }
             try (InputStream stream = zipFile.getInputStream(entry)) {
                 Identifier registryName = new Identifier(namespace, path);
-                String json = IOUtils.toString(stream, StandardCharsets.UTF_8);
+                String json = IOReader.toString(stream, StandardCharsets.UTF_8);
                 loadFromJsonString(registryName, json);
                 CommonGunPackNetwork.addData(DataType.RECIPES, registryName, json);
                 return true;
@@ -59,7 +59,7 @@ public final class RecipeLoader {
         if (Files.isDirectory(filePath)) {
             TacPathVisitor visitor = new TacPathVisitor(filePath.toFile(), root.getName(), ".json", (id, file) -> {
                 try (InputStream stream = Files.newInputStream(file)) {
-                    String json = IOUtils.toString(stream, StandardCharsets.UTF_8);
+                    String json = IOReader.toString(stream, StandardCharsets.UTF_8);
                     loadFromJsonString(id, json);
                     CommonGunPackNetwork.addData(DataType.RECIPES, id, json);
                 } catch (IOException | JsonSyntaxException | JsonIOException exception) {

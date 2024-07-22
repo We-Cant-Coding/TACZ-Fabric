@@ -24,15 +24,17 @@ public final class TextureLoader {
     public static boolean load(ZipFile zipFile, String zipPath) {
         Matcher matcher = TEXTURE_PATTERN.matcher(zipPath);
         if (matcher.find()) {
-            String namespace = matcher.group(1);
+            String ori_namespace = matcher.group(1);
+            String namespace = TacPathVisitor.checkNamespace(ori_namespace);
             String path = matcher.group(2);
             ZipEntry entry = zipFile.getEntry(zipPath);
             if (entry == null) {
                 GunMod.LOGGER.warn(MARKER, "{} file don't exist", zipPath);
                 return false;
             }
+            Identifier ori_id = new Identifier(ori_namespace, path);
             Identifier id = new Identifier(namespace, path);
-            ZipPackTexture zipPackTexture = new ZipPackTexture(id, zipFile.getName());
+            ZipPackTexture zipPackTexture = new ZipPackTexture(ori_id, zipFile.getName());
             MinecraftClient.getInstance().getTextureManager().registerTexture(id, zipPackTexture);
             return true;
         }

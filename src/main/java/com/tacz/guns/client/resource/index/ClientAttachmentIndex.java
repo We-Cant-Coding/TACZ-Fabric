@@ -96,7 +96,7 @@ public class ClientAttachmentIndex {
     private static void checkName(AttachmentIndexPOJO indexPOJO, ClientAttachmentIndex index) {
         index.name = indexPOJO.getName();
         if (StringUtils.isBlank(index.name)) {
-            index.name = "custom.tacz.error.no_name";
+            index.name = "custom.tacz-fabric.error.no_name";
         }
     }
 

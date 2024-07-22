@@ -5,6 +5,8 @@ import com.google.gson.JsonSyntaxException;
 import com.tacz.guns.GunMod;
 import com.tacz.guns.client.resource.ClientAssetManager;
 import com.tacz.guns.client.resource.pojo.PackInfo;
+import com.tacz.guns.util.IOReader;
+import com.tacz.guns.util.TacPathVisitor;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
@@ -26,18 +28,17 @@ public final class PackInfoLoader {
     private static final Marker MARKER = MarkerFactory.getMarker("CreativeTabLoader");
     private static final Pattern PACK_INFO_PATTERN = Pattern.compile("^(\\w+)/pack\\.json$");
 
-    @SuppressWarnings("UnstableApiUsage")
     public static boolean load(ZipFile zipFile, String zipPath) {
         Matcher matcher = PACK_INFO_PATTERN.matcher(zipPath);
         if (matcher.find()) {
-            String namespace = matcher.group(1);
+            String namespace = TacPathVisitor.checkNamespace(matcher.group(1));
             ZipEntry entry = zipFile.getEntry(zipPath);
             if (entry == null) {
                 GunMod.LOGGER.warn(MARKER, "{} file don't exist", zipPath);
                 return false;
             }
             try (InputStream inputStream = zipFile.getInputStream(entry)) {
-                PackInfo packInfo = GSON.fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8), PackInfo.class);
+                PackInfo packInfo = GSON.fromJson(IOReader.toString(inputStream, StandardCharsets.UTF_8), PackInfo.class);
                 ClientAssetManager.INSTANCE.putPackInfo(namespace, packInfo);
                 return true;
             } catch (IOException | JsonSyntaxException | JsonIOException exception) {
@@ -48,12 +49,11 @@ public final class PackInfoLoader {
         return false;
     }
 
-    @SuppressWarnings("UnstableApiUsage")
     public static void load(File root) {
         Path packInfoFilePath = root.toPath().resolve("pack.json");
         if (Files.isRegularFile(packInfoFilePath)) {
             try (InputStream stream = Files.newInputStream(packInfoFilePath)) {
-                PackInfo packInfo = GSON.fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8), PackInfo.class);
+                PackInfo packInfo = GSON.fromJson(IOReader.toString(stream, StandardCharsets.UTF_8), PackInfo.class);
                 ClientAssetManager.INSTANCE.putPackInfo(root.getName(), packInfo);
             } catch (IOException | JsonSyntaxException | JsonIOException exception) {
                 GunMod.LOGGER.warn(MARKER, "Failed to read info json: {}", packInfoFilePath);

@@ -29,7 +29,7 @@ public class ClientAttachmentSkinIndex {
     private static void checkName(AttachmentSkin skinPojo, ClientAttachmentSkinIndex index) {
         index.name = skinPojo.getName();
         if (StringUtils.isBlank(index.name)) {
-            index.name = "custom.tacz.error.no_name";
+            index.name = "custom.tacz-fabric.error.no_name";
         }
     }
 

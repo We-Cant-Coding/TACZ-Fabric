@@ -5,6 +5,7 @@ import com.google.gson.JsonSyntaxException;
 import com.tacz.guns.GunMod;
 import com.tacz.guns.client.resource.ClientAssetManager;
 import com.tacz.guns.client.resource.pojo.model.BedrockModelPOJO;
+import com.tacz.guns.util.IOReader;
 import com.tacz.guns.util.TacPathVisitor;
 import net.minecraft.util.Identifier;
 import org.slf4j.Marker;
@@ -31,7 +32,7 @@ public final class BedrockModelLoader {
     public static boolean load(ZipFile zipFile, String zipPath) {
         Matcher matcher = MODEL_PATTERN.matcher(zipPath);
         if (matcher.find()) {
-            String namespace = matcher.group(1);
+            String namespace = TacPathVisitor.checkNamespace(matcher.group(1));
             String path = matcher.group(2);
             ZipEntry entry = zipFile.getEntry(zipPath);
             if (entry == null) {
@@ -40,7 +41,7 @@ public final class BedrockModelLoader {
             }
             try (InputStream modelFileStream = zipFile.getInputStream(entry)) {
                 Identifier registryName = new Identifier(namespace, path);
-                BedrockModelPOJO modelPOJO = GSON.fromJson(new InputStreamReader(modelFileStream, StandardCharsets.UTF_8), BedrockModelPOJO.class);
+                BedrockModelPOJO modelPOJO = GSON.fromJson(IOReader.toString(modelFileStream, StandardCharsets.UTF_8), BedrockModelPOJO.class);
                 ClientAssetManager.INSTANCE.putModel(registryName, modelPOJO);
                 return true;
             } catch (IOException | JsonSyntaxException | JsonIOException exception) {
@@ -56,7 +57,7 @@ public final class BedrockModelLoader {
         if (Files.isDirectory(modelPath)) {
             TacPathVisitor visitor = new TacPathVisitor(modelPath.toFile(), root.getName(), ".json", (id, file) -> {
                 try (InputStream modelFileStream = Files.newInputStream(file)) {
-                    BedrockModelPOJO modelPOJO = GSON.fromJson(new InputStreamReader(modelFileStream, StandardCharsets.UTF_8), BedrockModelPOJO.class);
+                    BedrockModelPOJO modelPOJO = GSON.fromJson(IOReader.toString(modelFileStream, StandardCharsets.UTF_8), BedrockModelPOJO.class);
                     ClientAssetManager.INSTANCE.putModel(id, modelPOJO);
                 } catch (IOException | JsonSyntaxException | JsonIOException exception) {
                     GunMod.LOGGER.warn(MARKER, "Failed to read model file: {}", file);

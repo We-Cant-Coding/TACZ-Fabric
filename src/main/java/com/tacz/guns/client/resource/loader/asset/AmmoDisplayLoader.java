@@ -6,6 +6,7 @@ import com.tacz.guns.GunMod;
 import com.tacz.guns.client.resource.ClientAssetManager;
 import com.tacz.guns.client.resource.ClientGunPackLoader;
 import com.tacz.guns.client.resource.pojo.display.ammo.AmmoDisplay;
+import com.tacz.guns.util.IOReader;
 import com.tacz.guns.util.TacPathVisitor;
 import net.minecraft.util.Identifier;
 import org.slf4j.Marker;
@@ -30,7 +31,7 @@ public final class AmmoDisplayLoader {
     public static boolean load(ZipFile zipFile, String zipPath) {
         Matcher matcher = DISPLAY_PATTERN.matcher(zipPath);
         if (matcher.find()) {
-            String namespace = matcher.group(1);
+            String namespace = TacPathVisitor.checkNamespace(matcher.group(1));
             String path = matcher.group(2);
             ZipEntry entry = zipFile.getEntry(zipPath);
             if (entry == null) {
@@ -39,7 +40,8 @@ public final class AmmoDisplayLoader {
             }
             try (InputStream stream = zipFile.getInputStream(entry)) {
                 Identifier registryName = new Identifier(namespace, path);
-                AmmoDisplay display = ClientGunPackLoader.GSON.fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8), AmmoDisplay.class);
+
+                AmmoDisplay display = ClientGunPackLoader.GSON.fromJson(IOReader.toString(stream, StandardCharsets.UTF_8), AmmoDisplay.class);
                 ClientAssetManager.INSTANCE.putAmmoDisplay(registryName, display);
                 return true;
             } catch (IOException | JsonSyntaxException | JsonIOException exception) {
@@ -55,7 +57,7 @@ public final class AmmoDisplayLoader {
         if (Files.isDirectory(displayPath)) {
             TacPathVisitor visitor = new TacPathVisitor(displayPath.toFile(), root.getName(), ".json", (id, file) -> {
                 try (InputStream stream = Files.newInputStream(file)) {
-                    AmmoDisplay display = ClientGunPackLoader.GSON.fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8), AmmoDisplay.class);
+                    AmmoDisplay display = ClientGunPackLoader.GSON.fromJson(IOReader.toString(stream, StandardCharsets.UTF_8), AmmoDisplay.class);
                     ClientAssetManager.INSTANCE.putAmmoDisplay(id, display);
                 } catch (IOException | JsonSyntaxException | JsonIOException exception) {
                     GunMod.LOGGER.warn(MARKER, "Failed to read display file: {}", file);
