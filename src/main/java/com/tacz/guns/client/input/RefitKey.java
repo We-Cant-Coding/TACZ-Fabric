@@ -2,7 +2,7 @@ package com.tacz.guns.client.input;
 
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.client.gui.GunRefitScreen;
-import com.tacz.guns.forge.InputEvent;
+import com.tacz.guns.api.client.event.InputEvent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -14,14 +14,13 @@ import org.lwjgl.glfw.GLFW;
 import static com.tacz.guns.util.InputExtraCheck.isInGame;
 
 @Environment(EnvType.CLIENT)
-public class RefitKey implements InputEvent.KeyCallback {
+public class RefitKey {
     public static final KeyBinding REFIT_KEY = new KeyBinding("key.tacz-fabric.refit.desc",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_Z,
             "key.category.tacz");
 
-    @Override
-    public void onKey(InputEvent.Key event) {
+    public static void onRefitPress(InputEvent.Key event) {
         if (event.getAction() == GLFW.GLFW_PRESS && REFIT_KEY.matchesKey(event.getKey(), event.getScanCode())) {
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
             if (player == null || player.isSpectator()) {

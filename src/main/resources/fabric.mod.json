@@ -37,7 +37,6 @@
 		"java": ">=17",
 		"fabric-api": "*",
 		"forgeconfigapiport": ">=8.0.0",
-		"cloth-config": ">=11.1.118",
 		"cardinal-components-base": ">=5.2.2",
 		"cardinal-components-entity": ">=5.2.2",
 		"porting_lib_core": ">=2.3.4+1.20.1",

@@ -1,9 +1,8 @@
 package com.tacz.guns.client.event;
 
-import com.tacz.guns.GunMod;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.client.input.InteractKey;
-import com.tacz.guns.forge.InputEvent;
+import com.tacz.guns.api.client.event.InputEvent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.decoration.ItemFrameEntity;

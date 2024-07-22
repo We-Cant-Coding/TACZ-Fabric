@@ -1,19 +1,14 @@
 package com.tacz.guns.inventory;
 
-import com.tacz.guns.GunMod;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.crafting.GunSmithTableIngredient;
 import com.tacz.guns.network.NetworkHandler;
 import com.tacz.guns.network.message.ServerMessageCraft;
 import it.unimi.dsi.fastutil.ints.Int2IntArrayMap;
-import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
-import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
@@ -40,7 +35,7 @@ public class GunSmithTableMenu extends ScreenHandler {
     }
 
     public void doCraft(Identifier recipeId, PlayerEntity player) {
-        TimelessAPI.getRecipe(recipeId).ifPresent(recipe -> player.tacz$getItemHandlerCapability(null).ifPresent(handler -> {
+        TimelessAPI.getRecipe(recipeId).ifPresent(recipe -> player.tacz$getItemHandler(null).ifPresent(handler -> {
             Int2IntArrayMap recordCount = new Int2IntArrayMap();
             List<GunSmithTableIngredient> ingredients = recipe.getInputs();
 

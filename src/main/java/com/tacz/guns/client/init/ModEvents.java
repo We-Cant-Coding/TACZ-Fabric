@@ -1,9 +1,6 @@
 package com.tacz.guns.client.init;
 
-import com.tacz.guns.api.client.event.BeforeRenderHandEvent;
-import com.tacz.guns.api.client.event.RenderItemInHandBobEvent;
-import com.tacz.guns.api.client.event.SwapItemWithOffHand;
-import com.tacz.guns.api.event.client.RenderTickEvent;
+import com.tacz.guns.api.client.event.*;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.EntityKillByGunEvent;
 import com.tacz.guns.api.event.common.GunFireEvent;
@@ -13,79 +10,64 @@ import com.tacz.guns.client.gui.overlay.GunHudOverlay;
 import com.tacz.guns.client.gui.overlay.InteractKeyTextOverlay;
 import com.tacz.guns.client.gui.overlay.KillAmountOverlay;
 import com.tacz.guns.client.input.*;
-import com.tacz.guns.forge.InputEvent;
-import com.tacz.guns.forge.RenderGuiOverlayEvent;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 
 public class ModEvents {
     public static void init() {
-        var cameraSetupEvent = new CameraSetupEvent();
-        GunFireEvent.EVENT.register(cameraSetupEvent);
-        BeforeRenderHandEvent.EVENT.register(cameraSetupEvent);
-
-        var clientHitMark = new ClientHitMark();
-        EntityHurtByGunEvent.EVENT.register(clientHitMark);
-        EntityKillByGunEvent.EVENT.register(clientHitMark);
-
-        var firstPersonRenderGunEvent = new FirstPersonRenderGunEvent();
-        GunFireEvent.EVENT.register(firstPersonRenderGunEvent);
-        RenderItemInHandBobEvent.BobView.EVENT.register(firstPersonRenderGunEvent);
-
-        EntityHurtByGunEvent.EVENT.register(new PlayerHurtByGunEvent());
-
         HudRenderCallback.EVENT.register((context, tickDelta) -> {
             GunHudOverlay.onHudRender(context);
             InteractKeyTextOverlay.onHudRender(context);
             KillAmountOverlay.onHudRender(context);
         });
 
-        RenderTickEvent.EVENT.register(new RenderCrosshairEvent());
         RenderTickEvent.EVENT.register(RefitTransform::tickInterpolation);
 
-        var inventoryEvent = new InventoryEvent();
-        SwapItemWithOffHand.EVENT.register(inventoryEvent);
-        ClientTickEvents.START_CLIENT_TICK.register(inventoryEvent);
-        ClientTickEvents.END_CLIENT_TICK.register(inventoryEvent);
+        ViewportEvent.ComputeCameraAngles.EVENT.register(CameraSetupEvent::applyLevelCameraAnimation);
+        BeforeRenderHandEvent.EVENT.register(CameraSetupEvent::onBeforeRenderHand);
+        ViewportEvent.ComputeFov.EVENT.register(CameraSetupEvent::applyScopeMagnification);
+        ViewportEvent.ComputeFov.EVENT.register(CameraSetupEvent::applyGunModelFovModifying);
+        GunFireEvent.EVENT.register(CameraSetupEvent::initialCameraRecoil);
+        ViewportEvent.ComputeCameraAngles.EVENT.register(CameraSetupEvent::applyCameraRecoil);
 
-        var tickAnimationEvent = new TickAnimationEvent();
-        ClientTickEvents.START_CLIENT_TICK.register(tickAnimationEvent);
-        ClientTickEvents.END_CLIENT_TICK.register(tickAnimationEvent);
+        EntityHurtByGunEvent.EVENT.register(ClientHitMark::onEntityHurtByGun);
+        EntityKillByGunEvent.EVENT.register(ClientHitMark::onEntityKillByGun);
 
-        var aimKey = new AimKey();
-        InputEvent.MouseButton.Post.EVENT.register(aimKey);
-        ClientTickEvents.START_CLIENT_TICK.register(aimKey);
+        InputEvent.InteractionKeyMappingTriggered.EVENT.register(ClientPreventGunClick::onClickInput);
 
-        var configKey = new ConfigKey();
-        InputEvent.Key.EVENT.register(configKey);
+        RenderHandEvent.EVENT.register(FirstPersonRenderGunEvent::onRenderHand);
+        RenderItemInHandBobEvent.BobView.EVENT.register(FirstPersonRenderGunEvent::cancelItemInHandViewBobbing);
+        GunFireEvent.EVENT.register(FirstPersonRenderGunEvent::onGunFire);
 
-        var fireSelectKey = new FireSelectKey();
-        InputEvent.Key.EVENT.register(fireSelectKey);
-        InputEvent.MouseButton.Post.EVENT.register(fireSelectKey);
+        ClientTickEvents.START_CLIENT_TICK.register(InventoryEvent::onPlayerChangeSelect);
+        ClientTickEvents.END_CLIENT_TICK.register(InventoryEvent::onPlayerChangeSelect);
+        SwapItemWithOffHand.EVENT.register(InventoryEvent::onSwapItemWithOffHand);
 
-        var inspectKey = new InspectKey();
-        InputEvent.Key.EVENT.register(inspectKey);
+        EntityHurtByGunEvent.EVENT.register(PlayerHurtByGunEvent::onPlayerHurtByGun);
 
-        var interactKey = new InteractKey();
-        InputEvent.Key.EVENT.register(interactKey);
-        InputEvent.MouseButton.Post.EVENT.register(interactKey);
+        RenderTickEvent.EVENT.register(RenderCrosshairEvent::onRenderTick);
 
-        var meleeKey = new MeleeKey();
-        InputEvent.Key.EVENT.register(meleeKey);
-        InputEvent.MouseButton.Post.EVENT.register(meleeKey);
+        ClientTickEvents.START_CLIENT_TICK.register(TickAnimationEvent::tickAnimation);
+        ClientTickEvents.END_CLIENT_TICK.register(TickAnimationEvent::tickAnimation);
 
-        var refitKey = new RefitKey();
-        InputEvent.Key.EVENT.register(refitKey);
+        // keybinding
+        ClientTickEvents.START_CLIENT_TICK.register(AimKey::cancelAim);
+        ClientTickEvents.START_CLIENT_TICK.register(ShootKey::autoShoot);
 
-        var reloadKey = new ReloadKey();
-        InputEvent.Key.EVENT.register(reloadKey);
+        InputEvent.Key.EVENT.register(ConfigKey::onOpenConfig);
+        InputEvent.Key.EVENT.register(FireSelectKey::onFireSelectKeyPress);
+        InputEvent.Key.EVENT.register(InspectKey::onInspectPress);
+        InputEvent.Key.EVENT.register(InteractKey::onInteractKeyPress);
+        InputEvent.Key.EVENT.register(MeleeKey::onMeleeKeyPress);
+        InputEvent.Key.EVENT.register(RefitKey::onRefitPress);
+        InputEvent.Key.EVENT.register(ReloadKey::onReloadPress);
+        InputEvent.Key.EVENT.register(ZoomKey::onZoomKeyPress);
 
-        var shootKey = new ShootKey();
-        ClientTickEvents.START_CLIENT_TICK.register(shootKey);
-        InputEvent.MouseButton.Post.EVENT.register(shootKey);
-
-        var zoomKey = new ZoomKey();
-        InputEvent.Key.EVENT.register(zoomKey);
-        InputEvent.MouseButton.Post.EVENT.register(zoomKey);
+        InputEvent.MouseButton.Post.EVENT.register(AimKey::onAimPress);
+        InputEvent.MouseButton.Post.EVENT.register(FireSelectKey::onFireSelectMousePress);
+        InputEvent.MouseButton.Post.EVENT.register(InteractKey::onInteractMousePress);
+        InputEvent.MouseButton.Post.EVENT.register(MeleeKey::onMeleeMousePress);
+        InputEvent.MouseButton.Post.EVENT.register(ShootKey::semiShoot);
+        InputEvent.MouseButton.Post.EVENT.register(ZoomKey::onZoomMousePress);
     }
 }

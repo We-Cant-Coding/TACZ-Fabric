@@ -8,7 +8,6 @@ import com.tacz.guns.init.*;
 import com.tacz.guns.resource.DedicatedServerReloadManager;
 import com.tacz.guns.util.EnvironmentUtil;
 import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
-import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
 import net.fabricmc.api.ModInitializer;
 
 import net.minecraftforge.fml.config.ModConfig;

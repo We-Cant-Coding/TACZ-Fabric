@@ -4,10 +4,10 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.tacz.guns.GunMod;
 import com.tacz.guns.api.TimelessAPI;
+import com.tacz.guns.api.client.event.RenderTickEvent;
 import com.tacz.guns.api.client.gameplay.IClientPlayerGunOperator;
 import com.tacz.guns.api.entity.IGunOperator;
 import com.tacz.guns.api.entity.ReloadState;
-import com.tacz.guns.api.event.client.RenderTickEvent;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.client.animation.statemachine.GunAnimationStateMachine;
 import com.tacz.guns.client.gui.GunRefitScreen;
@@ -19,14 +19,12 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.client.option.GameOptions;
+import net.minecraft.client.util.Window;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.GameMode;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
-public class RenderCrosshairEvent implements RenderTickEvent.Callback {
+public class RenderCrosshairEvent {
     private static final Identifier HIT_ICON = new Identifier(GunMod.MOD_ID, "textures/crosshair/hit/hit_marker.png");
     private static final long KEEP_TIME = 300;
     private static boolean isRefitScreen = false;
@@ -37,7 +35,7 @@ public class RenderCrosshairEvent implements RenderTickEvent.Callback {
     /**
      * 当玩家手上拿着枪时，播放特定动画、或瞄准时需要隐藏准心
      */
-    public static void onRenderOverlay(DrawContext context) {
+    public static void onRenderOverlay(DrawContext context, Window window) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player == null) {
             return;
@@ -47,7 +45,7 @@ public class RenderCrosshairEvent implements RenderTickEvent.Callback {
         }
 
         // hit the display
-        renderHitMarker(context);
+        renderHitMarker(context, window);
         // Cancel center rendering while changing rounds
         ReloadState reloadState = IGunOperator.fromLivingEntity(player).getSynReloadState();
         if (reloadState.getStateType().isReloading()) {
@@ -80,18 +78,17 @@ public class RenderCrosshairEvent implements RenderTickEvent.Callback {
 
             GunAnimationStateMachine animationStateMachine = gunIndex.getAnimationStateMachine();
             if (!animationStateMachine.shouldHideCrossHair()) {
-                renderCrosshair(context);
+                renderCrosshair(context, window);
             }
         });
     }
 
-    @Override
-    public void onRenderTick(RenderTickEvent event) {
+    public static void onRenderTick(RenderTickEvent event) {
         // 奇迹的是，RenderGameOverlayEvent.PreLayer 事件中，screen 还未被赋值...
         isRefitScreen = event.getClient().currentScreen instanceof GunRefitScreen;
     }
 
-    private static void renderCrosshair(DrawContext graphics) {
+    private static void renderCrosshair(DrawContext graphics, Window window) {
         GameOptions options = MinecraftClient.getInstance().options;
         // 越肩视角可以强制显示准星
         boolean shoulderSurfingForceShow = ShoulderSurfingCompat.showCrosshair();
@@ -108,8 +105,8 @@ public class RenderCrosshairEvent implements RenderTickEvent.Callback {
         if (gameMode.getCurrentGameMode() == GameMode.SPECTATOR) {
             return;
         }
-        int width = graphics.getScaledWindowWidth();
-        int height = graphics.getScaledWindowHeight();
+        int width = window.getScaledWidth();
+        int height = window.getScaledHeight();
 
         Identifier location = CrosshairType.getTextureLocation(RenderConfig.CROSSHAIR_TYPE.get());
 
@@ -122,7 +119,7 @@ public class RenderCrosshairEvent implements RenderTickEvent.Callback {
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
     }
 
-    private static void renderHitMarker(DrawContext graphics) {
+    private static void renderHitMarker(DrawContext graphics, Window window) {
         long remainHitTime = System.currentTimeMillis() - hitTimestamp;
         long remainKillTime = System.currentTimeMillis() - killTimestamp;
         long remainHeadShotTime = System.currentTimeMillis() - headShotTimestamp;
@@ -141,8 +138,8 @@ public class RenderCrosshairEvent implements RenderTickEvent.Callback {
             fadeTime = remainKillTime;
         }
 
-        int width = graphics.getScaledWindowWidth();
-        int height = graphics.getScaledWindowHeight();
+        int width = window.getScaledWidth();
+        int height = window.getScaledHeight();
         float x = width / 2f - 8;
         float y = height / 2f - 8;
 

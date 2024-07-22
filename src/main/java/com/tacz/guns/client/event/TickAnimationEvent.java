@@ -5,23 +5,12 @@ import com.tacz.guns.api.client.gameplay.IClientPlayerGunOperator;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.client.animation.statemachine.GunAnimationStateMachine;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 
-public class TickAnimationEvent implements ClientTickEvents.StartTick, ClientTickEvents.EndTick {
-
-    @Override
-    public void onStartTick(MinecraftClient client) {
-        tickAnimation(client);
-    }
-
-    @Override
-    public void onEndTick(MinecraftClient client) {
-        tickAnimation(client);
-    }
+public class TickAnimationEvent {
 
     public static void tickAnimation(MinecraftClient client) {
         ClientPlayerEntity player = client.player;

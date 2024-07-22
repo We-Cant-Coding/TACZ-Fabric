@@ -1,22 +1,26 @@
 package com.tacz.guns.event;
 
+import com.tacz.guns.config.common.OtherConfig;
 import com.tacz.guns.util.HitboxHelper;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import net.minecraft.server.network.ServerPlayerEntity;
 
-public class HitboxHelperEvent implements ServerPlayConnectionEvents.Disconnect {
+public class HitboxHelperEvent {
 
-    /**
-     * Move to
-     * {@link com.tacz.guns.mixin.common.PlayerEntityMixin#tickEnd(CallbackInfo)}
-     */
-    public static void onPlayerTick() {
+    public static void onPlayerTick(PlayerEntity player) {
+        if (!OtherConfig.SERVER_HITBOX_LATENCY_FIX.get()) {
+            return;
+        }
+        // event.side == LogicalSide.SERVER == player instanceof ServerPlayerEntity
+        if (player instanceof ServerPlayerEntity) {
+            HitboxHelper.onPlayerTick(player);
+        }
+
     }
 
-    @Override
-    public void onPlayDisconnect(ServerPlayNetworkHandler handler, MinecraftServer server) {
+    public static void onPlayDisconnect(ServerPlayNetworkHandler handler, MinecraftServer ignoredServer) {
         HitboxHelper.onPlayerLoggedOut(handler.player);
     }
 }

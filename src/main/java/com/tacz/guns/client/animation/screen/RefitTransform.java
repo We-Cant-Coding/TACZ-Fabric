@@ -1,6 +1,6 @@
 package com.tacz.guns.client.animation.screen;
 
-import com.tacz.guns.api.event.client.RenderTickEvent;
+import com.tacz.guns.api.client.event.RenderTickEvent;
 import com.tacz.guns.api.item.attachment.AttachmentType;
 import com.tacz.guns.client.gui.GunRefitScreen;
 import net.minecraft.client.MinecraftClient;
@@ -53,7 +53,7 @@ public class RefitTransform {
         return true;
     }
 
-    public static void tickInterpolation(RenderTickEvent ignored) {
+    public static void tickInterpolation(RenderTickEvent ignoredEvent) {
         // tick opening progress
         if (refitScreenOpeningTimestamp == -1) {
             refitScreenOpeningTimestamp = System.currentTimeMillis();

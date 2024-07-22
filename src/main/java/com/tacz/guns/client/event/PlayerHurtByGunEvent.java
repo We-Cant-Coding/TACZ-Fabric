@@ -13,10 +13,9 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
-public class PlayerHurtByGunEvent implements EntityHurtByGunEvent.Callback {
+public class PlayerHurtByGunEvent {
 
-    @Override
-    public void onEntityHurtByGun(EntityHurtByGunEvent event) {
+    public static void onPlayerHurtByGun(EntityHurtByGunEvent event) {
         LogicalSide logicalSide = event.getLogicalSide();
         if (logicalSide != LogicalSide.CLIENT) {
             return;

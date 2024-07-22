@@ -1,14 +1,14 @@
 package com.tacz.guns.event;
 
-import net.minecraft.network.ClientConnection;
+import com.tacz.guns.resource.network.CommonGunPackNetwork;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 public class EnterServerEvent {
-    /**
-     * Move to
-     * {@link com.tacz.guns.mixin.common.PlayerManagerMixin#onPlayerConnect(ClientConnection, ServerPlayerEntity, CallbackInfo)}
-     */
-    public static void onLoggedInServer() {
+
+    public static void onLoggedInServer(PlayerEntity player) {
+        if (player instanceof ServerPlayerEntity serverPlayer) {
+            CommonGunPackNetwork.syncClient(serverPlayer);
+        }
     }
 }

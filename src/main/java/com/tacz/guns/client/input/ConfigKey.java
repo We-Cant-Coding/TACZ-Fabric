@@ -2,7 +2,7 @@ package com.tacz.guns.client.input;
 
 import com.tacz.guns.client.gui.compat.ClothConfigScreen;
 import com.tacz.guns.compat.cloth.MenuIntegration;
-import com.tacz.guns.forge.InputEvent;
+import com.tacz.guns.api.client.event.InputEvent;
 import com.tacz.guns.init.CompatRegistry;
 import committee.nova.mkb.api.IKeyBinding;
 import committee.nova.mkb.keybinding.KeyModifier;
@@ -23,14 +23,13 @@ import org.lwjgl.glfw.GLFW;
 import static com.tacz.guns.util.InputExtraCheck.isInGame;
 
 @Environment(EnvType.CLIENT)
-public class ConfigKey implements InputEvent.KeyCallback {
+public class ConfigKey {
     public static final KeyBinding OPEN_CONFIG_KEY = new KeyBinding("key.tacz-fabric.open_config.desc",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_T,
             "key.category.tacz");
 
-    @Override
-    public void onKey(InputEvent.Key event) {
+    public static void onOpenConfig(InputEvent.Key event) {
         if (isInGame() && event.getAction() == GLFW.GLFW_PRESS
                 && OPEN_CONFIG_KEY.matchesKey(event.getKey(), event.getScanCode())
                 && ((IKeyBinding) OPEN_CONFIG_KEY).getKeyModifier().equals(KeyModifier.getActiveModifier())) {

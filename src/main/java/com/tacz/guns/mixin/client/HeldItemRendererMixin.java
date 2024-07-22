@@ -1,10 +1,9 @@
 package com.tacz.guns.mixin.client;
 
 import com.tacz.guns.api.client.event.BeforeRenderHandEvent;
+import com.tacz.guns.api.client.event.RenderHandEvent;
 import com.tacz.guns.api.client.other.KeepingItemRenderer;
 import com.tacz.guns.api.item.IGun;
-import com.tacz.guns.client.event.FirstPersonRenderGunEvent;
-import com.tacz.guns.forge.RenderHandEvent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -44,6 +43,18 @@ public abstract class HeldItemRendererMixin implements KeepingItemRenderer {
         new BeforeRenderHandEvent(matrices).post();
     }
 
+    @Redirect(method = "renderItem(FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;Lnet/minecraft/client/network/ClientPlayerEntity;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;renderFirstPersonItem(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/util/Hand;FLnet/minecraft/item/ItemStack;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V"))
+    private void renderFirstPersonItemMainHand(HeldItemRenderer instance, AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+        if (callEvent(hand, matrices, vertexConsumers, light, tickDelta, pitch, swingProgress, equipProgress, item)) {
+            renderFirstPersonItem(player, tickDelta, pitch, hand, swingProgress, item, equipProgress, matrices, vertexConsumers, light);
+        }
+    }
+
+    @Unique
+    private boolean callEvent(Hand hand, MatrixStack poseStack, VertexConsumerProvider bufferSource, int packedLight, float partialTick, float interpPitch, float swingProgress, float equipProgress, ItemStack stack) {
+        return !new RenderHandEvent(hand, poseStack, bufferSource, packedLight, partialTick, interpPitch, swingProgress, equipProgress, stack).post();
+    }
+
     @Inject(method = "updateHeldItems", at = @At("HEAD"))
     private void cancelEquippedProgress(CallbackInfo ci) {
         if (MinecraftClient.getInstance().player == null) {
@@ -66,26 +77,6 @@ public abstract class HeldItemRendererMixin implements KeepingItemRenderer {
             mainHand = itemStack;
         }
     }
-
-    /* ------ forge event ------ */
-
-    @Redirect(method = "renderItem(FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;Lnet/minecraft/client/network/ClientPlayerEntity;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;renderFirstPersonItem(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/util/Hand;FLnet/minecraft/item/ItemStack;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V"))
-    private void renderFirstPersonItemMainHand(HeldItemRenderer instance, AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
-        if (callEvent(hand, matrices, vertexConsumers, light, tickDelta, pitch, swingProgress, equipProgress, item)) {
-            renderFirstPersonItem(player, tickDelta, pitch, hand, swingProgress, item, equipProgress, matrices, vertexConsumers, light);
-        }
-    }
-
-    @Unique
-    private boolean callEvent(Hand hand, MatrixStack poseStack, VertexConsumerProvider bufferSource, int packedLight, float partialTick, float interpPitch, float swingProgress, float equipProgress, ItemStack stack) {
-        var event = new RenderHandEvent(hand, poseStack, bufferSource, packedLight, partialTick, interpPitch, swingProgress, equipProgress, stack);
-
-        FirstPersonRenderGunEvent.onRenderHand(event);
-
-        return !event.isCanceled();
-    }
-
-    /* ------ forge event ------ */
 
     @Unique
     @Override

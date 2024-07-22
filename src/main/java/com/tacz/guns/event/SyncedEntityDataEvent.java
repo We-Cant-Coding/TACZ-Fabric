@@ -3,9 +3,6 @@ package com.tacz.guns.event;
 import com.tacz.guns.entity.sync.core.*;
 import com.tacz.guns.network.NetworkHandler;
 import com.tacz.guns.network.message.ServerMessageUpdateEntityData;
-import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
@@ -17,10 +14,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class SyncedEntityDataEvent implements ServerTickEvents.StartTick, ServerPlayerEvents.CopyFrom, EntityTrackingEvents.StartTracking {
+public class SyncedEntityDataEvent {
 
-    @Override
-    public void onStartTracking(Entity entity, ServerPlayerEntity player) {
+    public static void onStartTracking(Entity entity, ServerPlayerEntity player) {
         if (!player.getWorld().isClient()) {
             DataHolder holder = SyncedEntityData.instance().getDataHolder(entity);
             if (holder != null) {
@@ -33,7 +29,7 @@ public class SyncedEntityDataEvent implements ServerTickEvents.StartTick, Server
         }
     }
 
-    public static void onPlayerJoinWorld(Entity entity, World world) {
+    public static boolean onPlayerJoinWorld(Entity entity, World world, boolean ignoredLoadedFromDisk) {
         if (entity instanceof PlayerEntity player && !world.isClient()) {
             DataHolder holder = SyncedEntityData.instance().getDataHolder(player);
             if (holder != null) {
@@ -43,10 +39,11 @@ public class SyncedEntityDataEvent implements ServerTickEvents.StartTick, Server
                 }
             }
         }
+        // To cancel an event, you must leave the return value false
+        return true;
     }
 
-    @Override
-    public void copyFromPlayer(ServerPlayerEntity original, ServerPlayerEntity player, boolean alive) {
+    public static void copyFromPlayer(ServerPlayerEntity original, ServerPlayerEntity player, boolean alive) {
         DataHolder oldHolder = SyncedEntityData.instance().getDataHolder(original);
         if (oldHolder == null) {
             return;
@@ -62,8 +59,7 @@ public class SyncedEntityDataEvent implements ServerTickEvents.StartTick, Server
         newHolder.dataMap = dataMap;
     }
 
-    @Override
-    public void onStartTick(MinecraftServer server) {
+    public static void onServerTick(MinecraftServer ignoredServer) {
         SyncedEntityData instance = SyncedEntityData.instance();
 
         if (!instance.isDirty()) {

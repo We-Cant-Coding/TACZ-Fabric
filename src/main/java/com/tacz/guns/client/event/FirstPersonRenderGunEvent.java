@@ -3,6 +3,7 @@ package com.tacz.guns.client.event;
 import com.tacz.guns.api.DefaultAssets;
 import com.tacz.guns.api.LogicalSide;
 import com.tacz.guns.api.TimelessAPI;
+import com.tacz.guns.api.client.event.RenderHandEvent;
 import com.tacz.guns.api.client.event.RenderItemInHandBobEvent;
 import com.tacz.guns.api.client.gameplay.IClientPlayerGunOperator;
 import com.tacz.guns.api.client.other.KeepingItemRenderer;
@@ -22,7 +23,6 @@ import com.tacz.guns.client.resource.index.ClientAttachmentIndex;
 import com.tacz.guns.client.resource.index.ClientGunIndex;
 import com.tacz.guns.config.client.RenderConfig;
 import com.tacz.guns.entity.EntityKineticBullet;
-import com.tacz.guns.forge.RenderHandEvent;
 import com.tacz.guns.util.math.Easing;
 import com.tacz.guns.util.math.MathUtil;
 import com.tacz.guns.util.math.PerlinNoise;
@@ -55,7 +55,7 @@ import java.util.Optional;
 import static net.minecraft.client.render.model.json.ModelTransformationMode.FIRST_PERSON_LEFT_HAND;
 import static net.minecraft.client.render.model.json.ModelTransformationMode.FIRST_PERSON_RIGHT_HAND;
 
-public class FirstPersonRenderGunEvent implements GunFireEvent.Callback, RenderItemInHandBobEvent.BobViewCallback {
+public class FirstPersonRenderGunEvent {
     // Used to generate motion curves for aiming actions to make the action look smoother
     private static final SecondOrderDynamics AIMING_DYNAMICS = new SecondOrderDynamics(1.2f, 1.2f, 0.5f, 0);
     // For smoothing gun movement when opening the modification screen
@@ -260,8 +260,7 @@ public class FirstPersonRenderGunEvent implements GunFireEvent.Callback, RenderI
     /**
      * 当主手拿着枪械物品的时候，取消应用在它上面的 viewBobbing，以便应用自定义的跑步/走路动画。
      */
-    @Override
-    public void onBobView(RenderItemInHandBobEvent.BobView event) {
+    public static void cancelItemInHandViewBobbing(RenderItemInHandBobEvent.BobView event) {
         MinecraftClient mc = MinecraftClient.getInstance();
         if (mc.player == null) {
             return;
@@ -272,8 +271,7 @@ public class FirstPersonRenderGunEvent implements GunFireEvent.Callback, RenderI
         }
     }
 
-    @Override
-    public void onGunFire(GunFireEvent event) {
+    public static void onGunFire(GunFireEvent event) {
         LogicalSide side = event.getLogicalSide();
         if (side.isClient()) {
             Entity shooter = event.getShooter();
@@ -306,7 +304,7 @@ public class FirstPersonRenderGunEvent implements GunFireEvent.Callback, RenderI
         return false;
     }
 
-    private static void applyFirstPersonGunTransform(ClientPlayerEntity player, ItemStack gunItemStack, ClientGunIndex gunIndex, MatrixStack poseStack, BedrockGunModel model, float partialTicks) {
+    private static void applyFirstPersonGunTransform(ClientPlayerEntity player, ItemStack gunItemStack, ClientGunIndex ignoredGunIndex, MatrixStack poseStack, BedrockGunModel model, float partialTicks) {
         // 配合运动曲线，计算改装枪口的打开进度
         float refitScreenOpeningProgress = REFIT_OPENING_DYNAMICS.update(RefitTransform.getOpeningProgress());
         // 配合运动曲线，计算瞄准进度

@@ -1,6 +1,5 @@
 package com.tacz.guns.entity;
 
-import com.tacz.guns.GunMod;
 import com.tacz.guns.api.DefaultAssets;
 import com.tacz.guns.api.LogicalSide;
 import com.tacz.guns.api.entity.ITargetEntity;
@@ -48,10 +47,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
@@ -185,11 +181,11 @@ public class EntityKineticBullet extends ProjectileEntity implements IEntityAddi
             AmmoParticleSpawner.addParticle(this, gunId);
         }
         // 子弹模型的旋转与抛物线
-        Vec3d movement = this.getVelocity();
-        double x = movement.x;
-        double y = movement.y;
-        double z = movement.z;
-        double distance = movement.horizontalLength();
+        Vec3d velocity = this.getVelocity();
+        double x = velocity.x;
+        double y = velocity.y;
+        double z = velocity.z;
+        double distance = velocity.horizontalLength();
         this.setYaw((float) Math.toDegrees(MathHelper.atan2(x, z)));
         this.setPitch((float) Math.toDegrees(MathHelper.atan2(y, distance)));
         // 子弹初始的朝向设置
@@ -205,6 +201,7 @@ public class EntityKineticBullet extends ProjectileEntity implements IEntityAddi
         double nextPosY = this.getY() + y;
         double nextPosZ = this.getZ() + z;
         this.setPosition(nextPosX, nextPosY, nextPosZ);
+        updateRotation();
         float friction = this.friction;
         float gravity = this.gravity;
         // 子弹入水后的调整
@@ -551,49 +548,49 @@ public class EntityKineticBullet extends ProjectileEntity implements IEntityAddi
 
     // 테스트 필요
     @Override
-    public void writeSpawnData(PacketByteBuf buffer) {
-        buffer.writeFloat(getPitch());
-        buffer.writeFloat(getYaw());
-        buffer.writeDouble(getVelocity().x);
-        buffer.writeDouble(getVelocity().y);
-        buffer.writeDouble(getVelocity().z);
+    public void writeSpawnData(PacketByteBuf buf) {
+        buf.writeFloat(getPitch());
+        buf.writeFloat(getYaw());
+        buf.writeDouble(getVelocity().x);
+        buf.writeDouble(getVelocity().y);
+        buf.writeDouble(getVelocity().z);
         Entity entity = getOwner();
-        buffer.writeInt(entity != null ? entity.getId() : 0);
-        buffer.writeIdentifier(ammoId);
-        buffer.writeFloat(this.gravity);
-        buffer.writeBoolean(this.hasExplosion);
-        buffer.writeBoolean(this.hasIgnite);
-        buffer.writeFloat(this.explosionRadius);
-        buffer.writeFloat(this.explosionDamage);
-        buffer.writeInt(this.life);
-        buffer.writeFloat(this.speed);
-        buffer.writeFloat(this.friction);
-        buffer.writeInt(this.pierce);
-        buffer.writeBoolean(this.isTracerAmmo);
-        buffer.writeIdentifier(this.gunId);
+        buf.writeInt(entity != null ? entity.getId() : 0);
+        buf.writeIdentifier(ammoId);
+        buf.writeFloat(this.gravity);
+        buf.writeBoolean(this.hasExplosion);
+        buf.writeBoolean(this.hasIgnite);
+        buf.writeFloat(this.explosionRadius);
+        buf.writeFloat(this.explosionDamage);
+        buf.writeInt(this.life);
+        buf.writeFloat(this.speed);
+        buf.writeFloat(this.friction);
+        buf.writeInt(this.pierce);
+        buf.writeBoolean(this.isTracerAmmo);
+        buf.writeIdentifier(this.gunId);
     }
 
     @Override
-    public void readSpawnData(PacketByteBuf additionalData) {
-        setPitch(additionalData.readFloat());
-        setYaw(additionalData.readFloat());
-        setVelocity(additionalData.readDouble(), additionalData.readDouble(), additionalData.readDouble());
-        Entity entity = this.getWorld().getEntityById(additionalData.readInt());
+    public void readSpawnData(PacketByteBuf buf) {
+        setPitch(buf.readFloat());
+        setYaw(buf.readFloat());
+        setVelocity(buf.readDouble(), buf.readDouble(), buf.readDouble());
+        Entity entity = this.getWorld().getEntityById(buf.readInt());
         if (entity != null) {
             this.setOwner(entity);
         }
-        this.ammoId = additionalData.readIdentifier();
-        this.gravity = additionalData.readFloat();
-        this.hasExplosion = additionalData.readBoolean();
-        this.hasIgnite = additionalData.readBoolean();
-        this.explosionRadius = additionalData.readFloat();
-        this.explosionDamage = additionalData.readFloat();
-        this.life = additionalData.readInt();
-        this.speed = additionalData.readFloat();
-        this.friction = additionalData.readFloat();
-        this.pierce = additionalData.readInt();
-        this.isTracerAmmo = additionalData.readBoolean();
-        this.gunId = additionalData.readIdentifier();
+        this.ammoId = buf.readIdentifier();
+        this.gravity = buf.readFloat();
+        this.hasExplosion = buf.readBoolean();
+        this.hasIgnite = buf.readBoolean();
+        this.explosionRadius = buf.readFloat();
+        this.explosionDamage = buf.readFloat();
+        this.life = buf.readInt();
+        this.speed = buf.readFloat();
+        this.friction = buf.readFloat();
+        this.pierce = buf.readInt();
+        this.isTracerAmmo = buf.readBoolean();
+        this.gunId = buf.readIdentifier();
     }
 
     public Identifier getAmmoId() {

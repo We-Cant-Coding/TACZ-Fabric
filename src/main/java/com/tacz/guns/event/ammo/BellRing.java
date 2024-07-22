@@ -6,9 +6,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.world.World;
 
-public class BellRing implements AmmoHitBlockEvent.Callback {
-    @Override
-    public void onAmmoHitBlock(AmmoHitBlockEvent event) {
+public class BellRing {
+
+    public static void onAmmoHitBlock(AmmoHitBlockEvent event) {
         World level = event.getLevel();
         BlockState state = event.getState();
         BlockHitResult hitResult = event.getHitResult();

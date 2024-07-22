@@ -6,12 +6,11 @@ import com.tacz.guns.api.item.gun.AbstractGunItem;
 import com.tacz.guns.config.common.GunConfig;
 import com.tacz.guns.entity.shooter.LivingEntityReload;
 import com.tacz.guns.util.AttachmentDataUtils;
-import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-public class PlayerRespawnEvent implements ServerPlayerEvents.AfterRespawn {
-    @Override
-    public void afterRespawn(ServerPlayerEntity deadPlayer, ServerPlayerEntity player, boolean alive) {
+public class PlayerRespawnEvent {
+
+    public static void afterRespawn(ServerPlayerEntity ignoredDeadPlayer, ServerPlayerEntity player, boolean ignoredAlive) {
         if (!GunConfig.AUTO_RELOAD_WHEN_RESPAWN.get()) {
             return;
         }

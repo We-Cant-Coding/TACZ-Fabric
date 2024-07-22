@@ -8,9 +8,9 @@ import net.minecraft.block.enums.Instrument;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class DestroyGlassBlock implements AmmoHitBlockEvent.Callback {
-    @Override
-    public void onAmmoHitBlock(AmmoHitBlockEvent event) {
+public class DestroyGlassBlock {
+
+    public static void onAmmoHitBlock(AmmoHitBlockEvent event) {
         World level = event.getLevel();
         BlockState state = event.getState();
         BlockPos pos = event.getHitResult().getBlockPos();

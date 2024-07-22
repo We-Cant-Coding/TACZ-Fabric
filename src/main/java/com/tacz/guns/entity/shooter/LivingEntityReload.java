@@ -10,7 +10,7 @@ import com.tacz.guns.api.item.IAmmo;
 import com.tacz.guns.api.item.IAmmoBox;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.api.item.gun.AbstractGunItem;
-import com.tacz.guns.forge.items.IItemHandler;
+import com.tacz.guns.util.item.IItemHandler;
 import com.tacz.guns.network.NetworkHandler;
 import com.tacz.guns.network.message.event.ServerMessageGunReload;
 import com.tacz.guns.resource.index.CommonGunIndex;
@@ -173,7 +173,7 @@ public class LivingEntityReload {
         }
         // ???? 도대체 이거 뭔데?
 
-        return shooter.tacz$getItemHandlerCapability(null).map(cap -> {
+        return shooter.tacz$getItemHandler(null).map(cap -> {
             for (int i = 0; i < cap.getSlots(); i++) {
                 ItemStack checkAmmoStack = cap.getStackInSlot(i);
                 if (checkAmmoStack.getItem() instanceof IAmmo iAmmo && iAmmo.isAmmoOfGun(currentGunItem, checkAmmoStack)) {
@@ -193,7 +193,7 @@ public class LivingEntityReload {
             if (iGun.useDummyAmmo(currentGunItem)) {
                 return getAndExtractDummyAmmoCount(maxAmmoCount, currentAmmoCount, currentGunItem, iGun);
             }
-            return shooter.tacz$getItemHandlerCapability(null)
+            return shooter.tacz$getItemHandler(null)
                     .map(cap -> getAndExtractInventoryAmmoCount(cap, maxAmmoCount, currentAmmoCount, currentGunItem))
                     .orElse(currentAmmoCount);
         }

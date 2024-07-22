@@ -183,20 +183,6 @@ public class LivingEntityMixin implements IGunOperator, KnockBackModifier {
         this.tacz$data.knockbackStrength = strength;
     }
 
-
-
-    @ModifyVariable(method = "takeKnockback", at = @At("HEAD"), ordinal = 0, argsOnly = true)
-    private double modifyKnockbackStrength(double strength) {
-        KnockBackModifier modifier = KnockBackModifier.fromLivingEntity(This());
-        double modifierStrength = modifier.getKnockBackStrength();
-        if (modifierStrength >= 0) {
-            return modifierStrength;
-        }
-        return strength;
-    }
-
-
-
     @Unique
     private LivingEntity This() {
         return (LivingEntity) (Object) this;

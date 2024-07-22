@@ -1,7 +1,7 @@
 package com.tacz.guns.client.input;
 
 import com.tacz.guns.api.client.gameplay.IClientPlayerGunOperator;
-import com.tacz.guns.forge.InputEvent;
+import com.tacz.guns.api.client.event.InputEvent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -13,21 +13,19 @@ import org.lwjgl.glfw.GLFW;
 import static com.tacz.guns.util.InputExtraCheck.isInGame;
 
 @Environment(EnvType.CLIENT)
-public class MeleeKey implements InputEvent.KeyCallback, InputEvent.MousePostCallback {
+public class MeleeKey {
     public static final KeyBinding MELEE_KEY = new KeyBinding("key.tacz-fabric.melee.desc",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_V,
             "key.category.tacz");
 
-    @Override
-    public void onKey(InputEvent.Key event) {
+    public static void onMeleeKeyPress(InputEvent.Key event) {
         if (isInGame() && event.getAction() == GLFW.GLFW_PRESS && MELEE_KEY.matchesKey(event.getKey(), event.getScanCode())) {
             doMeleeLogic();
         }
     }
 
-    @Override
-    public void onMousePost(InputEvent.MouseButton.Post event) {
+    public static void onMeleeMousePress(InputEvent.MouseButton.Post event) {
         if (isInGame() && event.getAction() == GLFW.GLFW_PRESS && MELEE_KEY.matchesMouse(event.getButton())) {
             doMeleeLogic();
         }

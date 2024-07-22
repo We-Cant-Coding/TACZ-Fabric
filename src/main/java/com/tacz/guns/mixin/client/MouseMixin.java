@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.tacz.guns.api.DefaultAssets;
 import com.tacz.guns.api.TimelessAPI;
+import com.tacz.guns.api.client.event.InputEvent;
 import com.tacz.guns.api.entity.IGunOperator;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.api.item.attachment.AttachmentType;
@@ -18,13 +19,21 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Optional;
 
 @Mixin(Mouse.class)
 public class MouseMixin {
+
+    @Shadow
+    @Final
+    private MinecraftClient client;
 
     @WrapOperation(method = "updateMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;changeLookDirection(DD)V"))
     public void reduceSensitivity(ClientPlayerEntity player, double yaw, double pitch, Operation<Void> original) {
@@ -62,5 +71,19 @@ public class MouseMixin {
         double coefficient = ZoomConfig.SCREEN_DISTANCE_COEFFICIENT.get();
         double denominator = MathUtil.zoomSensitivityRatio(currentFov, originalFov, coefficient) * sensitivityMultiplier;
         original.call(player, yaw * denominator, pitch * denominator);
+    }
+
+    @Inject(method = "onMouseButton", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getOverlay()Lnet/minecraft/client/gui/screen/Overlay;", ordinal = 0, shift = At.Shift.BEFORE), cancellable = true)
+    private void onMouseButtonPre(long window, int button, int action, int mods, CallbackInfo ci) {
+        if (new InputEvent.MouseButton.Pre(button, action, mods).post()) {
+            ci.cancel();
+        }
+    }
+
+    @Inject(method = "onMouseButton", at = @At("TAIL"))
+    private void onMouseButton(long window, int button, int action, int mods, CallbackInfo ci) {
+        if (window == this.client.getWindow().getHandle()) {
+            new InputEvent.MouseButton.Post(button, action, mods).post();
+        }
     }
 }

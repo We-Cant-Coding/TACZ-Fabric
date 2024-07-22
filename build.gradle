@@ -12,6 +12,18 @@ base {
 
 repositories {
 	maven {
+		url = "https://cursemaven.com"
+		content {
+			includeGroup "curse.maven"
+		}
+	}
+	maven {
+		url "https://maven.jamieswhiteshirt.com/libs-release"
+		content {
+			includeGroup "com.jamieswhiteshirt"
+		}
+	}
+	maven {
 		// location of the maven that hosts JEI files before January 2023
 		name = "Progwml6's maven"
 		url = "https://dvs1.progwml6.com/files/maven/"
@@ -29,12 +41,6 @@ repositories {
 		// location of a maven mirror for JEI files, as a fallback
 		name = "ModMaven"
 		url = "https://modmaven.dev"
-	}
-	maven {
-		url = "https://cursemaven.com"
-		content {
-			includeGroup "curse.maven"
-		}
 	}
 	maven {
 		name = "Modrinth"
@@ -89,8 +95,9 @@ dependencies {
 	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:core:${project.porting_lib_version}+${project.minecraft_version}"))
 	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:tags:${project.porting_lib_version}+${project.minecraft_version}"))
 	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:entity:${project.porting_lib_version}+${project.minecraft_version}"))
-	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinal_components_api_version}"
-	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinal_components_api_version}"
+	modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinal_components_api_version}"))
+	modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinal_components_api_version}"))
+	modImplementation(include("maven.modrinth:modernkeybinding:${project.modernkeybinding_version}"))
 
 	modRuntimeOnly("maven.modrinth:moonlight:${project.moonlight_version}")
 	modRuntimeOnly("maven.modrinth:mmmmmmmmmmmm:${project.mmmmmmmmmmmm_version}")
@@ -104,7 +111,6 @@ dependencies {
 	modCompileOnly "org.embeddedt:embeddium-1.20.1:${project.embeddedt_version}"
 	modCompileOnly "maven.modrinth:iris:${project.iris_version}"
 	modCompileOnly "maven.modrinth:carry-on:${project.carry_on_version}"
-	modCompileOnly "maven.modrinth:modernkeybinding:${project.modernkeybinding_version}"
 
 	// Apache Commons Math library for performing some interpolation operations
 	include implementation(minecraftLibraries('org.apache.commons:commons-math3:3.6.1'))

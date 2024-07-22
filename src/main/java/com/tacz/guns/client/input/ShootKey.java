@@ -1,15 +1,13 @@
 package com.tacz.guns.client.input;
 
-import com.tacz.guns.GunMod;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.client.gameplay.IClientPlayerGunOperator;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.api.item.gun.FireMode;
 import com.tacz.guns.client.sound.SoundPlayManager;
-import com.tacz.guns.forge.InputEvent;
+import com.tacz.guns.api.client.event.InputEvent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.KeyBinding;
@@ -21,14 +19,13 @@ import org.lwjgl.glfw.GLFW;
 import static com.tacz.guns.util.InputExtraCheck.isInGame;
 
 @Environment(EnvType.CLIENT)
-public class ShootKey implements ClientTickEvents.StartTick, InputEvent.MousePostCallback {
+public class ShootKey {
     public static final KeyBinding SHOOT_KEY = new KeyBinding("key.tacz-fabric.shoot.desc",
             InputUtil.Type.MOUSE,
             GLFW.GLFW_MOUSE_BUTTON_LEFT,
             "key.category.tacz");
 
-    @Override
-    public void onStartTick(MinecraftClient mc) {
+    public static void autoShoot(MinecraftClient mc) {
         if (!isInGame()) {
             return;
         }
@@ -49,8 +46,7 @@ public class ShootKey implements ClientTickEvents.StartTick, InputEvent.MousePos
         }
     }
 
-    @Override
-    public void onMousePost(InputEvent.MouseButton.Post event) {
+    public static void semiShoot(InputEvent.MouseButton.Post event) {
         if (isInGame() && SHOOT_KEY.matchesMouse(event.getButton())) {
             // 松开鼠标，重置 DryFire 状态
             if (event.getAction() == GLFW.GLFW_RELEASE) {

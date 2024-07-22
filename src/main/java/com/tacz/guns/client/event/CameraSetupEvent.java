@@ -1,7 +1,6 @@
 package com.tacz.guns.client.event;
 
 import com.tacz.guns.api.DefaultAssets;
-import com.tacz.guns.api.LogicalSide;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.client.event.BeforeRenderHandEvent;
 import com.tacz.guns.api.client.gameplay.IClientPlayerGunOperator;
@@ -13,7 +12,7 @@ import com.tacz.guns.api.item.attachment.AttachmentType;
 import com.tacz.guns.client.model.BedrockGunModel;
 import com.tacz.guns.client.resource.index.ClientAttachmentIndex;
 import com.tacz.guns.client.resource.index.ClientGunIndex;
-import com.tacz.guns.forge.ViewportEvent;
+import com.tacz.guns.api.client.event.ViewportEvent;
 import com.tacz.guns.resource.pojo.data.attachment.RecoilModifier;
 import com.tacz.guns.resource.pojo.data.gun.GunData;
 import com.tacz.guns.util.AttachmentDataUtils;
@@ -32,7 +31,7 @@ import org.joml.Quaternionf;
 
 import java.util.Optional;
 
-public class CameraSetupEvent implements GunFireEvent.Callback, BeforeRenderHandEvent.Callback {
+public class CameraSetupEvent {
     /**
      * 用于平滑 FOV 变化
      */
@@ -45,6 +44,7 @@ public class CameraSetupEvent implements GunFireEvent.Callback, BeforeRenderHand
     private static double yRot0 = 0;
     private static BedrockGunModel lastModel = null;
 
+    // The event is not canceled even if the return value is true or false.
     public static void applyLevelCameraAnimation(ViewportEvent.ComputeCameraAngles event) {
         if (!MinecraftClient.getInstance().options.getBobView().getValue()) {
             return;
@@ -82,8 +82,7 @@ public class CameraSetupEvent implements GunFireEvent.Callback, BeforeRenderHand
         });
     }
 
-    @Override
-    public void onBeforeRenderHand(BeforeRenderHandEvent event) {
+    public static void onBeforeRenderHand(BeforeRenderHandEvent event) {
         if (!MinecraftClient.getInstance().options.getBobView().getValue()) {
             return;
         }
@@ -170,13 +169,9 @@ public class CameraSetupEvent implements GunFireEvent.Callback, BeforeRenderHand
         }
     }
 
-    @Override
-    public void onGunFire(GunFireEvent event) {
-        initialCameraRecoil(event.getShooter(), event.getLogicalSide());
-    }
-
-    public static void initialCameraRecoil(LivingEntity shooter, LogicalSide side) {
-        if (side.isClient()) {
+    public static void initialCameraRecoil(GunFireEvent event) {
+        if (event.getLogicalSide().isClient()) {
+            LivingEntity shooter = event.getShooter();
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
             if (!shooter.equals(player)) {
                 return;
@@ -213,7 +208,8 @@ public class CameraSetupEvent implements GunFireEvent.Callback, BeforeRenderHand
             xRotO = 0;
         }
     }
-    public static void applyCameraRecoil() {
+
+    public static void applyCameraRecoil(ViewportEvent.ComputeCameraAngles ignoredEvent) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player == null) {
             return;

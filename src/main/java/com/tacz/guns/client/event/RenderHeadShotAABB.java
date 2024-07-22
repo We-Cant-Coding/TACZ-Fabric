@@ -7,6 +7,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.WorldRenderer;
+import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.registry.Registries;
@@ -15,7 +16,7 @@ import net.minecraft.util.math.Box;
 
 public class RenderHeadShotAABB {
 
-    public static void onRenderEntity(LivingEntity entity, VertexConsumerProvider vertexConsumerProvider, MatrixStack matrixStack) {
+    public static void onRenderEntity(LivingEntity entity, MatrixStack matrixStack, VertexConsumerProvider buffers) {
         boolean canRender = MinecraftClient.getInstance().getEntityRenderDispatcher().shouldRenderHitboxes();
         if (!canRender) {
             return;
@@ -31,7 +32,7 @@ public class RenderHeadShotAABB {
             // 扩张 0.01，避免和原版显示重合
             aabb = new Box(-width / 2, eyeHeight - 0.25, -width / 2, width / 2, eyeHeight + 0.25, width / 2).expand(0.01);
         }
-        VertexConsumer buffer = vertexConsumerProvider.getBuffer(RenderLayer.getLines());
+        VertexConsumer buffer = buffers.getBuffer(RenderLayer.getLines());
         WorldRenderer.drawBox(matrixStack, buffer, aabb, 1.0F, 1.0F, 0.0F, 1.0F);
     }
 }

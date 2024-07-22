@@ -22,7 +22,7 @@ public class EntityMixin {
             new EntityRemoveEvent(This()).post();
         }
         if (This() instanceof ItemHandlerCapability) {
-            ((ItemHandlerCapability) This()).tacz$invalidateItemHandlerCaps();
+            ((ItemHandlerCapability) This()).tacz$invalidateItemHandler();
         }
     }
 

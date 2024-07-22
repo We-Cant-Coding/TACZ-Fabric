@@ -6,36 +6,39 @@ import com.tacz.guns.event.*;
 import com.tacz.guns.event.ammo.BellRing;
 import com.tacz.guns.event.ammo.DestroyGlassBlock;
 import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
+import io.github.fabricators_of_create.porting_lib.entity.events.*;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 
 public class ModEvents {
 
     public static void init() {
-        ServerPlayConnectionEvents.DISCONNECT.register(new HitboxHelperEvent());
+        PlayerEvents.LOGGED_IN.register(EnterServerEvent::onLoggedInServer);
 
-        var loadingConfigEvent = new LoadingConfigEvent();
-        ModConfigEvents.loading(GunMod.MOD_ID).register(loadingConfigEvent);
-        ModConfigEvents.reloading(GunMod.MOD_ID).register(loadingConfigEvent);
+        PlayerTickEvents.END.register(HitboxHelperEvent::onPlayerTick);
+        ServerPlayConnectionEvents.DISCONNECT.register(HitboxHelperEvent::onPlayDisconnect);
 
-        ServerPlayerEvents.AFTER_RESPAWN.register(new PlayerRespawnEvent());
+        LivingEntityEvents.KNOCKBACK_STRENGTH.register(KnockbackChange::onKnockback);
 
-        var serverTickEvent = new ServerTickEvent();
-        ServerTickEvents.START_SERVER_TICK.register(serverTickEvent);
-        ServerTickEvents.END_SERVER_TICK.register(serverTickEvent);
+        ModConfigEvents.loading(GunMod.MOD_ID).register(LoadingConfigEvent::onModConfigLoading);
+        ModConfigEvents.reloading(GunMod.MOD_ID).register(LoadingConfigEvent::onModConfigReloading);
 
-        var syncedEntityDataEvent = new SyncedEntityDataEvent();
-        ServerTickEvents.START_SERVER_TICK.register(syncedEntityDataEvent);
-        ServerPlayerEvents.COPY_FROM.register(syncedEntityDataEvent);
-        EntityTrackingEvents.START_TRACKING.register(syncedEntityDataEvent);
+        ServerPlayerEvents.AFTER_RESPAWN.register(PlayerRespawnEvent::afterRespawn);
+
+        PlayerInteractionEvents.LEFT_CLICK_BLOCK.register(PreventGunClick::onLeftClickBlock);
+
+        ServerTickEvents.START_SERVER_TICK.register(ServerTickEvent::onServerTick);
+        ServerTickEvents.END_SERVER_TICK.register(ServerTickEvent::onServerTick);
+
+        PlayerEvents.START_TRACKING_TAIL.register(SyncedEntityDataEvent::onStartTracking);
+        EntityEvents.ON_JOIN_WORLD.register(SyncedEntityDataEvent::onPlayerJoinWorld);
+        ServerPlayerEvents.COPY_FROM.register(SyncedEntityDataEvent::copyFromPlayer);
+        ServerTickEvents.START_SERVER_TICK.register(SyncedEntityDataEvent::onServerTick);
 
         // ammo
-        var bellRing = new BellRing();
-        AmmoHitBlockEvent.EVENT.register(bellRing);
+        AmmoHitBlockEvent.EVENT.register(BellRing::onAmmoHitBlock);
 
-        var destroyGlassBlock = new DestroyGlassBlock();
-        AmmoHitBlockEvent.EVENT.register(destroyGlassBlock);
+        AmmoHitBlockEvent.EVENT.register(DestroyGlassBlock::onAmmoHitBlock);
     }
 }

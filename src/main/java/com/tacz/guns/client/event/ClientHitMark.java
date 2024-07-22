@@ -8,22 +8,18 @@ import com.tacz.guns.client.gui.overlay.KillAmountOverlay;
 import com.tacz.guns.client.sound.SoundPlayManager;
 import com.tacz.guns.config.client.RenderConfig;
 import com.tacz.guns.entity.TargetMinecart;
-import net.fabricmc.api.EnvType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.Nullable;
 
-public class ClientHitMark implements EntityHurtByGunEvent.Callback, EntityKillByGunEvent.Callback {
+public class ClientHitMark {
     public static long lastHitTimestamp = 0;
     public static float damageAmount = 0;
 
-    @Override
-    public void onEntityHurtByGun(EntityHurtByGunEvent event) {
+    public static void onEntityHurtByGun(EntityHurtByGunEvent event) {
         LogicalSide logicalSide = event.getLogicalSide();
         if (logicalSide != LogicalSide.CLIENT) {
             return;
@@ -55,8 +51,7 @@ public class ClientHitMark implements EntityHurtByGunEvent.Callback, EntityKillB
         }
     }
 
-    @Override
-    public void onEntityKillByGun(EntityKillByGunEvent event) {
+    public static void onEntityKillByGun(EntityKillByGunEvent event) {
         LogicalSide logicalSide = event.getLogicalSide();
         if (logicalSide != LogicalSide.CLIENT) {
             return;
