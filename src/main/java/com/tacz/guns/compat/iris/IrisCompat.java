@@ -33,9 +33,9 @@ public final class IrisCompat {
         if (FabricLoader.getInstance().isModLoaded(CompatRegistry.IRIS)) {
             if (bufferSource instanceof FullyBufferedMultiBufferSource fullyBufferedMultiBufferSource) {
                 fullyBufferedMultiBufferSource.draw();
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 }

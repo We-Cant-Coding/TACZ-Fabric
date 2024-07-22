@@ -367,7 +367,7 @@ public class BedrockModel {
             model.render(matrixStack, transformType, builder, light, overlay, red, green, blue, alpha);
         }
         matrixStack.pop();
-        if (!IrisCompat.endBatch(bufferSource)) {
+        if (IrisCompat.endBatch(bufferSource)) {
             bufferSource.draw(renderType);
         }
 

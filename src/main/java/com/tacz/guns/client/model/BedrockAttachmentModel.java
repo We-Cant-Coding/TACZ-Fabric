@@ -154,7 +154,7 @@ public class BedrockAttachmentModel extends BedrockAnimatedModel {
         VertexConsumerProvider.Immediate bufferSource = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
         part.render(poseStack, transformType, vertexConsumer, light, overlay);
-        if (!IrisCompat.endBatch(bufferSource)) {
+        if (IrisCompat.endBatch(bufferSource)) {
             bufferSource.draw(renderType);
         }
         part.visible = false;
