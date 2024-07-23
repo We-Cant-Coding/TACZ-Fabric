@@ -19,7 +19,7 @@
   ],
   "client": [
     "client.BipedEntityModelMixin",
-    "client.CameraAccessor",
+    "client.CameraMixin",
     "client.ClientPlayerEntityMixin",
     "client.FramebufferMixin",
     "client.GameRendererMixin",

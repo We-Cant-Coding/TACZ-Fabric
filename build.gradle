@@ -112,6 +112,7 @@ dependencies {
 	modCompileOnly "maven.modrinth:iris:${project.iris_version}"
 	modCompileOnly "maven.modrinth:carry-on:${project.carry_on_version}"
 	modCompileOnly "maven.modrinth:immediatelyfast:${project.immediatelyfast_version}"
+	modCompileOnly "maven.modrinth:zoomify:${project.zoomify_version}"
 
 	// Apache Commons Math library for performing some interpolation operations
 	include implementation(minecraftLibraries('org.apache.commons:commons-math3:3.6.1'))

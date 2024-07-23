@@ -9,6 +9,7 @@ import com.tacz.guns.client.tooltip.ClientGunTooltip;
 import com.tacz.guns.compat.immediatelyfast.ImmediatelyFastCompat;
 import com.tacz.guns.compat.playeranimator.PlayerAnimatorCompat;
 import com.tacz.guns.compat.shouldersurfing.ShoulderSurfingCompat;
+import com.tacz.guns.compat.zoomify.ZoomifyCompat;
 import com.tacz.guns.init.ModItems;
 import com.tacz.guns.inventory.tooltip.AmmoBoxTooltip;
 import com.tacz.guns.inventory.tooltip.AttachmentItemTooltip;
@@ -98,5 +99,6 @@ public class ClientSetup {
         ShoulderSurfingCompat.init();
 
         ImmediatelyFastCompat.init();
+        ZoomifyCompat.init();
     }
 }
