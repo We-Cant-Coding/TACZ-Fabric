@@ -17,9 +17,8 @@ public class CameraMixin implements CameraAngles {
     @Shadow
     private float pitch;
 
-    @Unique
-    @SuppressWarnings("AddedMixinMembersNamePattern")
-    public void setAnglesInternal(float yaw, float pitch) {
+    @Override
+    public void tacz$setAnglesInternal(float yaw, float pitch) {
         this.yaw = yaw;
         this.pitch = pitch;
     }

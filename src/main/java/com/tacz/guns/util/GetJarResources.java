@@ -7,10 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.net.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Objects;
@@ -110,8 +107,8 @@ public final class GetJarResources {
         var relativize = sourceURI.relativize(source.toUri()).toString();
         // 生成目标路径
         if (Objects.equals(sourceURI.getScheme(), "jar")) {
-            URI pSourceURI = URI.create(sourceURI.getSchemeSpecificPart().replace(" ", "%20"));
-            URI pSource = URI.create(source.toUri().getSchemeSpecificPart().replace(" ", "%20"));
+            URI pSourceURI = URI.create(UriEncoder.encode(sourceURI.getSchemeSpecificPart()));
+            URI pSource = URI.create(UriEncoder.encode(source.toUri().getSchemeSpecificPart()));
             relativize = pSourceURI.relativize(pSource).toString();
         }
         return targetPath.resolve(relativize);
