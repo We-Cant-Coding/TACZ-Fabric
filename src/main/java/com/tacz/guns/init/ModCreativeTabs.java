@@ -8,6 +8,7 @@ import com.tacz.guns.api.item.builder.AmmoItemBuilder;
 import com.tacz.guns.api.item.builder.AttachmentItemBuilder;
 import com.tacz.guns.api.item.builder.GunItemBuilder;
 import com.tacz.guns.api.item.gun.AbstractGunItem;
+import com.tacz.guns.item.AmmoBoxItem;
 import com.tacz.guns.item.AmmoItem;
 import com.tacz.guns.item.AttachmentItem;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
@@ -26,6 +27,7 @@ public class ModCreativeTabs {
                 entries.add(ModItems.TARGET);
                 entries.add(ModItems.STATUE);
                 entries.add(ModItems.TARGET_MINECART);
+                AmmoBoxItem.fillItemCategory(entries);
             }).build());
 
     public static ItemGroup AMMO_TAB = register("ammo", FabricItemGroup.builder()

@@ -41,7 +41,7 @@ public class GunSmithTableRenderer implements BlockEntityRenderer<GunSmithTableB
             poseStack.push();
             poseStack.translate(0.5, 1.5, 0.5);
             poseStack.multiply(RotationAxis.NEGATIVE_Z.rotationDegrees(180));
-            poseStack.multiply(RotationAxis.NEGATIVE_Y.rotationDegrees(90 - facing.getHorizontal() * 90));
+            poseStack.multiply(RotationAxis.NEGATIVE_Y.rotationDegrees(-facing.getHorizontal() * 90));
             RenderLayer renderType = RenderLayer.getEntityTranslucent(InternalAssetLoader.SMITH_TABLE_TEXTURE_LOCATION);
             model.render(poseStack, ModelTransformationMode.NONE, renderType, combinedLightIn, combinedOverlayIn);
             poseStack.pop();

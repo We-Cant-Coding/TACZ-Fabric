@@ -1,6 +1,7 @@
 package com.tacz.guns.block;
 
 import com.tacz.guns.block.entity.GunSmithTableBlockEntity;
+import com.tacz.guns.util.DirectionUtil;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.BedPart;
@@ -37,7 +38,7 @@ public class GunSmithTableBlock extends BlockWithEntity {
     }
 
     private static Direction getNeighbourDirection(BedPart bedPart, Direction direction) {
-        return bedPart == BedPart.FOOT ? direction : direction.getOpposite();
+        return bedPart == BedPart.FOOT ? DirectionUtil.getRight(direction) : DirectionUtil.getLeft(direction);
     }
 
     @Override
@@ -68,7 +69,7 @@ public class GunSmithTableBlock extends BlockWithEntity {
     public BlockState getPlacementState(ItemPlacementContext context) {
         Direction direction = context.getHorizontalPlayerFacing();
         BlockPos clickedPos = context.getBlockPos();
-        BlockPos relative = clickedPos.offset(direction);
+        BlockPos relative = clickedPos.offset(DirectionUtil.getRight(direction));
         World level = context.getWorld();
         if (level.getBlockState(relative).canReplace(context) && level.getWorldBorder().contains(relative)) {
             return this.getDefaultState().with(FACING, direction);
@@ -96,7 +97,7 @@ public class GunSmithTableBlock extends BlockWithEntity {
     public void onPlaced(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.onPlaced(worldIn, pos, state, placer, stack);
         if (!worldIn.isClient) {
-            BlockPos relative = pos.offset(state.get(FACING));
+            BlockPos relative = pos.offset(DirectionUtil.getRight(state.get(FACING)));
             worldIn.setBlockState(relative, state.with(PART, BedPart.HEAD), Block.NOTIFY_ALL);
             worldIn.updateNeighbors(pos, Blocks.AIR);
             state.updateNeighbors(worldIn, pos, Block.NOTIFY_ALL);
