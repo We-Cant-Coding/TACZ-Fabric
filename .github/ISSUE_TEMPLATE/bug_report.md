@@ -31,4 +31,4 @@ Please add information about your minecraft enviroment. if it an error log, Plea
 Add any other context about the problem here.
 
 
-Please Report Your Bug in English. Other Language Will be Likely Ignored.
+# Please Report Your Bug in English. Other Language Will be Likely Ignored.
