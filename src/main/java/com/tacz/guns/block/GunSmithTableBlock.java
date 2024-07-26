@@ -74,6 +74,10 @@ public class GunSmithTableBlock extends BlockWithEntity {
         if (level.getBlockState(relative).canReplace(context) && level.getWorldBorder().contains(relative)) {
             return this.getDefaultState().with(FACING, direction);
         }
+        relative = clickedPos.offset(DirectionUtil.getLeft(direction));
+        if (level.getBlockState(relative).canReplace(context) && level.getWorldBorder().contains(relative)) {
+            return this.getDefaultState().with(PART, BedPart.HEAD).with(FACING, direction);
+        }
         return null;
     }
 
@@ -97,8 +101,17 @@ public class GunSmithTableBlock extends BlockWithEntity {
     public void onPlaced(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.onPlaced(worldIn, pos, state, placer, stack);
         if (!worldIn.isClient) {
-            BlockPos relative = pos.offset(DirectionUtil.getRight(state.get(FACING)));
-            worldIn.setBlockState(relative, state.with(PART, BedPart.HEAD), Block.NOTIFY_ALL);
+            BedPart part = state.get(PART);
+            BlockPos relative;
+            if (part == BedPart.FOOT) {
+                relative = pos.offset(DirectionUtil.getRight(state.get(FACING)));
+                if (worldIn.getBlockState(relative).isOf(this)) return;
+                worldIn.setBlockState(relative, state.with(PART, BedPart.HEAD), Block.NOTIFY_ALL);
+            } else {
+                relative = pos.offset(DirectionUtil.getLeft(state.get(FACING)));
+                if (worldIn.getBlockState(relative).isOf(this)) return;
+                worldIn.setBlockState(relative, state.with(PART, BedPart.FOOT), Block.NOTIFY_ALL);
+            }
             worldIn.updateNeighbors(pos, Blocks.AIR);
             state.updateNeighbors(worldIn, pos, Block.NOTIFY_ALL);
         }
