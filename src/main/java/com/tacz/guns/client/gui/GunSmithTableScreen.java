@@ -347,7 +347,7 @@ public class GunSmithTableScreen extends HandledScreen<GunSmithTableMenu> {
             this.renderPackInfo(graphics, this.selectedRecipe);
         }
         if (selectedRecipeList != null && !selectedRecipeList.isEmpty()) {
-            renderIngredient(graphics);
+            renderIngredient(graphics, mouseX, mouseY);
         }
 
         this.drawables.stream().filter(w -> w instanceof ResultButton)
@@ -427,7 +427,7 @@ public class GunSmithTableScreen extends HandledScreen<GunSmithTableMenu> {
         }
     }
 
-    private void renderIngredient(DrawContext gui) {
+    private void renderIngredient(DrawContext gui, int mouseX, int mouseY) {
         if (this.selectedRecipe == null) {
             return;
         }
@@ -467,6 +467,12 @@ public class GunSmithTableScreen extends HandledScreen<GunSmithTableMenu> {
                 gui.drawText(textRenderer, String.format("%d/%d", count, hasCount), (offsetX + 17) * 2, (offsetY + 10) * 2, color, false);
 
                 poseStack.pop();
+
+                // width = 16.0F, height = 16.0F
+                boolean hovered = mouseX >= offsetX && mouseY >= offsetY && mouseX < offsetX + 16.0F && mouseY < offsetY + 16.0F;
+                if (hovered) {
+                    gui.drawItemTooltip(textRenderer, item, mouseX, mouseY);
+                }
             }
         }
     }
