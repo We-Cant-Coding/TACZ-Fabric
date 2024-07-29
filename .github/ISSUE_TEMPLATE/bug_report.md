@@ -7,6 +7,9 @@ assignees: ''
 
 ---
 
+[ ] Please Report Your Bug in English. Other Language Will be Likely Ignored.
+[ ] If the bug is also in forge, it will be likely won't be fixed.
+
 **Describe the bug**
 A clear and concise description of what the bug is.
 
@@ -29,8 +32,3 @@ Please add information about your minecraft enviroment. if it an error log, Plea
 
 **Additional context**
 Add any other context about the problem here.
-
-
-# Please Report Your Bug in English. Other Language Will be Likely Ignored.
-
-# If the bug is also in forge, it will be likely won't be fixed.
