@@ -32,3 +32,5 @@ Add any other context about the problem here.
 
 
 # Please Report Your Bug in English. Other Language Will be Likely Ignored.
+
+# If the bug is also in forge, it will be likely won't be fixed.
