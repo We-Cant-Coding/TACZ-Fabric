@@ -7,6 +7,7 @@ import com.tacz.guns.client.tooltip.ClientAmmoBoxTooltip;
 import com.tacz.guns.client.tooltip.ClientAttachmentItemTooltip;
 import com.tacz.guns.client.tooltip.ClientGunTooltip;
 import com.tacz.guns.compat.immediatelyfast.ImmediatelyFastCompat;
+import com.tacz.guns.compat.perspectivemod.PerspectiveModCompat;
 import com.tacz.guns.compat.playeranimator.PlayerAnimatorCompat;
 import com.tacz.guns.compat.shouldersurfing.ShoulderSurfingCompat;
 import com.tacz.guns.compat.zoomify.ZoomifyCompat;
@@ -98,6 +99,7 @@ public class ClientSetup {
         // 与 Shoulder Surfing Reloaded 的兼容
         ShoulderSurfingCompat.init();
 
+        PerspectiveModCompat.init();
         ImmediatelyFastCompat.init();
         ZoomifyCompat.init();
     }

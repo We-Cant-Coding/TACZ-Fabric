@@ -1,5 +1,6 @@
 package com.tacz.guns.client.event;
 
+import com.tacz.guns.GunMod;
 import com.tacz.guns.api.DefaultAssets;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.client.event.BeforeRenderHandEvent;
@@ -13,6 +14,7 @@ import com.tacz.guns.client.model.BedrockGunModel;
 import com.tacz.guns.client.resource.index.ClientAttachmentIndex;
 import com.tacz.guns.client.resource.index.ClientGunIndex;
 import com.tacz.guns.api.client.event.ViewportEvent;
+import com.tacz.guns.compat.perspectivemod.PerspectiveModCompat;
 import com.tacz.guns.resource.pojo.data.attachment.RecoilModifier;
 import com.tacz.guns.resource.pojo.data.gun.GunData;
 import com.tacz.guns.util.AttachmentDataUtils;
@@ -217,7 +219,11 @@ public class CameraSetupEvent {
         long timeTotal = System.currentTimeMillis() - shootTimeStamp;
         if (pitchSplineFunction != null && pitchSplineFunction.isValidPoint(timeTotal)) {
             double value = pitchSplineFunction.value(timeTotal);
-            player.setPitch(player.getPitch() - (float) (value - xRotO));
+            float setPitch = player.getPitch() - (float) (value - xRotO);
+            if (PerspectiveModCompat.getPerspectiveEnabled() && setPitch < -90f) {
+                setPitch = -90f;
+            }
+            player.setPitch(setPitch);
             xRotO = value;
         }
         if (yawSplineFunction != null && yawSplineFunction.isValidPoint(timeTotal)) {

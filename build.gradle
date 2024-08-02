@@ -98,6 +98,7 @@ dependencies {
 	modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinal_components_api_version}"))
 	modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinal_components_api_version}"))
 	modImplementation(include("maven.modrinth:modernkeybinding:${project.modernkeybinding_version}"))
+	modImplementation("maven.modrinth:perspective-mod-redux:${project.perspective_mod_redux_version}")
 
 	modRuntimeOnly("maven.modrinth:moonlight:${project.moonlight_version}")
 	modRuntimeOnly("maven.modrinth:mmmmmmmmmmmm:${project.mmmmmmmmmmmm_version}")
