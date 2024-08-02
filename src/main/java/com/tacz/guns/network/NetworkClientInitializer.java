@@ -1,10 +1,17 @@
 package com.tacz.guns.network;
 
+import com.tacz.guns.mixin.client.network.ClientLoginNetworkHandlerAccessor;
 import com.tacz.guns.network.message.*;
 import com.tacz.guns.network.message.event.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.networking.v1.ClientLoginNetworking;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketType;
+import net.minecraft.network.ClientConnection;
+import net.minecraft.network.PacketByteBuf;
+
+import java.util.concurrent.CompletableFuture;
 
 @Environment(EnvType.CLIENT)
 public class NetworkClientInitializer {
@@ -27,5 +34,15 @@ public class NetworkClientInitializer {
         ClientPlayNetworking.registerGlobalReceiver(ServerMessageGunMelee.TYPE, ServerMessageGunMelee::handle);
         ClientPlayNetworking.registerGlobalReceiver(ServerMessageGunReload.TYPE, ServerMessageGunReload::handle);
         ClientPlayNetworking.registerGlobalReceiver(ServerMessageGunShoot.TYPE, ServerMessageGunShoot::handle);
+    }
+
+    @Environment(EnvType.CLIENT)
+    public static <T extends IMessage> void registerHandshake(PacketType<T> type) {
+        ClientLoginNetworking.registerGlobalReceiver(type.getId(), (client, handler, buf, listenerAdder) -> {
+            T packet = type.read(buf);
+            ClientConnection connection = ((ClientLoginNetworkHandlerAccessor) handler).getConnection();
+            PacketByteBuf response = packet.handle(connection, listenerAdder);
+            return CompletableFuture.completedFuture(response);
+        });
     }
 }

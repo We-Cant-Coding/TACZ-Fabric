@@ -1,14 +1,13 @@
 package com.tacz.guns.network;
 
 import com.tacz.guns.network.message.*;
+import com.tacz.guns.network.message.handshake.Acknowledge;
+import com.tacz.guns.network.message.handshake.ServerMessageSyncedEntityDataMapping;
 import com.tacz.guns.util.EnvironmentUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.FabricPacket;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
@@ -36,6 +35,9 @@ public class NetworkHandler {
         ServerPlayNetworking.registerGlobalReceiver(ClientMessagePlayerBoltGun.TYPE, ClientMessagePlayerBoltGun::handle);
         ServerPlayNetworking.registerGlobalReceiver(ClientMessageUnloadAttachment.TYPE, ClientMessageUnloadAttachment::handle);
         ServerPlayNetworking.registerGlobalReceiver(ClientMessagePlayerMelee.TYPE, ClientMessagePlayerMelee::handle);
+
+        HandshakeNetworking.register(
+                ServerMessageSyncedEntityDataMapping.TYPE, new ServerMessageSyncedEntityDataMapping(), Acknowledge::receive);
 
         if (EnvironmentUtil.isClient()) {
             NetworkClientInitializer.init();

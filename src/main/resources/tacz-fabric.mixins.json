@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "plugin": "com.tacz.guns.GunMonMixinPlugin",
   "mixins": [
+    "client.network.ClientLoginNetworkHandlerAccessor",
     "common.EntityMixin",
     "common.EntityTypeMixin",
     "common.ItemStackMixin",
@@ -14,8 +15,7 @@
     "common.StairsBlockAccessor",
     "common.item.AbstractHorseEntityMixin",
     "common.item.LivingEntityMixin",
-    "common.item.PlayerEntityMixin",
-    "common.network.LoginSuccessS2CPacketMixin"
+    "common.item.PlayerEntityMixin"
   ],
   "client": [
     "client.BipedEntityModelMixin",
@@ -36,7 +36,6 @@
     "client.SoundSystemMixin",
     "client.SpriteAtlasTextureMixin",
     "client.TranslationStorageMixin",
-    "client.network.ClientLoginNetworkHandlerMixin",
     "common.MinecraftServerMixin"
   ],
   "injectors": {
