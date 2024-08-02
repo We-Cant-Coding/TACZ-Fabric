@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.nio.IntBuffer;
 
-@Mixin(Framebuffer.class)
+@Mixin(value = Framebuffer.class, priority = 2000)
 public abstract class FramebufferMixin implements FramebufferStencil {
     @Shadow public abstract void resize(int width, int height, boolean getError);
 

@@ -101,6 +101,7 @@ dependencies {
 
 	modRuntimeOnly("maven.modrinth:moonlight:${project.moonlight_version}")
 	modRuntimeOnly("maven.modrinth:mmmmmmmmmmmm:${project.mmmmmmmmmmmm_version}")
+	modRuntimeOnly("maven.modrinth:resolution-control-plus:${project.resolution_control_plus_version}")
 
 	modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
 		exclude(group: "net.fabricmc.fabric-api")
