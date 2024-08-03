@@ -3,7 +3,7 @@ package com.tacz.guns.inventory;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.crafting.GunSmithTableIngredient;
 import com.tacz.guns.network.NetworkHandler;
-import com.tacz.guns.network.message.ServerMessageCraft;
+import com.tacz.guns.network.packets.s2c.CraftS2CPacket;
 import it.unimi.dsi.fastutil.ints.Int2IntArrayMap;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -78,7 +78,7 @@ public class GunSmithTableMenu extends ScreenHandler {
             }
             // Update, otherwise the client display is incorrect
             player.playerScreenHandler.updateToClient();
-            NetworkHandler.sendToClientPlayer(new ServerMessageCraft(this.syncId), player);
+            NetworkHandler.sendToClientPlayer(new CraftS2CPacket(this.syncId), player);
         }));
     }
 }

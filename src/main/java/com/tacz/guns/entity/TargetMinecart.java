@@ -10,7 +10,7 @@ import com.tacz.guns.init.ModBlocks;
 import com.tacz.guns.init.ModItems;
 import com.tacz.guns.init.ModSounds;
 import com.tacz.guns.network.NetworkHandler;
-import com.tacz.guns.network.message.event.ServerMessageGunHurt;
+import com.tacz.guns.network.packets.s2c.event.GunHurtS2CPacket;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.SkullBlockEntity;
 import net.minecraft.entity.Entity;
@@ -72,7 +72,7 @@ public class TargetMinecart extends AbstractMinecartEntity implements ITargetEnt
                 boolean isHeadshot = false;
                 float headshotMultiplier = 1;
                 new EntityHurtByGunEvent.Post(this, player, projectile.getGunId(), damage, isHeadshot, headshotMultiplier, LogicalSide.SERVER).post();
-                NetworkHandler.sendToDimension(new ServerMessageGunHurt(this.getId(), player.getId(), projectile.getGunId(), damage, isHeadshot, headshotMultiplier), this);
+                NetworkHandler.sendToDimension(new GunHurtS2CPacket(this.getId(), player.getId(), projectile.getGunId(), damage, isHeadshot, headshotMultiplier), this);
             }
         }
     }

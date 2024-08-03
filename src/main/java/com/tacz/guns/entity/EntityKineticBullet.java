@@ -13,8 +13,8 @@ import com.tacz.guns.config.sync.SyncConfig;
 import com.tacz.guns.config.util.HeadShotAABBConfigRead;
 import com.tacz.guns.init.ModDamageTypes;
 import com.tacz.guns.network.NetworkHandler;
-import com.tacz.guns.network.message.event.ServerMessageGunHurt;
-import com.tacz.guns.network.message.event.ServerMessageGunKill;
+import com.tacz.guns.network.packets.s2c.event.GunHurtS2CPacket;
+import com.tacz.guns.network.packets.s2c.event.GunKillS2CPacket;
 import com.tacz.guns.particles.BulletHoleOption;
 import com.tacz.guns.resource.pojo.data.gun.BulletData;
 import com.tacz.guns.resource.pojo.data.gun.ExplosionData;
@@ -447,10 +447,10 @@ public class EntityKineticBullet extends ProjectileEntity implements IEntityAddi
                 // 如果生物死了
                 if (livingEntity.isDead()) {
                     new EntityKillByGunEvent(livingEntity, attacker, newGunId, headshot, LogicalSide.SERVER).post();
-                    NetworkHandler.sendToDimension(new ServerMessageGunKill(livingEntity.getId(), attackerId, newGunId, headshot), livingEntity);
+                    NetworkHandler.sendToDimension(new GunKillS2CPacket(livingEntity.getId(), attackerId, newGunId, headshot), livingEntity);
                 } else {
                     new EntityHurtByGunEvent.Post(livingEntity, attacker, newGunId, damage, headshot, headShotMultiplier, LogicalSide.SERVER).post();
-                    NetworkHandler.sendToDimension(new ServerMessageGunHurt(livingEntity.getId(), attackerId, newGunId, damage, headshot, headShotMultiplier), livingEntity);
+                    NetworkHandler.sendToDimension(new GunHurtS2CPacket(livingEntity.getId(), attackerId, newGunId, damage, headshot, headShotMultiplier), livingEntity);
                 }
             }
         }

@@ -7,7 +7,7 @@ import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.client.animation.statemachine.GunAnimationStateMachine;
 import com.tacz.guns.client.sound.SoundPlayManager;
 import com.tacz.guns.network.NetworkHandler;
-import com.tacz.guns.network.message.ClientMessagePlayerFireSelect;
+import com.tacz.guns.network.packets.c2s.PlayerFireSelectC2SPacket;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -39,7 +39,7 @@ public class LocalPlayerFireSelect {
             // 播放音效
             SoundPlayManager.playFireSelectSound(player, gunIndex);
             // 发送切换开火模式的数据包，通知服务器
-            NetworkHandler.sendToServer(new ClientMessagePlayerFireSelect());
+            NetworkHandler.sendToServer(new PlayerFireSelectC2SPacket());
             // 动画状态机转移状态
             GunAnimationStateMachine animationStateMachine = gunIndex.getAnimationStateMachine();
             if (animationStateMachine != null) {

@@ -5,7 +5,7 @@ import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.client.animation.statemachine.GunAnimationStateMachine;
 import com.tacz.guns.client.sound.SoundPlayManager;
 import com.tacz.guns.network.NetworkHandler;
-import com.tacz.guns.network.message.ClientMessagePlayerBoltGun;
+import com.tacz.guns.network.packets.c2s.PlayerBoltGunC2SPacket;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -51,7 +51,7 @@ public class LocalPlayerBolt {
             data.lockState(operator -> operator.getSynBoltCoolDown() >= 0);
             data.isBolting = true;
             // 发包通知服务器
-            NetworkHandler.sendToServer(new ClientMessagePlayerBoltGun());
+            NetworkHandler.sendToServer(new PlayerBoltGunC2SPacket());
             // 播放动画和音效
             GunAnimationStateMachine animationStateMachine = gunIndex.getAnimationStateMachine();
             if (animationStateMachine != null) {

@@ -3,7 +3,7 @@ package com.tacz.guns.resource.network;
 import com.google.common.collect.Maps;
 import com.tacz.guns.client.resource.ClientGunPackLoader;
 import com.tacz.guns.network.NetworkHandler;
-import com.tacz.guns.network.message.ServerMessageSyncGunPack;
+import com.tacz.guns.network.packets.s2c.SyncGunPackS2CPacket;
 import com.tacz.guns.resource.loader.asset.*;
 import com.tacz.guns.resource.loader.index.CommonAmmoIndexLoader;
 import com.tacz.guns.resource.loader.index.CommonAttachmentIndexLoader;
@@ -36,20 +36,20 @@ public class CommonGunPackNetwork {
 
     public static void syncClient(MinecraftServer server) {
         server.getPlayerManager().getPlayerList().forEach(player -> NetworkHandler.sendToClientPlayer(
-                new ServerMessageSyncGunPack(NETWORK_CACHE), player));
+                new SyncGunPackS2CPacket(NETWORK_CACHE), player));
     }
 
     public static void syncClientExceptSelf(MinecraftServer server, @Nullable PlayerEntity self) {
         server.getPlayerManager().getPlayerList().forEach(player -> {
             if (!player.equals(self)) {
-                ServerMessageSyncGunPack message = new ServerMessageSyncGunPack(NETWORK_CACHE);
+                SyncGunPackS2CPacket message = new SyncGunPackS2CPacket(NETWORK_CACHE);
                 NetworkHandler.sendToClientPlayer(message, player);
             }
         });
     }
 
     public static void syncClient(ServerPlayerEntity player) {
-        ServerPlayNetworking.send(player, new ServerMessageSyncGunPack(NETWORK_CACHE));
+        ServerPlayNetworking.send(player, new SyncGunPackS2CPacket(NETWORK_CACHE));
     }
 
     public static void toNetwork(EnumMap<DataType, Map<Identifier, String>> cache, PacketByteBuf buf) {

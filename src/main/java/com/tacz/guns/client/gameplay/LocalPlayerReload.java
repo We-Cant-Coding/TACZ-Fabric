@@ -13,7 +13,7 @@ import com.tacz.guns.client.animation.statemachine.GunAnimationStateMachine;
 import com.tacz.guns.client.resource.index.ClientGunIndex;
 import com.tacz.guns.client.sound.SoundPlayManager;
 import com.tacz.guns.network.NetworkHandler;
-import com.tacz.guns.network.message.ClientMessagePlayerReloadGun;
+import com.tacz.guns.network.packets.c2s.PlayerReloadGunC2SPacket;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
 import com.tacz.guns.util.AttachmentDataUtils;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -53,7 +53,7 @@ public class LocalPlayerReload {
                 return;
             }
             // 发包通知服务器
-            NetworkHandler.sendToServer(new ClientMessagePlayerReloadGun());
+            NetworkHandler.sendToServer(new PlayerReloadGunC2SPacket());
             // 执行客户端 reload 相关内容
             this.doReload(iGun, gunIndex, mainhandItem);
         });

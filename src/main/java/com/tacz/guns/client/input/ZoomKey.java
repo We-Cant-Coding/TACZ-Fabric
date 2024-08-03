@@ -3,7 +3,7 @@ package com.tacz.guns.client.input;
 import com.tacz.guns.api.client.gameplay.IClientPlayerGunOperator;
 import com.tacz.guns.api.client.event.InputEvent;
 import com.tacz.guns.network.NetworkHandler;
-import com.tacz.guns.network.message.ClientMessagePlayerZoom;
+import com.tacz.guns.network.packets.c2s.PlayerZoomC2SPacket;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -40,7 +40,7 @@ public class ZoomKey {
         }
         IClientPlayerGunOperator operator = IClientPlayerGunOperator.fromLocalPlayer(player);
         if (operator.isAim()) {
-            NetworkHandler.sendToServer(new ClientMessagePlayerZoom());
+            NetworkHandler.sendToServer(new PlayerZoomC2SPacket());
         }
     }
 }

@@ -1,8 +1,8 @@
 package com.tacz.guns.network;
 
-import com.tacz.guns.network.message.*;
-import com.tacz.guns.network.message.handshake.Acknowledge;
-import com.tacz.guns.network.message.handshake.ServerMessageSyncedEntityDataMapping;
+import com.tacz.guns.network.packets.c2s.*;
+import com.tacz.guns.network.packets.c2s.handshake.AcknowledgeC2SPacket;
+import com.tacz.guns.network.packets.s2c.handshake.SyncedEntityDataMappingS2CPacket;
 import com.tacz.guns.util.EnvironmentUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -24,20 +24,20 @@ import java.util.Objects;
 public class NetworkHandler {
 
     public static void init() {
-        ServerPlayNetworking.registerGlobalReceiver(ClientMessagePlayerShoot.TYPE, ClientMessagePlayerShoot::handle);
-        ServerPlayNetworking.registerGlobalReceiver(ClientMessagePlayerReloadGun.TYPE, ClientMessagePlayerReloadGun::handle);
-        ServerPlayNetworking.registerGlobalReceiver(ClientMessagePlayerFireSelect.TYPE, ClientMessagePlayerFireSelect::handle);
-        ServerPlayNetworking.registerGlobalReceiver(ClientMessagePlayerAim.TYPE, ClientMessagePlayerAim::handle);
-        ServerPlayNetworking.registerGlobalReceiver(ClientMessagePlayerDrawGun.TYPE, ClientMessagePlayerDrawGun::handle);
-        ServerPlayNetworking.registerGlobalReceiver(ClientMessageCraft.TYPE, ClientMessageCraft::handle);
-        ServerPlayNetworking.registerGlobalReceiver(ClientMessagePlayerZoom.TYPE, ClientMessagePlayerZoom::handle);
-        ServerPlayNetworking.registerGlobalReceiver(ClientMessageRefitGun.TYPE, ClientMessageRefitGun::handle);
-        ServerPlayNetworking.registerGlobalReceiver(ClientMessagePlayerBoltGun.TYPE, ClientMessagePlayerBoltGun::handle);
-        ServerPlayNetworking.registerGlobalReceiver(ClientMessageUnloadAttachment.TYPE, ClientMessageUnloadAttachment::handle);
-        ServerPlayNetworking.registerGlobalReceiver(ClientMessagePlayerMelee.TYPE, ClientMessagePlayerMelee::handle);
+        ServerPlayNetworking.registerGlobalReceiver(PlayerShootC2SPacket.TYPE, PlayerShootC2SPacket::handle);
+        ServerPlayNetworking.registerGlobalReceiver(PlayerReloadGunC2SPacket.TYPE, PlayerReloadGunC2SPacket::handle);
+        ServerPlayNetworking.registerGlobalReceiver(PlayerFireSelectC2SPacket.TYPE, PlayerFireSelectC2SPacket::handle);
+        ServerPlayNetworking.registerGlobalReceiver(PlayerAimC2SPacket.TYPE, PlayerAimC2SPacket::handle);
+        ServerPlayNetworking.registerGlobalReceiver(PlayerDrawGunC2SPacket.TYPE, PlayerDrawGunC2SPacket::handle);
+        ServerPlayNetworking.registerGlobalReceiver(CraftC2SPacket.TYPE, CraftC2SPacket::handle);
+        ServerPlayNetworking.registerGlobalReceiver(PlayerZoomC2SPacket.TYPE, PlayerZoomC2SPacket::handle);
+        ServerPlayNetworking.registerGlobalReceiver(RefitGunC2SPacket.TYPE, RefitGunC2SPacket::handle);
+        ServerPlayNetworking.registerGlobalReceiver(PlayerBoltGunC2SPacket.TYPE, PlayerBoltGunC2SPacket::handle);
+        ServerPlayNetworking.registerGlobalReceiver(UnloadAttachmentC2SPacket.TYPE, UnloadAttachmentC2SPacket::handle);
+        ServerPlayNetworking.registerGlobalReceiver(PlayerMeleeC2SPacket.TYPE, PlayerMeleeC2SPacket::handle);
 
         HandshakeNetworking.register(
-                ServerMessageSyncedEntityDataMapping.TYPE, new ServerMessageSyncedEntityDataMapping(), Acknowledge::receive);
+                SyncedEntityDataMappingS2CPacket.TYPE, new SyncedEntityDataMappingS2CPacket(), AcknowledgeC2SPacket::receive);
 
         if (EnvironmentUtil.isClient()) {
             NetworkClientInitializer.init();

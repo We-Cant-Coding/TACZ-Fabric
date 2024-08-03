@@ -1,10 +1,7 @@
 package com.tacz.guns.sound;
 
-import com.tacz.guns.network.NetworkHandler;
-import com.tacz.guns.network.message.ServerMessageSound;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import com.tacz.guns.network.packets.s2c.SoundS2CPacket;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.fabric.impl.screenhandler.client.ClientNetworking;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
@@ -100,7 +97,7 @@ public class SoundManager {
     public static void sendSoundToNearby(LivingEntity sourceEntity, int distance, Identifier gunId, String soundName, float volume, float pitch) {
         if (sourceEntity.getWorld() instanceof ServerWorld serverWorld) {
             BlockPos pos = sourceEntity.getBlockPos();
-            ServerMessageSound soundMessage = new ServerMessageSound(sourceEntity.getId(), gunId, soundName, volume, pitch, distance);
+            SoundS2CPacket soundMessage = new SoundS2CPacket(sourceEntity.getId(), gunId, soundName, volume, pitch, distance);
             serverWorld.getChunkManager().threadedAnvilChunkStorage.getPlayersWatchingChunk(new ChunkPos(pos), false).stream()
                     .filter(p -> p.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ()) < distance * distance)
                     .filter(p -> p.getId() != sourceEntity.getId())

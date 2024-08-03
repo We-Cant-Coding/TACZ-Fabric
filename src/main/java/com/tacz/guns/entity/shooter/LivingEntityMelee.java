@@ -8,15 +8,13 @@ import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.api.item.attachment.AttachmentType;
 import com.tacz.guns.api.item.gun.AbstractGunItem;
 import com.tacz.guns.network.NetworkHandler;
-import com.tacz.guns.network.message.event.ServerMessageGunMelee;
+import com.tacz.guns.network.packets.s2c.event.GunMeleeS2CPacket;
 import com.tacz.guns.resource.index.CommonGunIndex;
 import com.tacz.guns.resource.pojo.data.attachment.MeleeData;
 import com.tacz.guns.resource.pojo.data.gun.GunDefaultMeleeData;
 import com.tacz.guns.resource.pojo.data.gun.GunMeleeData;
-import net.fabricmc.api.EnvType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
@@ -54,7 +52,7 @@ public class LivingEntityMelee {
         if (new GunMeleeEvent(shooter, currentGunItem, LogicalSide.SERVER).post()) {
             return;
         }
-        NetworkHandler.sendToTrackingEntity(new ServerMessageGunMelee(shooter.getId(), currentGunItem), shooter);
+        NetworkHandler.sendToTrackingEntity(new GunMeleeS2CPacket(shooter.getId(), currentGunItem), shooter);
         if (currentGunItem.getItem() instanceof AbstractGunItem logicGun) {
             data.meleeTimestamp = System.currentTimeMillis();
 

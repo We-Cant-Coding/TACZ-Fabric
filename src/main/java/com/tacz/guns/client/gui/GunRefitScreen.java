@@ -8,10 +8,9 @@ import com.tacz.guns.client.animation.screen.RefitTransform;
 import com.tacz.guns.client.gui.components.refit.*;
 import com.tacz.guns.client.sound.SoundPlayManager;
 import com.tacz.guns.network.NetworkHandler;
-import com.tacz.guns.network.message.ClientMessageRefitGun;
-import com.tacz.guns.network.message.ClientMessageUnloadAttachment;
+import com.tacz.guns.network.packets.c2s.RefitGunC2SPacket;
+import com.tacz.guns.network.packets.c2s.UnloadAttachmentC2SPacket;
 import com.tacz.guns.sound.SoundManager;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -128,7 +127,7 @@ public class GunRefitScreen extends Screen {
                 InventoryAttachmentSlot button = new InventoryAttachmentSlot(startX, currentY, i, inventory, b -> {
                     int slotIndex = ((InventoryAttachmentSlot) b).getSlotIndex();
                     SoundPlayManager.playerRefitSound(inventory.getStack(slotIndex), player, SoundManager.INSTALL_SOUND);
-                    ClientMessageRefitGun message = new ClientMessageRefitGun(slotIndex, inventory.selectedSlot, RefitTransform.getCurrentTransformType());
+                    RefitGunC2SPacket message = new RefitGunC2SPacket(slotIndex, inventory.selectedSlot, RefitTransform.getCurrentTransformType());
                     NetworkHandler.sendToServer(message);
                 });
                 this.addDrawableChild(button);
@@ -202,7 +201,7 @@ public class GunRefitScreen extends Screen {
                         int freeSlot = inventory.getEmptySlot();
                         if (freeSlot != -1) {
                             SoundPlayManager.playerRefitSound(attachmentItem, player, SoundManager.UNINSTALL_SOUND);
-                            ClientMessageUnloadAttachment message = new ClientMessageUnloadAttachment(inventory.selectedSlot, RefitTransform.getCurrentTransformType());
+                            UnloadAttachmentC2SPacket message = new UnloadAttachmentC2SPacket(inventory.selectedSlot, RefitTransform.getCurrentTransformType());
                             NetworkHandler.sendToServer(message);
                         } else {
                             player.sendMessage(Text.translatable("gui.tacz-fabric.gun_refit.unload.no_space"));

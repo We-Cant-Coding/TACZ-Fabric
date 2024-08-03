@@ -8,7 +8,7 @@ import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.client.animation.statemachine.GunAnimationStateMachine;
 import com.tacz.guns.client.sound.SoundPlayManager;
 import com.tacz.guns.network.NetworkHandler;
-import com.tacz.guns.network.message.ClientMessagePlayerDrawGun;
+import com.tacz.guns.network.packets.c2s.PlayerDrawGunC2SPacket;
 import com.tacz.guns.resource.index.CommonGunIndex;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -46,7 +46,7 @@ public class LocalPlayerDraw {
         if (MinecraftClient.getInstance().interactionManager != null) {
             MinecraftClient.getInstance().interactionManager.syncSelectedSlot();
         }
-        NetworkHandler.sendToServer(new ClientMessagePlayerDrawGun());
+        NetworkHandler.sendToServer(new PlayerDrawGunC2SPacket());
         new GunDrawEvent(player, lastItem, currentItem, LogicalSide.CLIENT).post();
 
         // 不处于收枪状态时才能收枪

@@ -1,6 +1,5 @@
 package com.tacz.guns.client.gameplay;
 
-import com.tacz.guns.GunMod;
 import com.tacz.guns.api.LogicalSide;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.client.gameplay.IClientPlayerGunOperator;
@@ -14,7 +13,7 @@ import com.tacz.guns.client.animation.statemachine.GunAnimationStateMachine;
 import com.tacz.guns.client.resource.index.ClientGunIndex;
 import com.tacz.guns.client.sound.SoundPlayManager;
 import com.tacz.guns.network.NetworkHandler;
-import com.tacz.guns.network.message.ClientMessagePlayerShoot;
+import com.tacz.guns.network.packets.c2s.PlayerShootC2SPacket;
 import com.tacz.guns.resource.index.CommonGunIndex;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
 import com.tacz.guns.resource.pojo.data.gun.GunData;
@@ -150,7 +149,7 @@ public class LocalPlayerShoot {
                 // 记录新的开火时间戳
                 data.clientShootTimestamp = System.currentTimeMillis();
                 // 发送开火的数据包，通知服务器
-                NetworkHandler.sendToServer(new ClientMessagePlayerShoot());
+                NetworkHandler.sendToServer(new PlayerShootC2SPacket());
             }
             // 触发击发事件
             boolean fire = !new GunFireEvent(player, mainhandItem, LogicalSide.CLIENT).post();

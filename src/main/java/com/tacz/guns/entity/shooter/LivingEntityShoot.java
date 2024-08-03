@@ -8,14 +8,12 @@ import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.api.item.gun.AbstractGunItem;
 import com.tacz.guns.api.item.gun.FireMode;
 import com.tacz.guns.network.NetworkHandler;
-import com.tacz.guns.network.message.event.ServerMessageGunShoot;
+import com.tacz.guns.network.packets.s2c.event.GunShootS2CPacket;
 import com.tacz.guns.resource.index.CommonGunIndex;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
 import com.tacz.guns.resource.pojo.data.gun.BulletData;
-import net.fabricmc.api.EnvType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 
 import java.util.Optional;
@@ -90,7 +88,7 @@ public class LivingEntityShoot {
         if (new GunShootEvent(shooter, currentGunItem, LogicalSide.SERVER).post()) {
             return ShootResult.FORGE_EVENT_CANCEL;
         }
-        NetworkHandler.sendToTrackingEntity(new ServerMessageGunShoot(shooter.getId(), currentGunItem), shooter);
+        NetworkHandler.sendToTrackingEntity(new GunShootS2CPacket(shooter.getId(), currentGunItem), shooter);
         // 执行枪械射击逻辑
         if (iGun instanceof AbstractGunItem logicGun) {
             BulletData bulletData = gunIndex.getBulletData();

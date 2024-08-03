@@ -2,7 +2,7 @@ package com.tacz.guns.event;
 
 import com.tacz.guns.entity.sync.core.*;
 import com.tacz.guns.network.NetworkHandler;
-import com.tacz.guns.network.message.ServerMessageUpdateEntityData;
+import com.tacz.guns.network.packets.s2c.UpdateEntityDataS2CPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
@@ -23,7 +23,7 @@ public class SyncedEntityDataEvent {
                 List<DataEntry<?, ?>> entries = holder.gatherAll();
                 entries.removeIf(entry -> !entry.getKey().syncMode().isTracking());
                 if (!entries.isEmpty()) {
-                    NetworkHandler.sendToClientPlayer(new ServerMessageUpdateEntityData(entity.getId(), entries), player);
+                    NetworkHandler.sendToClientPlayer(new UpdateEntityDataS2CPacket(entity.getId(), entries), player);
                 }
             }
         }
@@ -35,7 +35,7 @@ public class SyncedEntityDataEvent {
             if (holder != null) {
                 List<DataEntry<?, ?>> entries = holder.gatherAll();
                 if (!entries.isEmpty()) {
-                    NetworkHandler.sendToClientPlayer(new ServerMessageUpdateEntityData(player.getId(), entries), player);
+                    NetworkHandler.sendToClientPlayer(new UpdateEntityDataS2CPacket(player.getId(), entries), player);
                 }
             }
         }
@@ -81,11 +81,11 @@ public class SyncedEntityDataEvent {
             }
             List<DataEntry<?, ?>> selfEntries = entries.stream().filter(entry -> entry.getKey().syncMode().isSelf()).collect(Collectors.toList());
             if (!selfEntries.isEmpty() && entity instanceof ServerPlayerEntity) {
-                NetworkHandler.sendToClientPlayer(new ServerMessageUpdateEntityData(entity.getId(), selfEntries), (ServerPlayerEntity) entity);
+                NetworkHandler.sendToClientPlayer(new UpdateEntityDataS2CPacket(entity.getId(), selfEntries), (ServerPlayerEntity) entity);
             }
             List<DataEntry<?, ?>> trackingEntries = entries.stream().filter(entry -> entry.getKey().syncMode().isTracking()).collect(Collectors.toList());
             if (!trackingEntries.isEmpty()) {
-                NetworkHandler.sendToTrackingEntity(new ServerMessageUpdateEntityData(entity.getId(), trackingEntries), entity);
+                NetworkHandler.sendToTrackingEntity(new UpdateEntityDataS2CPacket(entity.getId(), trackingEntries), entity);
             }
             holder.clean();
         }

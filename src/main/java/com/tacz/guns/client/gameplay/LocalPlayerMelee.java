@@ -10,7 +10,7 @@ import com.tacz.guns.client.animation.statemachine.GunAnimationConstant;
 import com.tacz.guns.client.animation.statemachine.GunAnimationStateMachine;
 import com.tacz.guns.client.sound.SoundPlayManager;
 import com.tacz.guns.network.NetworkHandler;
-import com.tacz.guns.network.message.ClientMessagePlayerMelee;
+import com.tacz.guns.network.packets.c2s.PlayerMeleeC2SPacket;
 import com.tacz.guns.resource.pojo.data.attachment.MeleeData;
 import com.tacz.guns.resource.pojo.data.gun.GunDefaultMeleeData;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -82,7 +82,7 @@ public class LocalPlayerMelee {
                 // 播放音效
                 SoundPlayManager.playMeleeBayonetSound(player, gunIndex);
                 // 发送切换开火模式的数据包，通知服务器
-                NetworkHandler.sendToServer(new ClientMessagePlayerMelee());
+                NetworkHandler.sendToServer(new PlayerMeleeC2SPacket());
                 // 动画状态机转移状态
                 GunAnimationStateMachine animationStateMachine = gunIndex.getAnimationStateMachine();
                 if (animationStateMachine != null) {
@@ -99,7 +99,7 @@ public class LocalPlayerMelee {
                 // 播放音效
                 SoundPlayManager.playMeleeStockSound(player, gunIndex);
                 // 发送切换开火模式的数据包，通知服务器
-                NetworkHandler.sendToServer(new ClientMessagePlayerMelee());
+                NetworkHandler.sendToServer(new PlayerMeleeC2SPacket());
                 // 动画状态机转移状态
                 GunAnimationStateMachine animationStateMachine = gunIndex.getAnimationStateMachine();
                 if (animationStateMachine != null) {
@@ -115,7 +115,7 @@ public class LocalPlayerMelee {
                 // 播放音效
                 SoundPlayManager.playMeleePushSound(player, gunIndex);
                 // 发送切换开火模式的数据包，通知服务器
-                NetworkHandler.sendToServer(new ClientMessagePlayerMelee());
+                NetworkHandler.sendToServer(new PlayerMeleeC2SPacket());
                 // 动画状态机转移状态
                 GunAnimationStateMachine animationStateMachine = gunIndex.getAnimationStateMachine();
                 if (animationStateMachine != null) {

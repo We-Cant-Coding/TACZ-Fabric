@@ -5,7 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.tacz.guns.api.entity.IGunOperator;
 import com.tacz.guns.api.entity.ReloadState;
 import com.tacz.guns.network.NetworkHandler;
-import com.tacz.guns.network.message.ServerMessageSwapItem;
+import com.tacz.guns.network.packets.s2c.SwapItemS2CPacket;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -34,6 +34,6 @@ public class ServerPlayNetworkHandlerMixin {
     @Inject(method = "onPlayerAction", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;clearActiveItem()V"))
     public void applySwapOffhandDraw(PlayerActionC2SPacket packet, CallbackInfo ci) {
         player.currentScreenHandler.sendContentUpdates();
-        NetworkHandler.sendToClientPlayer(new ServerMessageSwapItem(), player);
+        NetworkHandler.sendToClientPlayer(new SwapItemS2CPacket(), player);
     }
 }

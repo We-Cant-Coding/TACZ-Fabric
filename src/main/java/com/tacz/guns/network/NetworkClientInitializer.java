@@ -1,8 +1,8 @@
 package com.tacz.guns.network;
 
 import com.tacz.guns.mixin.client.network.ClientLoginNetworkHandlerAccessor;
-import com.tacz.guns.network.message.*;
-import com.tacz.guns.network.message.event.*;
+import com.tacz.guns.network.packets.s2c.event.*;
+import com.tacz.guns.network.packets.s2c.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientLoginNetworking;
@@ -18,22 +18,22 @@ public class NetworkClientInitializer {
 
     @Environment(EnvType.CLIENT)
     public static void init() {
-        ClientPlayNetworking.registerGlobalReceiver(ServerMessageSound.TYPE, ServerMessageSound::handle);
-        ClientPlayNetworking.registerGlobalReceiver(ServerMessageCraft.TYPE, ServerMessageCraft::handle);
-        ClientPlayNetworking.registerGlobalReceiver(ServerMessageRefreshRefitScreen.TYPE, ServerMessageRefreshRefitScreen::handle);
-        ClientPlayNetworking.registerGlobalReceiver(ServerMessageSwapItem.TYPE, ServerMessageSwapItem::handle);
-        ClientPlayNetworking.registerGlobalReceiver(ServerMessageLevelUp.TYPE, ServerMessageLevelUp::handle);
-        ClientPlayNetworking.registerGlobalReceiver(ServerMessageUpdateEntityData.TYPE, ServerMessageUpdateEntityData::handle);
-        ClientPlayNetworking.registerGlobalReceiver(ServerMessageSyncGunPack.TYPE, ServerMessageSyncGunPack::handle);
+        ClientPlayNetworking.registerGlobalReceiver(SoundS2CPacket.TYPE, SoundS2CPacket::handle);
+        ClientPlayNetworking.registerGlobalReceiver(CraftS2CPacket.TYPE, CraftS2CPacket::handle);
+        ClientPlayNetworking.registerGlobalReceiver(RefreshRefitScreenS2CPacket.TYPE, RefreshRefitScreenS2CPacket::handle);
+        ClientPlayNetworking.registerGlobalReceiver(SwapItemS2CPacket.TYPE, SwapItemS2CPacket::handle);
+        ClientPlayNetworking.registerGlobalReceiver(LevelUpS2CPacket.TYPE, LevelUpS2CPacket::handle);
+        ClientPlayNetworking.registerGlobalReceiver(UpdateEntityDataS2CPacket.TYPE, UpdateEntityDataS2CPacket::handle);
+        ClientPlayNetworking.registerGlobalReceiver(SyncGunPackS2CPacket.TYPE, SyncGunPackS2CPacket::handle);
 
-        ClientPlayNetworking.registerGlobalReceiver(ServerMessageGunHurt.TYPE, ServerMessageGunHurt::handle);
-        ClientPlayNetworking.registerGlobalReceiver(ServerMessageGunKill.TYPE, ServerMessageGunKill::handle);
-        ClientPlayNetworking.registerGlobalReceiver(ServerMessageGunDraw.TYPE, ServerMessageGunDraw::handle);
-        ClientPlayNetworking.registerGlobalReceiver(ServerMessageGunFire.TYPE, ServerMessageGunFire::handle);
-        ClientPlayNetworking.registerGlobalReceiver(ServerMessageGunFireSelect.TYPE, ServerMessageGunFireSelect::handle);
-        ClientPlayNetworking.registerGlobalReceiver(ServerMessageGunMelee.TYPE, ServerMessageGunMelee::handle);
-        ClientPlayNetworking.registerGlobalReceiver(ServerMessageGunReload.TYPE, ServerMessageGunReload::handle);
-        ClientPlayNetworking.registerGlobalReceiver(ServerMessageGunShoot.TYPE, ServerMessageGunShoot::handle);
+        ClientPlayNetworking.registerGlobalReceiver(GunHurtS2CPacket.TYPE, GunHurtS2CPacket::handle);
+        ClientPlayNetworking.registerGlobalReceiver(GunKillS2CPacket.TYPE, GunKillS2CPacket::handle);
+        ClientPlayNetworking.registerGlobalReceiver(GunDrawS2CPacket.TYPE, GunDrawS2CPacket::handle);
+        ClientPlayNetworking.registerGlobalReceiver(GunFireS2CPacket.TYPE, GunFireS2CPacket::handle);
+        ClientPlayNetworking.registerGlobalReceiver(GunFireSelectS2CPacket.TYPE, GunFireSelectS2CPacket::handle);
+        ClientPlayNetworking.registerGlobalReceiver(GunMeleeS2CPacket.TYPE, GunMeleeS2CPacket::handle);
+        ClientPlayNetworking.registerGlobalReceiver(GunReloadS2CPacket.TYPE, GunReloadS2CPacket::handle);
+        ClientPlayNetworking.registerGlobalReceiver(GunShootS2CPacket.TYPE, GunShootS2CPacket::handle);
     }
 
     @Environment(EnvType.CLIENT)

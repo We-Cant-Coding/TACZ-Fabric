@@ -2,7 +2,7 @@ package com.tacz.guns.client.resource;
 
 import com.tacz.guns.client.download.ClientGunPackDownloadManager;
 import com.tacz.guns.config.sync.SyncConfig;
-import com.tacz.guns.network.message.ServerMessageSyncGunPack;
+import com.tacz.guns.network.packets.s2c.SyncGunPackS2CPacket;
 import com.tacz.guns.resource.CommonGunPackLoader;
 import com.tacz.guns.resource.network.CommonGunPackNetwork;
 import com.tacz.guns.resource.network.DataType;
@@ -55,7 +55,7 @@ public class ClientReloadManager {
         }
     }
 
-    public static void cacheAll(ServerMessageSyncGunPack message) {
+    public static void cacheAll(SyncGunPackS2CPacket message) {
         LOCALE_CACHE.clear();
         LOCALE_CACHE.putAll(message.getCache());
     }

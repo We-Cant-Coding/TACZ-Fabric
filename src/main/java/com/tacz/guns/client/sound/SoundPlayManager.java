@@ -5,7 +5,7 @@ import com.tacz.guns.api.item.IAttachment;
 import com.tacz.guns.client.resource.index.ClientGunIndex;
 import com.tacz.guns.config.common.GunConfig;
 import com.tacz.guns.init.ModSounds;
-import com.tacz.guns.network.message.ServerMessageSound;
+import com.tacz.guns.network.packets.s2c.SoundS2CPacket;
 import com.tacz.guns.sound.SoundManager;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -147,7 +147,7 @@ public class SoundPlayManager {
         playClientSound(entity, gunIndex.getSounds(SoundManager.KILL_SOUND), 1.0f, 1.0f, GunConfig.DEFAULT_GUN_OTHER_SOUND_DISTANCE.get());
     }
 
-    public static void playMessageSound(ServerMessageSound message) {
+    public static void playMessageSound(SoundS2CPacket message) {
         ClientWorld world = MinecraftClient.getInstance().world;
         if (world == null || !(world.getEntityById(message.getEntityId()) instanceof LivingEntity livingEntity)) {
             return;

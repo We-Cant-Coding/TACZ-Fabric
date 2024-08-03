@@ -19,10 +19,9 @@ import com.tacz.guns.crafting.GunSmithTableResult;
 import com.tacz.guns.init.ModCreativeTabs;
 import com.tacz.guns.inventory.GunSmithTableMenu;
 import com.tacz.guns.network.NetworkHandler;
-import com.tacz.guns.network.message.ClientMessageCraft;
+import com.tacz.guns.network.packets.c2s.CraftC2SPacket;
 import com.tacz.guns.util.RenderDistance;
 import it.unimi.dsi.fastutil.ints.Int2IntArrayMap;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -189,7 +188,7 @@ public class GunSmithTableScreen extends HandledScreen<GunSmithTableMenu> {
                         return;
                     }
                 }
-                NetworkHandler.sendToServer(new ClientMessageCraft(this.selectedRecipe.getId(), this.handler.syncId));
+                NetworkHandler.sendToServer(new CraftC2SPacket(this.selectedRecipe.getId(), this.handler.syncId));
             }
         }));
     }

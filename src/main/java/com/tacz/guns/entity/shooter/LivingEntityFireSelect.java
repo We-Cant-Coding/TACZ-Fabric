@@ -5,11 +5,9 @@ import com.tacz.guns.api.event.common.GunFireSelectEvent;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.api.item.gun.AbstractGunItem;
 import com.tacz.guns.network.NetworkHandler;
-import com.tacz.guns.network.message.event.ServerMessageGunFireSelect;
-import net.fabricmc.api.EnvType;
+import com.tacz.guns.network.packets.s2c.event.GunFireSelectS2CPacket;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
 
 public class LivingEntityFireSelect {
     private final LivingEntity shooter;
@@ -31,7 +29,7 @@ public class LivingEntityFireSelect {
         if (new GunFireSelectEvent(shooter, currentGunItem, LogicalSide.SERVER).post()) {
             return;
         }
-        NetworkHandler.sendToTrackingEntity(new ServerMessageGunFireSelect(shooter.getId(), currentGunItem), shooter);
+        NetworkHandler.sendToTrackingEntity(new GunFireSelectS2CPacket(shooter.getId(), currentGunItem), shooter);
         if (iGun instanceof AbstractGunItem logicGun) {
             logicGun.fireSelect(currentGunItem);
         }
