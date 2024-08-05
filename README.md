@@ -1,5 +1,5 @@
 # About Immersive Guns Mod.
-[Related Issue.]([https://pages.github.com/](https://github.com/We-Cant-Coding/TACZ-Fabric/issues/11)).
+[Related Issue.](https://github.com/We-Cant-Coding/TACZ-Fabric/issues/11)
 
 
 # TACZ-Fabric
