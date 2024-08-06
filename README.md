@@ -1,6 +1,4 @@
-# About Immersive Guns Mod.
-## [Related Issue.](https://github.com/We-Cant-Coding/TACZ-Fabric/issues/11)
-
+# [About Immersive Guns Mod.](https://github.com/We-Cant-Coding/TACZ-Fabric/issues/11)
 
 ### TACZ-Fabric
 Ported Timeless and Classics Zero Forge 1.20.1 to Fabric 1.20.1.
