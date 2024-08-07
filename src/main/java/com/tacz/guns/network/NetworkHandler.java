@@ -7,7 +7,9 @@ import com.tacz.guns.util.EnvironmentUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.*;
+import net.fabricmc.fabric.api.networking.v1.FabricPacket;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
@@ -36,8 +38,8 @@ public class NetworkHandler {
         ServerPlayNetworking.registerGlobalReceiver(UnloadAttachmentC2SPacket.TYPE, UnloadAttachmentC2SPacket::handle);
         ServerPlayNetworking.registerGlobalReceiver(PlayerMeleeC2SPacket.TYPE, PlayerMeleeC2SPacket::handle);
 
-        HandshakeNetworking.register(
-                SyncedEntityDataMappingS2CPacket.TYPE, new SyncedEntityDataMappingS2CPacket(), AcknowledgeC2SPacket::receive);
+        HandshakeNetworking.register(AcknowledgeC2SPacket.ID, AcknowledgeC2SPacket.class);
+        HandshakeNetworking.register(SyncedEntityDataMappingS2CPacket.TYPE, SyncedEntityDataMappingS2CPacket.class);
 
         if (EnvironmentUtil.isClient()) {
             NetworkClientInitializer.init();

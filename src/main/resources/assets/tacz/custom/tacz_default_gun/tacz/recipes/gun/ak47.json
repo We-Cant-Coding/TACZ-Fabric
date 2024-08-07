@@ -1,0 +1,26 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "c:iron_ingots"
+      },
+      "count": 38
+    },
+    {
+      "item": {
+        "tag": "c:lapis"
+      },
+      "count": 6
+    },
+    {
+      "item": {
+        "tag": "minecraft:logs"
+      },
+      "count": 8
+    }
+  ],
+  "result": {
+    "type": "gun",
+    "id": "tacz:ak47"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "c:iron_ingots"
+      },
+      "count": 4
+    },
+    {
+      "item": {
+        "tag": "c:dusts/redstone"
+      },
+      "count": 1
+    },
+    {
+      "item": {
+        "tag": "c:glass_blocks"
+      },
+      "count": 1
+    }
+  ],
+  "result": {
+    "type": "attachment",
+    "id": "tacz:sight_t1"
+  }
+}

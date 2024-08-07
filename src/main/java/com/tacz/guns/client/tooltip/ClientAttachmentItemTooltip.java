@@ -37,8 +37,8 @@ public class ClientAttachmentItemTooltip implements TooltipComponent {
     private static final Cache<Identifier, List<ItemStack>> CACHE = CacheBuilder.newBuilder().expireAfterAccess(5, TimeUnit.SECONDS).build();
     private final Identifier attachmentId;
     private final List<Text> components = Lists.newArrayList();
-    private final MutableText tips = Text.translatable("tooltip.tacz-fabric.attachment.yaw.shift");
-    private final MutableText support = Text.translatable("tooltip.tacz-fabric.attachment.yaw.support");
+    private final MutableText tips = Text.translatable("tooltip.tacz.attachment.yaw.shift");
+    private final MutableText support = Text.translatable("tooltip.tacz.attachment.yaw.support");
     private @Nullable MutableText packInfo;
     private List<ItemStack> showGuns = Lists.newArrayList();
 
@@ -161,49 +161,49 @@ public class ClientAttachmentItemTooltip implements TooltipComponent {
                         zoomText[i] = "x" + zoom[i];
                     }
                     String zoomJoinText = StringUtils.join(zoomText, ", ");
-                    components.add(Text.translatable("tooltip.tacz-fabric.attachment.zoom", zoomJoinText).formatted(Formatting.GOLD));
+                    components.add(Text.translatable("tooltip.tacz.attachment.zoom", zoomJoinText).formatted(Formatting.GOLD));
                 }
             }
 
             if (type == AttachmentType.EXTENDED_MAG) {
                 int magLevel = data.getExtendedMagLevel();
                 if (magLevel == 1) {
-                    components.add(Text.translatable("tooltip.tacz-fabric.attachment.extended_mag_level_1").formatted(Formatting.GRAY));
+                    components.add(Text.translatable("tooltip.tacz.attachment.extended_mag_level_1").formatted(Formatting.GRAY));
                 } else if (magLevel == 2) {
-                    components.add(Text.translatable("tooltip.tacz-fabric.attachment.extended_mag_level_2").formatted(Formatting.BLUE));
+                    components.add(Text.translatable("tooltip.tacz.attachment.extended_mag_level_2").formatted(Formatting.BLUE));
                 } else if (magLevel == 3) {
-                    components.add(Text.translatable("tooltip.tacz-fabric.attachment.extended_mag_level_3").formatted(Formatting.LIGHT_PURPLE));
+                    components.add(Text.translatable("tooltip.tacz.attachment.extended_mag_level_3").formatted(Formatting.LIGHT_PURPLE));
                 }
             }
 
             float adsAddendTime = data.getAdsAddendTime();
             if (adsAddendTime > 0) {
-                components.add(Text.translatable("tooltip.tacz-fabric.attachment.ads.increase").formatted(Formatting.RED));
+                components.add(Text.translatable("tooltip.tacz.attachment.ads.increase").formatted(Formatting.RED));
             } else if (adsAddendTime < 0) {
-                components.add(Text.translatable("tooltip.tacz-fabric.attachment.ads.decrease").formatted(Formatting.GREEN));
+                components.add(Text.translatable("tooltip.tacz.attachment.ads.decrease").formatted(Formatting.GREEN));
             }
 
             float inaccuracyAddend = data.getInaccuracyAddend();
             if (inaccuracyAddend > 0) {
-                components.add(Text.translatable("tooltip.tacz-fabric.attachment.inaccuracy.increase").formatted(Formatting.RED));
+                components.add(Text.translatable("tooltip.tacz.attachment.inaccuracy.increase").formatted(Formatting.RED));
             } else if (inaccuracyAddend < 0) {
-                components.add(Text.translatable("tooltip.tacz-fabric.attachment.inaccuracy.decrease").formatted(Formatting.GREEN));
+                components.add(Text.translatable("tooltip.tacz.attachment.inaccuracy.decrease").formatted(Formatting.GREEN));
             }
 
             RecoilModifier recoilModifier = data.getRecoilModifier();
             if (recoilModifier != null) {
                 float pitch = recoilModifier.getPitch();
                 if (pitch > 0) {
-                    components.add(Text.translatable("tooltip.tacz-fabric.attachment.pitch.increase").formatted(Formatting.RED));
+                    components.add(Text.translatable("tooltip.tacz.attachment.pitch.increase").formatted(Formatting.RED));
                 } else if (pitch < 0) {
-                    components.add(Text.translatable("tooltip.tacz-fabric.attachment.pitch.decrease").formatted(Formatting.GREEN));
+                    components.add(Text.translatable("tooltip.tacz.attachment.pitch.decrease").formatted(Formatting.GREEN));
                 }
 
                 float yaw = recoilModifier.getYaw();
                 if (yaw > 0) {
-                    components.add(Text.translatable("tooltip.tacz-fabric.attachment.yaw.increase").formatted(Formatting.RED));
+                    components.add(Text.translatable("tooltip.tacz.attachment.yaw.increase").formatted(Formatting.RED));
                 } else if (yaw < 0) {
-                    components.add(Text.translatable("tooltip.tacz-fabric.attachment.yaw.decrease").formatted(Formatting.GREEN));
+                    components.add(Text.translatable("tooltip.tacz.attachment.yaw.decrease").formatted(Formatting.GREEN));
                 }
             }
         });

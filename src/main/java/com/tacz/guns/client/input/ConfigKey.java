@@ -1,8 +1,8 @@
 package com.tacz.guns.client.input;
 
+import com.tacz.guns.api.client.event.InputEvent;
 import com.tacz.guns.client.gui.compat.ClothConfigScreen;
 import com.tacz.guns.compat.cloth.MenuIntegration;
-import com.tacz.guns.api.client.event.InputEvent;
 import com.tacz.guns.init.CompatRegistry;
 import committee.nova.mkb.api.IKeyBinding;
 import committee.nova.mkb.keybinding.KeyModifier;
@@ -24,7 +24,7 @@ import static com.tacz.guns.util.InputExtraCheck.isInGame;
 
 @Environment(EnvType.CLIENT)
 public class ConfigKey {
-    public static final KeyBinding OPEN_CONFIG_KEY = new KeyBinding("key.tacz-fabric.open_config.desc",
+    public static final KeyBinding OPEN_CONFIG_KEY = new KeyBinding("key.tacz.open_config.desc",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_T,
             "key.category.tacz");
@@ -39,8 +39,8 @@ public class ConfigKey {
             }
             if (!FabricLoader.getInstance().isModLoaded(CompatRegistry.CLOTH_CONFIG)) {
                 ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.OPEN_URL, ClothConfigScreen.CLOTH_CONFIG_URL);
-                HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable("gui.tacz-fabric.cloth_config_warning.download"));
-                MutableText component = Text.translatable("gui.tacz-fabric.cloth_config_warning.tips").styled(style ->
+                HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable("gui.tacz.cloth_config_warning.download"));
+                MutableText component = Text.translatable("gui.tacz.cloth_config_warning.tips").styled(style ->
                         style.withFormatting(Formatting.BLUE).withFormatting(Formatting.UNDERLINE).withClickEvent(clickEvent).withHoverEvent(hoverEvent));
                 player.sendMessage(component);
             } else {

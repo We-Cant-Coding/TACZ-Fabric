@@ -1,8 +1,8 @@
 package com.tacz.guns.client.input;
 
+import com.tacz.guns.api.client.event.InputEvent;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.config.util.InteractKeyConfigRead;
-import com.tacz.guns.api.client.event.InputEvent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
@@ -21,7 +21,7 @@ import static com.tacz.guns.util.InputExtraCheck.isInGame;
 
 @Environment(EnvType.CLIENT)
 public class InteractKey {
-    public static final KeyBinding INTERACT_KEY = new KeyBinding("key.tacz-fabric.interact.desc",
+    public static final KeyBinding INTERACT_KEY = new KeyBinding("key.tacz.interact.desc",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_O,
             "key.category.tacz");

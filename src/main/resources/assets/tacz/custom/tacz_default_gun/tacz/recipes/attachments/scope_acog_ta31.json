@@ -1,0 +1,26 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "c:iron_ingots"
+      },
+      "count": 10
+    },
+    {
+      "item": {
+        "tag": "c:amethyst"
+      },
+      "count": 3
+    },
+    {
+      "item": {
+        "tag": "c:dusts/redstone"
+      },
+      "count": 8
+    }
+  ],
+  "result": {
+    "type": "attachment",
+    "id": "tacz:scope_acog_ta31"
+  }
+}

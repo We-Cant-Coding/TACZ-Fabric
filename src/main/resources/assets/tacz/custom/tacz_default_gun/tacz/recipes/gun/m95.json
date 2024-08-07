@@ -1,0 +1,38 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "c:diamonds"
+      },
+      "count": 15
+    },
+    {
+      "item": {
+        "tag": "c:gold_ingots"
+      },
+      "count": 60
+    },
+    {
+      "item": {
+        "tag": "c:netherite_ingots"
+      },
+      "count": 3
+    },
+    {
+      "item": {
+        "tag": "c:iron_ingots"
+      },
+      "count": 300
+    },
+    {
+      "item": {
+        "tag": "c:blaze_rods"
+      },
+      "count": 5
+    }
+  ],
+  "result": {
+    "type": "gun",
+    "id": "tacz:m95"
+  }
+}

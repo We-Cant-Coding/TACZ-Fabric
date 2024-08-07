@@ -1,0 +1,32 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "c:diamonds"
+      },
+      "count": 10
+    },
+    {
+      "item": {
+        "tag": "c:gold_ingots"
+      },
+      "count": 50
+    },
+    {
+      "item": {
+        "tag": "c:iron_ingots"
+      },
+      "count": 200
+    },
+    {
+      "item": {
+        "tag": "c:blaze_rods"
+      },
+      "count": 5
+    }
+  ],
+  "result": {
+    "type": "gun",
+    "id": "tacz:ai_awp"
+  }
+}

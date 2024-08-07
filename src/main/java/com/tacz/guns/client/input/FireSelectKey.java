@@ -1,8 +1,8 @@
 package com.tacz.guns.client.input;
 
+import com.tacz.guns.api.client.event.InputEvent;
 import com.tacz.guns.api.client.gameplay.IClientPlayerGunOperator;
 import com.tacz.guns.api.item.IGun;
-import com.tacz.guns.api.client.event.InputEvent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -15,7 +15,7 @@ import static com.tacz.guns.util.InputExtraCheck.isInGame;
 
 @Environment(EnvType.CLIENT)
 public class FireSelectKey {
-    public static final KeyBinding FIRE_SELECT_KEY = new KeyBinding("key.tacz-fabric.fire_select.desc",
+    public static final KeyBinding FIRE_SELECT_KEY = new KeyBinding("key.tacz.fire_select.desc",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_G,
             "key.category.tacz");

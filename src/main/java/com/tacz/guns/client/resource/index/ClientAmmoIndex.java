@@ -63,7 +63,7 @@ public class ClientAmmoIndex {
     private static void checkName(AmmoIndexPOJO ammoIndexPOJO, ClientAmmoIndex index) {
         index.name = ammoIndexPOJO.getName();
         if (StringUtils.isBlank(index.name)) {
-            index.name = "custom.tacz-fabric.error.no_name";
+            index.name = "custom.tacz.error.no_name";
         }
     }
 

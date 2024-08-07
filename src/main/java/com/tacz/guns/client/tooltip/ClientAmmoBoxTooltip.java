@@ -21,7 +21,7 @@ public class ClientAmmoBoxTooltip implements TooltipComponent {
         if (ammoBox.getItem() instanceof IAmmoBox box && box.isCreative(ammoBox)) {
             this.count = Text.literal("∞");
         } else {
-            this.count = Text.translatable("tooltip.tacz-fabric.ammo_box.count", tooltip.count());
+            this.count = Text.translatable("tooltip.tacz.ammo_box.count", tooltip.count());
         }
         this.ammoName = this.ammo.getName();
     }

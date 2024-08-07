@@ -9,15 +9,14 @@ import com.tacz.guns.resource.DedicatedServerReloadManager;
 import com.tacz.guns.util.EnvironmentUtil;
 import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
 import net.fabricmc.api.ModInitializer;
-
 import net.minecraftforge.fml.config.ModConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class GunMod implements ModInitializer {
-	public static final String ORIGINAL_MOD_ID = "tacz";
-	public static final String MOD_ID = "tacz-fabric";
-	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+	public static final String OLD_MOD_ID = "tacz-fabric";
+	public static final String MOD_ID = "tacz";
+	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID.toUpperCase());
 	/**
 	 * 默认模型包文件夹
 	 */

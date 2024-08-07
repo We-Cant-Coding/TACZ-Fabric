@@ -3,10 +3,10 @@ package com.tacz.guns.network.packets.s2c.handshake;
 import com.tacz.guns.GunMod;
 import com.tacz.guns.entity.sync.core.SyncedDataKey;
 import com.tacz.guns.entity.sync.core.SyncedEntityData;
-import com.tacz.guns.network.IMessage;
+import com.tacz.guns.network.IHandshakeMessage;
+import com.tacz.guns.network.packets.c2s.handshake.AcknowledgeC2SPacket;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketType;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.PacketByteBuf;
@@ -19,7 +19,7 @@ import org.slf4j.MarkerFactory;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class SyncedEntityDataMappingS2CPacket implements IMessage {
+public class SyncedEntityDataMappingS2CPacket implements IHandshakeMessage {
     public static final PacketType<SyncedEntityDataMappingS2CPacket> TYPE = PacketType.create(new Identifier(GunMod.MOD_ID, "synced_entity_data_mapping"), SyncedEntityDataMappingS2CPacket::new);
     private static final Marker HANDSHAKE = MarkerFactory.getMarker("TACZ_HANDSHAKE");
     private Map<Identifier, List<Pair<Identifier, Integer>>> keyMap;
@@ -50,13 +50,12 @@ public class SyncedEntityDataMappingS2CPacket implements IMessage {
     }
 
     @Override
-    public PacketByteBuf handle(ClientConnection connection, Consumer<GenericFutureListener<? extends Future<? super Void>>> listenerAdder) {
+    public IResponsePacket handle(ClientConnection connection, Consumer<GenericFutureListener<? extends Future<? super Void>>> listenerAdder) {
         GunMod.LOGGER.debug(HANDSHAKE, "Received synced key mappings from server");
         if (!SyncedEntityData.instance().updateMappings(keyMap)) {
             connection.disconnect(Text.literal("Connection closed - [TacZ] Received unknown synced data keys."));
         }
-        // reply Acknowledge.class
-        return PacketByteBufs.empty();
+        return new AcknowledgeC2SPacket();
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.tacz.guns.client.input;
 
-import com.tacz.guns.api.client.gameplay.IClientPlayerGunOperator;
 import com.tacz.guns.api.client.event.InputEvent;
+import com.tacz.guns.api.client.gameplay.IClientPlayerGunOperator;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -14,7 +14,7 @@ import static com.tacz.guns.util.InputExtraCheck.isInGame;
 
 @Environment(EnvType.CLIENT)
 public class MeleeKey {
-    public static final KeyBinding MELEE_KEY = new KeyBinding("key.tacz-fabric.melee.desc",
+    public static final KeyBinding MELEE_KEY = new KeyBinding("key.tacz.melee.desc",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_V,
             "key.category.tacz");

@@ -1,0 +1,26 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "c:copper_ingots"
+      },
+      "count": 24
+    },
+    {
+      "item": {
+        "tag": "c:lapis"
+      }
+    },
+    {
+      "item": {
+        "tag": "c:gunpowder"
+      },
+      "count": 9
+    }
+  ],
+  "result": {
+    "type": "ammo",
+    "id": "tacz:308",
+    "count": 48
+  }
+}

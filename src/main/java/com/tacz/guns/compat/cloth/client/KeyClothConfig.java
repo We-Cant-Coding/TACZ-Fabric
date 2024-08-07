@@ -8,10 +8,10 @@ import net.minecraft.text.Text;
 
 public class KeyClothConfig {
     public static void init(ConfigBuilder root, ConfigEntryBuilder entryBuilder) {
-        ConfigCategory key = root.getOrCreateCategory(Text.translatable("config.tacz-fabric.client.key"));
+        ConfigCategory key = root.getOrCreateCategory(Text.translatable("config.tacz.client.key"));
 
-        key.addEntry(entryBuilder.startBooleanToggle(Text.translatable("config.tacz-fabric.client.key.hold_to_aim"), KeyConfig.HOLD_TO_AIM.get())
-                .setDefaultValue(true).setTooltip(Text.translatable("config.tacz-fabric.client.key.hold_to_aim.desc"))
+        key.addEntry(entryBuilder.startBooleanToggle(Text.translatable("config.tacz.client.key.hold_to_aim"), KeyConfig.HOLD_TO_AIM.get())
+                .setDefaultValue(true).setTooltip(Text.translatable("config.tacz.client.key.hold_to_aim.desc"))
                 .setSaveConsumer(KeyConfig.HOLD_TO_AIM::set).build());
     }
 }

@@ -78,13 +78,18 @@ repositories {
 	maven {
 		url = "https://maven.nova-committee.cn/releases"
 	}
+	flatDir {
+		dir 'libs/mods'
+	}
 }
 
 loom {
-	accessWidenerPath = file("src/main/resources/tacz-fabric.accesswidener")
+	accessWidenerPath = file("src/main/resources/tacz.accesswidener")
 }
 
 dependencies {
+	implementation fileTree(dir: 'libs/libraries', include: ['*.jar'])
+
 	// 버전을 변경하려면 gradle.properties 파일을 참조
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -117,10 +122,13 @@ dependencies {
 	modApi "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.forgeconfigapiport_version}"
 
 	modCompileOnly "org.embeddedt:embeddium-1.20.1:${project.embeddedt_version}"
-	modCompileOnly "maven.modrinth:iris:${project.iris_version}"
+	modCompileOnly "libs:iris:${project.iris_version}"
+	modCompileOnly "libs:iris_legacy:${project.iris_old_version}"
 	modCompileOnly "maven.modrinth:carry-on:${project.carry_on_version}"
 	modCompileOnly "maven.modrinth:immediatelyfast:${project.immediatelyfast_version}"
 	modCompileOnly "maven.modrinth:zoomify:${project.zoomify_version}"
+	modCompileOnly include("maven.modrinth:controlling:${project.controlling_version}")
+	modCompileOnly include("maven.modrinth:searchables:${project.searchables_version}")
 
 	// 일부 보간 연산을 수행하기 위한 Apache Commons 수학 라이브러리
 	// Apache Commons Math library for performing some interpolation operations

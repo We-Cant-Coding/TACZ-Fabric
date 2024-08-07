@@ -1,11 +1,11 @@
 package com.tacz.guns.client.input;
 
 import com.tacz.guns.api.TimelessAPI;
+import com.tacz.guns.api.client.event.InputEvent;
 import com.tacz.guns.api.client.gameplay.IClientPlayerGunOperator;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.api.item.gun.FireMode;
 import com.tacz.guns.client.sound.SoundPlayManager;
-import com.tacz.guns.api.client.event.InputEvent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -20,7 +20,7 @@ import static com.tacz.guns.util.InputExtraCheck.isInGame;
 
 @Environment(EnvType.CLIENT)
 public class ShootKey {
-    public static final KeyBinding SHOOT_KEY = new KeyBinding("key.tacz-fabric.shoot.desc",
+    public static final KeyBinding SHOOT_KEY = new KeyBinding("key.tacz.shoot.desc",
             InputUtil.Type.MOUSE,
             GLFW.GLFW_MOUSE_BUTTON_LEFT,
             "key.category.tacz");
@@ -65,7 +65,7 @@ public class ShootKey {
                         .map(index -> !index.getGunData().getBurstData().isContinuousShoot())
                         .orElse(false);
                 if (fireMode == FireMode.UNKNOWN) {
-                    player.sendMessage(Text.translatable("message.tacz-fabric.fire_select.fail"));
+                    player.sendMessage(Text.translatable("message.tacz.fire_select.fail"));
                 }
                 if (fireMode == FireMode.SEMI || isBurstSemi) {
                     IClientPlayerGunOperator.fromLocalPlayer(player).shoot();

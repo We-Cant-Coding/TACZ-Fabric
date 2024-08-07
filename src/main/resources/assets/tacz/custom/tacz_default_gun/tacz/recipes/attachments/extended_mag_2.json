@@ -1,0 +1,26 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "c:iron_ingots"
+      },
+      "count": 20
+    },
+    {
+      "item": {
+        "tag": "c:gold_ingots"
+      },
+      "count": 8
+    },
+    {
+      "item": {
+        "tag": "c:lapis"
+      },
+      "count": 8
+    }
+  ],
+  "result": {
+    "type": "attachment",
+    "id": "tacz:extended_mag_2"
+  }
+}

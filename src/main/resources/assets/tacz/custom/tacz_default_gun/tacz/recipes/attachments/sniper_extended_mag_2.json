@@ -1,0 +1,26 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "c:iron_ingots"
+      },
+      "count": 26
+    },
+    {
+      "item": {
+        "tag": "c:gold_ingots"
+      },
+      "count": 12
+    },
+    {
+      "item": {
+        "tag": "c:lapis"
+      },
+      "count": 12
+    }
+  ],
+  "result": {
+    "type": "attachment",
+    "id": "tacz:sniper_extended_mag_2"
+  }
+}

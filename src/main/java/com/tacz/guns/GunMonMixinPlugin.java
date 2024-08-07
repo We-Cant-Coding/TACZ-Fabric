@@ -1,6 +1,7 @@
 package com.tacz.guns;
 
 import com.llamalad7.mixinextras.MixinExtrasBootstrap;
+import com.tacz.guns.init.CompatRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
@@ -15,8 +16,8 @@ public class GunMonMixinPlugin implements IMixinConfigPlugin {
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         var fabricLoader = FabricLoader.getInstance();
         return switch (mixinClassName) {
-            case "com.tacz.guns.mixin.common.RaycastContextMixin" ->
-                    !fabricLoader.isModLoaded("porting_lib_base");
+            case "com.tacz.guns.mixin.common.RaycastContextMixin" -> !fabricLoader.isModLoaded("porting_lib_base");
+            case "com.tacz.guns.mixin.common.CarryOnMixin" -> fabricLoader.isModLoaded(CompatRegistry.CARRY_ON_ID);
             default -> true;
         };
     }

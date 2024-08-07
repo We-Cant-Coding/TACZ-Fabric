@@ -39,7 +39,7 @@ public class RefitTurnPageButton extends ButtonWidget implements IComponentToolt
     @Override
     public void renderTooltip(Consumer<List<Text>> consumer) {
         if (this.isSelected()) {
-            String key = isUpPage ? "tooltip.tacz-fabric.page.previous" : "tooltip.tacz-fabric.page.next";
+            String key = isUpPage ? "tooltip.tacz.page.previous" : "tooltip.tacz.page.next";
             consumer.accept(Collections.singletonList(Text.translatable(key)));
         }
     }

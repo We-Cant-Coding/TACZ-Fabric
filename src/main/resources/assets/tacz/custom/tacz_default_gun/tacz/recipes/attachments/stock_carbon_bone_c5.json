@@ -1,0 +1,20 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "c:iron_ingots"
+      },
+      "count": 12
+    },
+    {
+      "item": {
+        "tag": "c:leather"
+      },
+      "count": 3
+    }
+  ],
+  "result": {
+    "type": "attachment",
+    "id": "tacz:stock_carbon_bone_c5"
+  }
+}

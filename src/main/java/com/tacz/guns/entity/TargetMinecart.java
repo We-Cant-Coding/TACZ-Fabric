@@ -61,7 +61,7 @@ public class TargetMinecart extends AbstractMinecartEntity implements ITargetEnt
             this.scheduleVelocityUpdate();
             this.setDamageWobbleStrength(10);
             double dis = this.getPos().distanceTo(sourceEntity.getPos());
-            player.sendMessage(Text.translatable("message.tacz-fabric.target_minecart.hit", String.format("%.1f", damage), String.format("%.2f", dis)), true);
+            player.sendMessage(Text.translatable("message.tacz.target_minecart.hit", String.format("%.1f", damage), String.format("%.2f", dis)), true);
             // 原版的声音传播距离由 volume 决定
             // 当声音大于 1 时，距离为 = 16 * volume
             float volume = OtherConfig.TARGET_SOUND_DISTANCE.get() / 16.0f;

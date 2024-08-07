@@ -1,12 +1,13 @@
 package com.tacz.guns.network;
 
 import com.tacz.guns.mixin.client.network.ClientLoginNetworkHandlerAccessor;
-import com.tacz.guns.network.packets.s2c.event.*;
 import com.tacz.guns.network.packets.s2c.*;
+import com.tacz.guns.network.packets.s2c.event.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientLoginNetworking;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketType;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.PacketByteBuf;
@@ -37,11 +38,16 @@ public class NetworkClientInitializer {
     }
 
     @Environment(EnvType.CLIENT)
-    public static <T extends IMessage> void registerHandshake(PacketType<T> type) {
+    static <T extends IHandshakeMessage> void registerHandshake(PacketType<T> type) {
         ClientLoginNetworking.registerGlobalReceiver(type.getId(), (client, handler, buf, listenerAdder) -> {
             T packet = type.read(buf);
             ClientConnection connection = ((ClientLoginNetworkHandlerAccessor) handler).getConnection();
-            PacketByteBuf response = packet.handle(connection, listenerAdder);
+            IHandshakeMessage.IResponsePacket responsePacket = packet.handle(connection, listenerAdder);
+            PacketByteBuf response = PacketByteBufs.create();
+            if (responsePacket != null) {
+                response.writeIdentifier(responsePacket.getId());
+                responsePacket.write(response);
+            }
             return CompletableFuture.completedFuture(response);
         });
     }

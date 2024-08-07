@@ -27,9 +27,9 @@ public class OverwriteCommand {
         OtherConfig.DEFAULT_PACK_DEBUG.set(!enable);
         if (context.getSource().getEntity() instanceof ServerPlayerEntity serverPlayer) {
             if (OtherConfig.DEFAULT_PACK_DEBUG.get()) {
-                serverPlayer.sendMessage(Text.translatable("commands.tacz-fabric.reload.overwrite_off"));
+                serverPlayer.sendMessage(Text.translatable("commands.tacz.reload.overwrite_off"));
             } else {
-                serverPlayer.sendMessage(Text.translatable("commands.tacz-fabric.reload.overwrite_on"));
+                serverPlayer.sendMessage(Text.translatable("commands.tacz.reload.overwrite_on"));
             }
         }
         return Command.SINGLE_SUCCESS;

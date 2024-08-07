@@ -36,13 +36,13 @@ public class ReloadCommand {
         watch.stop();
         double time = watch.getTime(TimeUnit.MICROSECONDS) / 1000.0;
         if (context.getSource().getEntity() instanceof ServerPlayerEntity serverPlayer) {
-            serverPlayer.sendMessage(Text.translatable("commands.tacz-fabric.reload.success", time));
+            serverPlayer.sendMessage(Text.translatable("commands.tacz.reload.success", time));
             if (OtherConfig.DEFAULT_PACK_DEBUG.get()) {
-                serverPlayer.sendMessage(Text.translatable("commands.tacz-fabric.reload.overwrite_off"));
-                serverPlayer.sendMessage(Text.translatable("commands.tacz-fabric.reload.overwrite_command.off"));
+                serverPlayer.sendMessage(Text.translatable("commands.tacz.reload.overwrite_off"));
+                serverPlayer.sendMessage(Text.translatable("commands.tacz.reload.overwrite_command.off"));
             } else {
-                serverPlayer.sendMessage(Text.translatable("commands.tacz-fabric.reload.overwrite_on"));
-                serverPlayer.sendMessage(Text.translatable("commands.tacz-fabric.reload.overwrite_command.on"));
+                serverPlayer.sendMessage(Text.translatable("commands.tacz.reload.overwrite_on"));
+                serverPlayer.sendMessage(Text.translatable("commands.tacz.reload.overwrite_command.on"));
             }
         }
         GunMod.LOGGER.info("Model loading time: {} ms", time);

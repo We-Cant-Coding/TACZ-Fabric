@@ -1,0 +1,21 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "c:copper_ingots"
+      },
+      "count": 20
+    },
+    {
+      "item": {
+        "tag": "c:gunpowder"
+      },
+      "count": 5
+    }
+  ],
+  "result": {
+    "type": "ammo",
+    "id": "tacz:357mag",
+    "count": 48
+  }
+}

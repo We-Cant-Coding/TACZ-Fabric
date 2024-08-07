@@ -24,7 +24,7 @@ import java.util.List;
 public class AttachmentQueryCategory implements IRecipeCategory<AttachmentQueryEntry> {
     public static final RecipeType<AttachmentQueryEntry> ATTACHMENT_QUERY = RecipeType.create(GunMod.MOD_ID, "attachment_query", AttachmentQueryEntry.class);
     public static final int MAX_GUN_SHOW_COUNT = 60;
-    private static final Text TITLE = Text.translatable("jei.tacz-fabric.attachment_query.title");
+    private static final Text TITLE = Text.translatable("jei.tacz.attachment_query.title");
     private final IDrawableStatic bgDraw;
     private final IDrawable slotDraw;
     private final IDrawable iconDraw;
@@ -40,7 +40,7 @@ public class AttachmentQueryCategory implements IRecipeCategory<AttachmentQueryE
         List<ItemStack> extraAllowGunStacks = entry.getExtraAllowGunStacks();
         if (!extraAllowGunStacks.isEmpty()) {
             TextRenderer font = MinecraftClient.getInstance().textRenderer;
-            guiGraphics.drawText(font, Text.translatable("jei.tacz-fabric.attachment_query.more"), 128, 134, 0x555555, false);
+            guiGraphics.drawText(font, Text.translatable("jei.tacz.attachment_query.more"), 128, 134, 0x555555, false);
         }
     }
 

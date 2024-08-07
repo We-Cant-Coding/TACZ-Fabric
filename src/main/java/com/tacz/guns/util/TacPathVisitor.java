@@ -37,7 +37,7 @@ public class TacPathVisitor extends SimpleFileVisitor<Path> {
     }
 
     public static String checkNamespace(String namespace) {
-        if (Objects.equals(namespace, GunMod.ORIGINAL_MOD_ID)) {
+        if (Objects.equals(namespace, GunMod.OLD_MOD_ID)) {
             return GunMod.MOD_ID;
         }
         return namespace;

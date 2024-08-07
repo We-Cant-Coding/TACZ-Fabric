@@ -1,0 +1,20 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "c:gold_ingots"
+      },
+      "count": 30
+    },
+    {
+      "item": {
+        "tag": "c:iron_ingots"
+      },
+      "count": 10
+    }
+  ],
+  "result": {
+    "type": "attachment",
+    "id": "tacz:deagle_golden_long_barrel"
+  }
+}

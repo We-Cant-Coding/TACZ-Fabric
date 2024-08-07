@@ -210,21 +210,21 @@ public class AmmoBoxItem extends Item implements DyeableItem, AmmoBoxItemDataAcc
     @Override
     public Text getName(ItemStack stack) {
         if (isAllTypeCreative(stack)) {
-            return Text.translatable("item.tacz-fabric.ammo_box.all_type_creative").formatted(Formatting.DARK_PURPLE);
+            return Text.translatable("item.tacz.ammo_box.all_type_creative").formatted(Formatting.DARK_PURPLE);
         }
         if (isCreative(stack)) {
-            return Text.translatable("item.tacz-fabric.ammo_box.creative").formatted(Formatting.DARK_PURPLE);
+            return Text.translatable("item.tacz.ammo_box.creative").formatted(Formatting.DARK_PURPLE);
         }
         int ammoLevel = getAmmoLevel(stack);
         switch (ammoLevel) {
             case GOLD_LEVEL -> {
-                return Text.translatable("item.tacz-fabric.ammo_box.gold").formatted(Formatting.YELLOW);
+                return Text.translatable("item.tacz.ammo_box.gold").formatted(Formatting.YELLOW);
             }
             case DIAMOND_LEVEL -> {
-                return Text.translatable("item.tacz-fabric.ammo_box.diamond").formatted(Formatting.AQUA);
+                return Text.translatable("item.tacz.ammo_box.diamond").formatted(Formatting.AQUA);
             }
             default -> {
-                return Text.translatable("item.tacz-fabric.ammo_box.iron");
+                return Text.translatable("item.tacz.ammo_box.iron");
             }
         }
     }
@@ -276,15 +276,15 @@ public class AmmoBoxItem extends Item implements DyeableItem, AmmoBoxItemDataAcc
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World pLevel, List<Text> components, TooltipContext isAdvanced) {
         if (isAllTypeCreative(stack)) {
-            components.add(Text.translatable("tooltip.tacz-fabric.ammo_box.usage.all_type_creative").formatted(Formatting.GOLD));
+            components.add(Text.translatable("tooltip.tacz.ammo_box.usage.all_type_creative").formatted(Formatting.GOLD));
             return;
         }
         if (isCreative(stack)) {
-            components.add(Text.translatable("tooltip.tacz-fabric.ammo_box.usage.creative.1").formatted(Formatting.YELLOW));
-            components.add(Text.translatable("tooltip.tacz-fabric.ammo_box.usage.creative.2").formatted(Formatting.YELLOW));
+            components.add(Text.translatable("tooltip.tacz.ammo_box.usage.creative.1").formatted(Formatting.YELLOW));
+            components.add(Text.translatable("tooltip.tacz.ammo_box.usage.creative.2").formatted(Formatting.YELLOW));
             return;
         }
-        components.add(Text.translatable("tooltip.tacz-fabric.ammo_box.usage.deposit").formatted(Formatting.GRAY));
-        components.add(Text.translatable("tooltip.tacz-fabric.ammo_box.usage.remove").formatted(Formatting.GRAY));
+        components.add(Text.translatable("tooltip.tacz.ammo_box.usage.deposit").formatted(Formatting.GRAY));
+        components.add(Text.translatable("tooltip.tacz.ammo_box.usage.remove").formatted(Formatting.GRAY));
     }
 }

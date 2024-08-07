@@ -204,7 +204,7 @@ public class GunRefitScreen extends Screen {
                             UnloadAttachmentC2SPacket message = new UnloadAttachmentC2SPacket(inventory.selectedSlot, RefitTransform.getCurrentTransformType());
                             NetworkHandler.sendToServer(message);
                         } else {
-                            player.sendMessage(Text.translatable("gui.tacz-fabric.gun_refit.unload.no_space"));
+                            player.sendMessage(Text.translatable("gui.tacz.gun_refit.unload.no_space"));
                         }
                     }
                 });

@@ -12,6 +12,6 @@ public class IOReader {
     public static String toString(InputStream input, Charset charset) throws IOException {
         String result = IOUtils.toString(input, charset);
         return result
-                .replace(GunMod.ORIGINAL_MOD_ID + ":", GunMod.MOD_ID + ":");
+                .replace(GunMod.OLD_MOD_ID + ":", GunMod.MOD_ID + ":");
     }
 }

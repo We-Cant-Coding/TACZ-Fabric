@@ -57,16 +57,16 @@ public class LevelUpS2CPacket implements FabricPacket {
                 /*
                 if (GunLevelManager.DAMAGE_UP_LEVELS.contains(level)) {
                     Minecraft.getInstance().getToasts().addToast(new GunLevelUpToast(gun,
-                            Component.translatable("toast.tacz-fabric.level_up"),
-                            Component.translatable("toast.tacz-fabric.sub.damage_up")));
+                            Component.translatable("toast.tacz.level_up"),
+                            Component.translatable("toast.tacz.sub.damage_up")));
                 } else if (level >= GunLevelManager.MAX_LEVEL) {
                     Minecraft.getInstance().getToasts().addToast(new GunLevelUpToast(gun,
-                            Component.translatable("toast.tacz-fabric.level_up"),
-                            Component.translatable("toast.tacz-fabric.sub.final_level")));
+                            Component.translatable("toast.tacz.level_up"),
+                            Component.translatable("toast.tacz.sub.final_level")));
                 } else {
                     Minecraft.getInstance().getToasts().addToast(new GunLevelUpToast(gun,
-                            Component.translatable("toast.tacz-fabric.level_up"),
-                            Component.translatable("toast.tacz-fabric.sub.level_up")));
+                            Component.translatable("toast.tacz.level_up"),
+                            Component.translatable("toast.tacz.sub.level_up")));
                 }*/
     }
 

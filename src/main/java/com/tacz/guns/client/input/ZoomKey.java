@@ -1,7 +1,7 @@
 package com.tacz.guns.client.input;
 
-import com.tacz.guns.api.client.gameplay.IClientPlayerGunOperator;
 import com.tacz.guns.api.client.event.InputEvent;
+import com.tacz.guns.api.client.gameplay.IClientPlayerGunOperator;
 import com.tacz.guns.network.NetworkHandler;
 import com.tacz.guns.network.packets.c2s.PlayerZoomC2SPacket;
 import net.fabricmc.api.EnvType;
@@ -16,7 +16,7 @@ import static com.tacz.guns.util.InputExtraCheck.isInGame;
 
 @Environment(EnvType.CLIENT)
 public class ZoomKey {
-    public static final KeyBinding ZOOM_KEY = new KeyBinding("key.tacz-fabric.zoom.desc",
+    public static final KeyBinding ZOOM_KEY = new KeyBinding("key.tacz.zoom.desc",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_V,
             "key.category.tacz");

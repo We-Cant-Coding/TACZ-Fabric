@@ -1,8 +1,8 @@
 package com.tacz.guns.client.input;
 
+import com.tacz.guns.api.client.event.InputEvent;
 import com.tacz.guns.api.client.gameplay.IClientPlayerGunOperator;
 import com.tacz.guns.api.item.IGun;
-import com.tacz.guns.api.client.event.InputEvent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -15,7 +15,7 @@ import static com.tacz.guns.util.InputExtraCheck.isInGame;
 
 @Environment(EnvType.CLIENT)
 public class ReloadKey {
-    public static final KeyBinding RELOAD_KEY = new KeyBinding("key.tacz-fabric.reload.desc",
+    public static final KeyBinding RELOAD_KEY = new KeyBinding("key.tacz.reload.desc",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_R,
             "key.category.tacz");

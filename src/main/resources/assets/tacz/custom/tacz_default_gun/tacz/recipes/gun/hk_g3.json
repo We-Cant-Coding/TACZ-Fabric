@@ -1,0 +1,26 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "c:gold_ingots"
+      },
+      "count": 9
+    },
+    {
+      "item": {
+        "tag": "c:iron_ingots"
+      },
+      "count": 72
+    },
+    {
+      "item": {
+        "tag": "c:quartz"
+      },
+      "count": 5
+    }
+  ],
+  "result": {
+    "type": "gun",
+    "id": "tacz:hk_g3"
+  }
+}

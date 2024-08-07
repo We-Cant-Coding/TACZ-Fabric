@@ -1,9 +1,9 @@
 package com.tacz.guns.client.input;
 
+import com.tacz.guns.api.client.event.InputEvent;
 import com.tacz.guns.api.client.gameplay.IClientPlayerGunOperator;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.config.client.KeyConfig;
-import com.tacz.guns.api.client.event.InputEvent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -16,7 +16,7 @@ import static com.tacz.guns.util.InputExtraCheck.isInGame;
 
 @Environment(EnvType.CLIENT)
 public class AimKey {
-    public static final KeyBinding AIM_KEY = new KeyBinding("key.tacz-fabric.aim.desc",
+    public static final KeyBinding AIM_KEY = new KeyBinding("key.tacz.aim.desc",
             InputUtil.Type.MOUSE,
             GLFW.GLFW_MOUSE_BUTTON_RIGHT,
             "key.category.tacz");

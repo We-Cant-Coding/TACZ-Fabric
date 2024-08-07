@@ -1,0 +1,31 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "c:diamonds"
+      },
+      "count": 2
+    },
+    {
+      "item": {
+        "tag": "c:gold_ingots"
+      },
+      "count": 6
+    },
+    {
+      "item": {
+        "tag": "c:iron_ingots"
+      },
+      "count": 42
+    },
+    {
+      "item": {
+        "tag": "c:blaze_rods"
+      }
+    }
+  ],
+  "result": {
+    "type": "gun",
+    "id": "tacz:deagle"
+  }
+}

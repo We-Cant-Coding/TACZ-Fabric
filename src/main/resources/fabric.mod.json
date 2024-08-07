@@ -1,6 +1,6 @@
 {
 	"schemaVersion": 1,
-	"id": "tacz-fabric",
+	"id": "tacz",
 	"version": "${version}",
 	"name": "Timeless & Classics Guns: Zero",
 	"description": "",
@@ -12,7 +12,7 @@
 		"sources": "https://github.com/We-Cant-Coding/TACZ-Fabric"
 	},
 	"license": "GPL-3.0",
-	"icon": "assets/tacz-fabric/icon.png",
+	"icon": "assets/tacz/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
@@ -24,12 +24,15 @@
 		"cardinal-components": [
 			"com.tacz.guns.GunModComponents"
 		],
+		"jei_mod_plugin": [
+			"com.tacz.guns.compat.jei.GunModPlugin"
+		],
 		"modmenu": [
 			"com.tacz.guns.compat.modmenu.ModMenuIntegration"
 		]
 	},
 	"mixins": [
-		"tacz-fabric.mixins.json"
+		"tacz.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.15.11",
@@ -54,8 +57,8 @@
 			]
 		},
 		"cardinal-components": [
-			"tacz-fabric:synced_entity_data"
+			"tacz:synced_entity_data"
 		]
 	},
-	"accessWidener": "tacz-fabric.accesswidener"
+	"accessWidener": "tacz.accesswidener"
 }

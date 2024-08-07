@@ -4,7 +4,6 @@ import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.client.input.InteractKey;
 import com.tacz.guns.config.client.RenderConfig;
 import com.tacz.guns.config.util.InteractKeyConfigRead;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -65,7 +64,7 @@ public class InteractKeyTextOverlay {
 
     private static void renderText(DrawContext graphics, int width, int height, TextRenderer font) {
         String keyName = InteractKey.INTERACT_KEY.getBoundKeyLocalizedText().getString();
-        Text title = Text.translatable("gui.tacz-fabric.interact_key.text.desc", StringUtils.capitalize(keyName));
+        Text title = Text.translatable("gui.tacz.interact_key.text.desc", StringUtils.capitalize(keyName));
         graphics.drawText(font, title, (int) ((width - font.getWidth(title)) / 2.0f), (int) (height / 2.0f - 25), Formatting.YELLOW.getColorValue(), false);
     }
 }

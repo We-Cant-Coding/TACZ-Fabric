@@ -35,7 +35,7 @@ public class RefitUnloadButton extends ButtonWidget implements IComponentTooltip
     @Override
     public void renderTooltip(Consumer<List<Text>> consumer) {
         if (this.isSelected()) {
-            consumer.accept(Collections.singletonList(Text.translatable("tooltip.tacz-fabric.refit.unload")));
+            consumer.accept(Collections.singletonList(Text.translatable("tooltip.tacz.refit.unload")));
         }
     }
 }

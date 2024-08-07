@@ -1,0 +1,14 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "c:iron_ingots"
+      },
+      "count": 17
+    }
+  ],
+  "result": {
+    "type": "gun",
+    "id": "tacz:cz75"
+  }
+}

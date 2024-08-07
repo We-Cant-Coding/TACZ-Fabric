@@ -125,8 +125,8 @@ public class ClientGunPackDownloader {
     }
 
     private void displayFailScreen(MinecraftClient mc) {
-        Text title = Text.translatable("gui.tacz-fabric.client_gun_pack_downloader.fail.title");
-        Text subTitle = Text.translatable("gui.tacz-fabric.client_gun_pack_downloader.fail.subtitle");
+        Text title = Text.translatable("gui.tacz.client_gun_pack_downloader.fail.title");
+        Text subTitle = Text.translatable("gui.tacz.client_gun_pack_downloader.fail.subtitle");
         Text yesButton = ScreenTexts.PROCEED;
         Text noButton = Text.translatable("menu.disconnect");
         mc.setScreen(new ConfirmScreen(button -> {
